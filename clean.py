@@ -19,8 +19,9 @@ Steps:
   11. PII redaction (hash names/phones/emails/rego; scan comments)
   12. Assign customer_code (C1, C2, C3, …) per unique customer
   13. Add derived columns (rating_scale, date_quality)
-  14. Assign feedback_id (site_code + sequence, e.g. VIC01-00001)
-  15. Merge vehicle/model into one vehicle_model field for the clean output
+  14. Drop rows where rating_std, comment, and date_parsed are all blank
+  15. Assign feedback_id (site_code + sequence, e.g. VIC01-00001)
+  16. Merge vehicle/model into one vehicle_model field for the clean output
 
 Outputs:
   - consolidated_clean.csv   — the cleaned dataset
@@ -1280,6 +1281,43 @@ def add_derived_columns(df: pd.DataFrame) -> pd.DataFrame:
 
 
 # ─────────────────────────────────────────────────────────────────────
+# Step 14: Drop records with no usable feedback signal
+# ─────────────────────────────────────────────────────────────────────
+
+def drop_empty_feedback_rows(df: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
+    """Reject rows only when rating_std, comment, and date_parsed are all blank.
+
+    A row is kept if at least one of these three fields contains a value.
+    Missing columns are treated as blank, and whitespace-only strings count as
+    blank. Returns (cleaned_df, rejected_df).
+    """
+    required_signal_cols = ["rating_std", "comment", "date_parsed"]
+    blank_masks = []
+
+    for col in required_signal_cols:
+        if col not in df.columns:
+            blank_masks.append(pd.Series(True, index=df.index))
+        else:
+            values = df[col]
+            blank_masks.append(
+                values.isna() | values.astype("string").str.strip().eq("").fillna(True)
+            )
+
+    all_three_blank = blank_masks[0] & blank_masks[1] & blank_masks[2]
+    rejected = df.loc[all_three_blank].copy()
+    if not rejected.empty:
+        rejected["reject_reason"] = "rating_std_comment_date_parsed_all_blank"
+
+    cleaned = df.loc[~all_three_blank].copy()
+    log.info(
+        f"  Step 14: No-feedback rows — rejected {len(rejected):,} rows "
+        f"with rating_std, comment, and date_parsed all blank; "
+        f"kept {len(cleaned):,} rows with at least one populated field"
+    )
+    return cleaned, rejected
+
+
+# ─────────────────────────────────────────────────────────────────────
 # Final schema: merge vehicle + model
 # ─────────────────────────────────────────────────────────────────────
 
@@ -1420,8 +1458,15 @@ def clean(input_path: Path, output_path: Path, rejects_path: Path | None = None,
     log.info("Step 13: Adding derived columns...")
     df = add_derived_columns(df)
 
-    # Step 14: Assign stable feedback_id (after all drops/dedup/routing)
-    log.info("Step 14: Assigning feedback_id...")
+    # Step 14: Final usability filter — keep rows with at least one of the
+    # standardised rating, comment, or parsed date populated.
+    log.info("Step 14: Dropping rows with no rating, comment, or parsed date...")
+    df, rejects14 = drop_empty_feedback_rows(df)
+    if len(rejects14) > 0:
+        all_rejects.append(rejects14)
+
+    # Step 15: Assign stable feedback_id (after all drops/dedup/routing)
+    log.info("Step 15: Assigning feedback_id...")
     df = df.sort_values(["site_code", "date_parsed", "source_file", "source_row"]).reset_index(drop=True)
     df["feedback_id"] = df.apply(
         lambda r: f"{r['site_code']}-{r.name + 1:05d}", axis=1
@@ -1449,8 +1494,8 @@ def clean(input_path: Path, output_path: Path, rejects_path: Path | None = None,
     elif errors_path:
         log.info("No data quality errors recorded")
 
-    # Step 15: Merge vehicle/model for the clean output only
-    log.info("Step 15: Merging vehicle and model columns...")
+    # Step 16: Merge vehicle/model for the clean output only
+    log.info("Step 16: Merging vehicle and model columns...")
     df = merge_vehicle_model_columns(df)
 
     # ── Final column ordering ──
