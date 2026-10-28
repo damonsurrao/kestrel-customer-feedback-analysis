@@ -17,8 +17,9 @@ Steps:
   9.  Frankston subtotal reconciliation → log then drop
   10. Dedup on (site_code, date, department, rating_raw, comment_hash)
   11. PII redaction (hash names/phones/emails/rego; scan comments)
-  12. Add derived columns (rating_scale, date_quality)
-  13. Assign feedback_id (site_code + sequence, e.g. VIC01-00001)
+  12. Assign customer_code (C1, C2, C3, …) per unique customer
+  13. Add derived columns (rating_scale, date_quality)
+  14. Assign feedback_id (site_code + sequence, e.g. VIC01-00001)
 
 Outputs:
   - consolidated_clean.csv   — the cleaned dataset
@@ -229,6 +230,7 @@ QLD08_PATTERNS = re.compile(
 # ─────────────────────────────────────────────────────────────────────
 # Helpers
 # ─────────────────────────────────────────────────────────────────────
+
 
 def sha256_short(value: str, length: int = 12) -> str:
     """Return a truncated SHA-256 hex digest for PII hashing."""
@@ -566,6 +568,40 @@ def standardise_departments(df: pd.DataFrame) -> pd.DataFrame:
 # Step 6: Normalise ratings → rating_std (1-5, 5 = best)
 # ─────────────────────────────────────────────────────────────────────
 
+def normalise_star_rating(raw_value: str) -> tuple[str, float] | None:
+    """Convert star symbols or star labels to a compact label and numeric value.
+
+    Examples: '★★★★☆' → ('4star', 4.0), '★★★½☆' → ('3.5star', 3.5),
+    and '1.5 stars' → ('1.5star', 1.5). Returns None for other values.
+    """
+    raw_str = str(raw_value).strip()
+
+    # Normalise ratings already written as text, e.g. '4 stars' or '1.5star'.
+    label_match = re.fullmatch(
+        r"(\d+(?:[.,]\d+)?)\s*[- ]?\s*stars?", raw_str, re.IGNORECASE
+    )
+    if label_match:
+        value = float(label_match.group(1).replace(",", "."))
+        return f"{value:g}star", value
+
+    star_markers = "★☆⭐🌟⯨⯩⯪⯫½"
+    if not any(marker in raw_str for marker in star_markers):
+        return None
+
+    full_stars = sum(raw_str.count(symbol) for symbol in ("★", "⭐", "🌟"))
+    half_stars = sum(raw_str.count(symbol) for symbol in ("⯨", "⯩", "⯪", "⯫"))
+    half_stars += raw_str.count("½")
+    if half_stars == 0 and re.search(r"(?<!\d)1\s*/\s*2(?!\d)", raw_str):
+        half_stars = 1
+
+    # An all-empty-star string is not a usable rating.
+    if full_stars == 0 and half_stars == 0:
+        return None
+
+    value = full_stars + (0.5 * half_stars)
+    return f"{value:g}star", value
+
+
 def normalise_ratings(df: pd.DataFrame) -> pd.DataFrame:
     """
     Convert all ratings to a standardised 1-5 scale (5 = best).
@@ -580,7 +616,7 @@ def normalise_ratings(df: pd.DataFrame) -> pd.DataFrame:
     rating_std = []
     rating_scales = []
 
-    for _, row in df.iterrows():
+    for idx, row in df.iterrows():
         raw = row.get("rating_raw", "")
         site = row.get("site_code", "")
         segment = row.get("segment_id", "")
@@ -601,13 +637,13 @@ def normalise_ratings(df: pd.DataFrame) -> pd.DataFrame:
 
         raw_str = str(raw).strip()
 
-        # Try to extract a number
+        # Convert graphical star ratings into labels in rating_raw, while
+        # keeping the numeric value available for rating_std calculations.
+        star_rating = normalise_star_rating(raw_str)
         numeric_val = None
-
-        # Check for star emoji (★ or ⭐)
-        star_count = raw_str.count("★") + raw_str.count("⭐")
-        if star_count > 0:
-            numeric_val = float(star_count)
+        if star_rating is not None:
+            raw_str, numeric_val = star_rating
+            df.at[idx, "rating_raw"] = raw_str
         else:
             # Try parsing as number (handle decimal commas like '4,5')
             cleaned_num = raw_str.replace(",", ".")
@@ -902,7 +938,90 @@ def redact_pii(df: pd.DataFrame) -> pd.DataFrame:
 
 
 # ─────────────────────────────────────────────────────────────────────
-# Step 12: Derived columns
+# Step 12: Assign customer_code (C1, C2, C3, …)
+# ─────────────────────────────────────────────────────────────────────
+
+def _get_customer_fingerprint(row: pd.Series) -> str | None:
+    """
+    Build a customer fingerprint from the best available identifier.
+
+    Priority order (highest confidence first):
+      1. customer_ref  — DMS customer number, most reliable
+      2. email         — unique per person (hashed)
+      3. phone         — unique per person (hashed)
+      4. customer_name — least reliable (duplicates possible),
+                         but combined with site_code narrows it
+
+    Returns a string key like "ref:12345" or "email:a1b2c3d4e5f6"
+    or None if no identifier is available.
+
+    NOTE: This runs AFTER PII hashing (step 11), so customer_name,
+    phone and email are already SHA-256 hashes. That's fine — we just
+    need consistent values to group on.
+    """
+    # 1. customer_ref (not hashed — it's a DMS number)
+    ref = row.get("customer_ref")
+    if pd.notna(ref) and str(ref).strip():
+        return f"ref:{str(ref).strip()}"
+
+    # 2. email (hashed)
+    email = row.get("email")
+    if pd.notna(email) and str(email).strip():
+        return f"email:{str(email).strip()}"
+
+    # 3. phone (hashed)
+    phone = row.get("phone")
+    if pd.notna(phone) and str(phone).strip():
+        return f"phone:{str(phone).strip()}"
+
+    # 4. customer_name (hashed) — scope to site_code to reduce
+    #    false merges (different people with the same name at
+    #    different dealerships are unlikely to be the same customer)
+    name = row.get("customer_name")
+    if pd.notna(name) and str(name).strip():
+        site = str(row.get("site_code", "")).strip()
+        return f"name:{site}:{str(name).strip()}"
+
+    return None
+
+
+def assign_customer_codes(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Assign a simple sequential customer_code (C1, C2, C3, …) to each
+    unique customer, identified by the best available identifier column.
+
+    Rows with no customer identifier at all get customer_code = None.
+    """
+    df = df.copy()
+
+    # Build fingerprint for every row
+    fingerprints = df.apply(_get_customer_fingerprint, axis=1)
+
+    # Map unique fingerprints → sequential codes
+    unique_fps = fingerprints.dropna().unique()
+    fp_to_code = {fp: f"C{i+1}" for i, fp in enumerate(sorted(unique_fps))}
+
+    # Apply
+    df["customer_code"] = fingerprints.map(fp_to_code)
+
+    identified = fingerprints.notna().sum()
+    unique_customers = len(fp_to_code)
+    anonymous = fingerprints.isna().sum()
+
+    log.info(f"  Step 12: Customer codes — {unique_customers:,} unique customers "
+             f"across {identified:,} identified rows; "
+             f"{anonymous:,} rows with no customer identifier (left as null)")
+
+    # Log anonymous rows
+    if anonymous > 0:
+        anon_sites = df.loc[fingerprints.isna(), "site_code"].value_counts()
+        log.info(f"  Step 12: Anonymous rows by site: {anon_sites.to_dict()}")
+
+    return df
+
+
+# ─────────────────────────────────────────────────────────────────────
+# Step 13: Derived columns
 # ─────────────────────────────────────────────────────────────────────
 
 def add_derived_columns(df: pd.DataFrame) -> pd.DataFrame:
@@ -991,17 +1110,21 @@ def clean(input_path: Path, output_path: Path, rejects_path: Path | None = None,
     log.info("Step 11: PII redaction...")
     df = redact_pii(df)
 
-    # Step 12: Derived columns
-    log.info("Step 12: Adding derived columns...")
+    # Step 12: Customer codes
+    log.info("Step 12: Assigning customer codes...")
+    df = assign_customer_codes(df)
+
+    # Step 13: Derived columns
+    log.info("Step 13: Adding derived columns...")
     df = add_derived_columns(df)
 
-    # Step 13: Assign stable feedback_id (after all drops/dedup/routing)
-    log.info("Step 13: Assigning feedback_id...")
+    # Step 14: Assign stable feedback_id (after all drops/dedup/routing)
+    log.info("Step 14: Assigning feedback_id...")
     df = df.sort_values(["site_code", "date_parsed", "source_file", "source_row"]).reset_index(drop=True)
     df["feedback_id"] = df.apply(
         lambda r: f"{r['site_code']}-{r.name + 1:05d}", axis=1
     )
-    log.info(f"  Step 13: Assigned {len(df):,} feedback IDs "
+    log.info(f"  Step 14: Assigned {len(df):,} feedback IDs "
              f"({df['feedback_id'].iloc[0]} … {df['feedback_id'].iloc[-1]})")
 
     # ── Back-fill feedback_id into error log ──
@@ -1034,6 +1157,7 @@ def clean(input_path: Path, output_path: Path, rejects_path: Path | None = None,
         "department", "department_raw",
         "rating_raw", "rating_std", "rating_scale",
         "comment",
+        "customer_code",
         "customer_name", "phone", "email", "customer_ref",
         "vehicle", "model", "rego",
         "booking_ref", "action_taken", "staff",
@@ -1079,6 +1203,13 @@ def clean(input_path: Path, output_path: Path, rejects_path: Path | None = None,
     print(f"\nDate quality:")
     if "date_quality" in df.columns:
         print(df["date_quality"].value_counts().to_string())
+    print(f"\nCustomer codes:")
+    if "customer_code" in df.columns:
+        n_with = df["customer_code"].notna().sum()
+        n_unique = df["customer_code"].nunique()
+        print(f"  Rows with a customer code: {n_with:,}")
+        print(f"  Unique customers:          {n_unique:,}")
+        print(f"  Rows without (anonymous):  {len(df) - n_with:,}")
 
     if _error_log:
         print(f"\nData quality errors: {len(_error_log):,}")
