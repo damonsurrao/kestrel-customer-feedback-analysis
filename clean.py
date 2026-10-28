@@ -641,7 +641,8 @@ def normalise_ratings(df: pd.DataFrame) -> pd.DataFrame:
         # keeping the numeric value available for rating_std calculations.
         star_rating = normalise_star_rating(raw_str)
         numeric_val = None
-        if star_rating is not None:
+        is_star_rating = star_rating is not None
+        if is_star_rating:
             raw_str, numeric_val = star_rating
             df.at[idx, "rating_raw"] = raw_str
         else:
@@ -657,7 +658,7 @@ def normalise_ratings(df: pd.DataFrame) -> pd.DataFrame:
             text_lower = raw_str.lower().strip()
             if text_lower in TEXT_RATING_MAP:
                 numeric_val = float(TEXT_RATING_MAP[text_lower])
-                rating_std.append(numeric_val)
+                rating_std.append(int(numeric_val))
                 rating_scales.append("text_lookup→1-5")
                 continue
             else:
@@ -675,25 +676,34 @@ def normalise_ratings(df: pd.DataFrame) -> pd.DataFrame:
                 )
                 continue
 
-        # Apply site-specific transformations
-        if site == "VIC06":
-            # Geelong: inverted scale (1 = Excellent, 5 = Poor)
-            # rating_std = 6 - raw
-            std = 6.0 - numeric_val
-            std = max(1.0, min(5.0, std))  # clamp
-            rating_std.append(std)
-            rating_scales.append("1-5_inverted")
+        # Bucket star ratings using the requested ranges:
+        # 0.5–1 → 1, 1.5–2 → 2, 2.5–3 → 3, 3.5–4 → 4, 4.5–5 → 5.
+        # Star ratings use this rule regardless of the source site's numeric scale.
+        if is_star_rating:
+            star_value = max(0.5, min(5.0, numeric_val))
+            rating_std.append(int(np.ceil(star_value)))
+            rating_scales.append("stars→1-5")
         elif site == "VIC02" and segment == "new_template":
-            # Ringwood new template: 1-10 scale → divide by 2
-            std = numeric_val / 2.0
-            std = max(1.0, min(5.0, std))  # clamp
-            rating_std.append(round(std, 1))
+            # Ringwood new template is a 1–10 scale: 1–2 → 1, 3–4 → 2,
+            # 5–6 → 3, 7–8 → 4, and 9–10 → 5.
+            value_1_to_10 = max(1.0, min(10.0, numeric_val))
+            rating_std.append(int(np.ceil(value_1_to_10 / 2.0)))
             rating_scales.append("1-10→1-5")
         else:
-            # Default: assume 1-5 scale, 5 = best
-            std = max(1.0, min(5.0, numeric_val))  # clamp to 1-5
-            rating_std.append(std)
-            rating_scales.append("1-5")
+            # Apply site-specific transformations, then bucket onto integer 1–5.
+            if site == "VIC06":
+                # Geelong: inverted scale (1 = Excellent, 5 = Poor).
+                std = 6.0 - numeric_val
+                scale_label = "1-5_inverted"
+            else:
+                # Default numeric scale: 1 and 1.5 → 1; 2 and 2.5 → 2;
+                # 3 and 3.5 → 3; 4 and 4.5 → 4; 5 → 5.
+                std = numeric_val
+                scale_label = "1-5"
+
+            std = max(1.0, min(5.0, std))
+            rating_std.append(int(std))  # all numeric standard ratings are integers
+            rating_scales.append(scale_label)
 
     df["rating_std"] = rating_std
     df["rating_scale"] = rating_scales
