@@ -1,0 +1,348 @@
+# Kestrel Motor Group - Source Registry (DRAFT)
+# Built from self-reported inventory + README. Nothing verified against real files yet.
+# Period in scope: Oct 2025 - Sep 2026.
+#
+# HOW TO READ THIS FILE
+#  - `segments`: the file has more than one layout (different headers/scales). Segment settings override site-level `column_map`.
+#  - `header_detect`: preferred way to find a header (scan first N rows for these cells). `row_hint` is what the inventory says; cross-check only.
+#  - Dropped rows go to a `rejects` table with a reason code; nothing is silently discarded.
+
+canonical_fields:
+  - site_code             # from this registry, except shared North QLD file (split on Site column)
+  - source_file
+  - source_sheet
+  - source_row            # 1-based row in the source sheet, for traceability
+  - from_google_southport # binary 0/1: 1 only for Southport Google reviews sheet rows
+  - date
+  - department            # raw kept as department_raw; standardised to Sales | Service | Parts | Unknown
+  - rating_raw
+  - rating_scale_min
+  - rating_scale_max      # 5 for most sites, 10 for Ringwood new template
+  - rating_std            # comparable 1-5 scale, 5 = best
+  - comment
+  - customer_name         # PII
+  - phone                 # PII
+  - email                 # PII
+  - customer_ref          # PII-ish (DMS customer no / Cust No)
+  - vehicle
+  - model
+  - rego                  # PII-ish
+  - booking_ref           # Parramatta, from May 2026
+  - action_taken
+  - staff                 # PII-ish
+  - response_id
+  - source_detail         # Frankston 'Source' column; kept separate from from_google_southport
+
+defaults:
+  encoding: utf-8
+  header_row: 1
+  rating_scale: {min: 1, max: 5, higher_is_better: true}
+  from_google_southport: 0
+  grain: response
+  verified: false
+
+row_filters_global:
+  drop_blank_rows: true
+  drop_if_first_cell_matches:
+    - '^Grand Total'
+    - '^\*\*\*'                    # template-change markers (Ringwood)
+    - '^NOTE:'                     # in-sheet annotations (Dandenong): store in annotations table, not data
+  reconcile_then_keep_for_validation:
+    - '^Total [A-Za-z]{3} \d{4}'   # Frankston subtotals: use to verify, then exclude from final table
+
+annotations:
+  - {site_code: VIC01, date: '2026-05-05', source: 'Dandenong sheet "May 26"', text: 'New online booking system went live 5 May; expect teething issues - log everything'}
+  - {site_code: NSW01, date: '2026-05', source: 'Parramatta', text: 'Booking ref column first appears from May 2026 files'}
+  - {site_code: VIC02, date: '2026-02', source: 'Ringwood Q1 2026, row 36', text: 'New template from Feb 2026; scale changes from 1-5 to 1-10'}
+
+sites:
+
+  # ===================== VICTORIA =====================
+
+  - site_code: VIC01
+    name: Dandenong
+    status: active
+    files:
+      - pattern: '^Dandenong Customer Feedback \d{4}-\d{2}\.xlsx$'
+        format: xlsx
+        sheets:
+          include_pattern: '^[A-Z][a-z]{2} \d{2}$'   # month sheets e.g. "May 26"
+          skip_if_empty: true                          # Sheet3 is empty
+        header_detect: {scan_rows: 10, must_contain: [Date, Dept]}
+        header_row_hint: 4
+        header_row_overrides: {'May 26': 5}            # extra NOTE row pushes header down one row
+        banner_rows: ['R1 "Kestrel Dandenong - Customer Feedback Log"', 'R2 "Month: MMM 2025"']
+    column_map: {Date: date, Dept: department, Customer: customer_name, Vehicle: vehicle, Rego: rego, "Rating (1-5)": rating_raw, Comments: comment, "Action taken": action_taken}
+    flags:
+      - "12 sheets; Sheet3 is empty and comes after Sep 26, so it is most likely Oct 2026 (out of scope) or a placeholder. Confirm by checking sheet order"
+      - "Banner year says 2025 even on 2026 sheets: ignore banner, trust Date column"
+      - "May 26 header on row 5, not row 4: header_detect handles this, but verify"
+      - "Booking-system go-live 5 May 2026 (see annotations): watch for a spike in booking-related complaints"
+
+  - site_code: VIC02
+    name: Ringwood
+    status: active
+    files:
+      - pattern: '^Ringwood feedback Q[1-4] \d{4}\.xlsx$'
+        format: xlsx
+        count: 4
+    segments:
+      - id: old_template            # up to Jan 2026
+        header_detect: {must_contain: ["Date Received", Department]}
+        column_map: {"Date Received": date, Department: department, "Score (1-5)": rating_raw, "Customer comments": comment, "Followed up?": action_taken}
+        rating_scale: {min: 1, max: 5, higher_is_better: true}
+      - id: new_template            # Feb 2026 onward; starts mid-file in Q1 2026 at row 37
+        header_detect: {must_contain: [Date, Model, "Score (out of 10)"]}
+        row_hint: 37
+        marker_row: 'Q1 2026, row 36: "*** NEW TEMPLATE FROM FEB 2026 ***" (drop, log)'
+        column_map: {Date: date, Department: department, Model: model, "Score (out of 10)": rating_raw, "Customer comments": comment, "Follow up (Y/N)": action_taken, Staff: staff}
+        rating_scale: {min: 1, max: 10, higher_is_better: true}
+    flags:
+      - "CONFIRMED 1-10 scale on new template"
+      - "SCALE CHANGE mid-file: never average raw scores across segments without conversion"
+      - "Conversion approach TBD: linear rescale (raw / 2), or compare on percentile / top-box / bottom-box"
+      - "'Followed up?' vs 'Follow up (Y/N)': both flags, not free text"
+      - "Q2-Q4 2026 presumably all new template: verify"
+
+  - site_code: VIC03
+    name: Essendon
+    status: active
+    files: [{pattern: '^ESSENDON - feedback register\.xlsx$', format: xlsx}]
+    column_map: {Date: date, "Taken by": staff, "Customer said": comment, Score: rating_raw, Action: action_taken}
+    flags:
+      - "NO department column: Unknown unless inferred from text (label as inferred)"
+      - "Score scale unstated: profile distinct values"
+      - "Comments are staff transcriptions, not customer verbatim"
+
+  - site_code: VIC04
+    name: Frankston
+    status: active
+    files: [{pattern: '^Frankston_CX_tracker\.xlsx$', format: xlsx}]
+    segments:
+      - id: old_layout              # rows 1-157
+        header_detect: {must_contain: [Date, Area, Rating, Comments]}
+        row_hint: '1-157'
+        column_map: {Date: date, Area: department, Rating: rating_raw, Comments: comment}
+      - id: new_layout              # row 160 onward (header repeated mid-sheet)
+        header_detect: {must_contain: [Date, Area, CSAT, "Customer comments", Source]}
+        row_hint: '160+'
+        column_map: {Date: date, Area: department, CSAT: rating_raw, "Customer comments": comment, Source: source_detail, Customer: customer_name, Rego: rego}
+    row_filters:
+      subtotals:
+        pattern: '^Total [A-Za-z]{3} \d{4}'
+        action: "Extract avg rating + count; compare to computed values for that month; log the comparison; then EXCLUDE from final table"
+    flags:
+      - "Two layouts in one sheet: split on repeated header; rows 158-159 unknown"
+      - "Check whether 'Rating' vs 'CSAT' scale changed at the break"
+      - "'Source' distinct values to be profiled: may identify channels (Google, walk-in, etc.)"
+      - "'Area' assumed = department"
+
+  - site_code: VIC05
+    name: Box Hill
+    status: active
+    files: [{pattern: '^boxhill_survey_export_\d{4}Q[1-4]\.csv$', format: csv, delimiter: ',', count: 4}]
+    schema_family: survey_export
+    column_map: {response_id: response_id, submitted_at: date, department: department, csat: rating_raw, verbatim: comment, vehicle: vehicle, dms_customer_no: customer_ref}
+    flags: ["csat range to verify", "submitted_at likely a timestamp: check timezone"]
+
+  - site_code: VIC06
+    name: Geelong
+    status: active
+    files: [{pattern: '^Geelong Feedback\.xlsx$', format: xlsx}]
+    header_detect: {scan_rows: 10, must_contain: [Date, Department, Rating]}
+    header_row_hint: 4
+    banner_rows: ['R1 "Kestrel Geelong"', 'R2 "Rating: 1 = Excellent, 5 = Poor"']
+    column_map: {Date: date, Department: department, Rating: rating_raw, Feedback: comment, Customer: customer_name}
+    rating_scale: {min: 1, max: 5, higher_is_better: false}
+    transform: "rating_std = 6 - rating_raw"
+    flags: ["INVERTED SCALE: 1 = best"]
+
+  - site_code: VIC07
+    name: Ballarat
+    status: active
+    files: [{pattern: '^Ballarat - Customer Satisfaction\.xlsx$', format: xlsx}]
+    header_detect: {scan_rows: 5, must_contain: [Date, Dept, Name, Phone]}
+    header_row_hint: 2
+    banner_rows: ['R1 "Visit | Customer | Feedback" (group banner, likely merged cells)']
+    column_map: {Date: date, Dept: department, Name: customer_name, Phone: phone, "How satisfied?": rating_raw, Comments: comment}
+    flags:
+      - "'How satisfied? Comments' written without comma in inventory: confirm two columns vs one"
+      - "'How satisfied?' may be text, not numeric: profile"
+      - "Do NOT delete the banner row: skip in the loader"
+
+  - site_code: VIC08
+    name: Bendigo
+    status: active
+    files: [{pattern: '^bendigo feedback\.csv$', format: csv, delimiter: ','}]
+    column_map: {Date: date, Dept: department, Stars: rating_raw, "What did they say?": comment}
+    flags: ["'Stars' scale assumed 1-5: verify"]
+
+  - site_code: VIC09
+    name: Shepparton
+    status: closed
+    files: [{pattern: '^Shepparton feedback FINAL - site closed\.xlsx$', format: xlsx}]
+    column_map: {Date: date, Dept: department, Rating: rating_raw, Comment: comment}
+    flags:
+      - "Closed site: include history, flag site_status=closed"
+      - "Exclude from 'where to focus' recommendations (no future investment value)"
+      - "Expect partial period: profile last date"
+
+  # ===================== NEW SOUTH WALES =====================
+
+  - site_code: NSW01
+    name: Parramatta
+    status: active
+    files: [{pattern: '^Parramatta_Feedback_\d{4}-\d{2}\.xlsx$', format: xlsx, count: 12}]
+    column_map: {Date: date, "Cust No": customer_ref, Mobile: phone, Department: department, Rating: rating_raw, Comments: comment, Staff: staff, "Booking ref": booking_ref}
+    optional_columns: ["Booking ref"]   # appears from May 2026 onward
+    flags:
+      - "Schema drift: Booking ref missing before May 2026; loader must tolerate"
+      - "Month in filename vs dates inside: reconcile"
+
+  - site_code: NSW02
+    name: Penrith
+    status: active
+    files: [{pattern: '^Penrith Feedback\.xlsx$', format: xlsx}]
+    column_map: {Date: date, Department: department, Score: rating_raw, Comments: comment, Customer: customer_name}
+
+  - site_code: NSW03
+    name: Chatswood
+    status: active
+    files: [{pattern: '^chatswood_\d{4}_q[1-4]\.csv$', format: csv, delimiter: ';', count: 4}]
+    column_map: {Date: date, Dept: department, Score: rating_raw, Comment: comment, Vehicle: vehicle}
+    flags: ["Semicolon delimiter: commas in comments are safe but check for semicolons in quoted text", "Possible decimal commas in Score (e.g. '4,5')"]
+
+  - site_code: NSW04
+    name: Liverpool
+    status: active
+    files: [{pattern: '^liverpool_q[1-4]_\d{4}\.csv$', format: csv, delimiter: ',', count: 4}]
+    column_map: {Date: date, Department: department, Customer: customer_name, Phone: phone, Rego: rego, Rating: rating_raw, Feedback: comment}
+
+  - site_code: NSW05
+    name: Newcastle
+    status: active
+    resolved_from: "Hunter Motors feedback 25-26.xlsx"
+    resolution: "Newcastle file was missing; Hunter Motors file (not in dealerships.csv) is assumed to be Newcastle per data owner decision"
+    files:
+      - pattern: '^Hunter Motors feedback 25-26\.xlsx$'
+        format: xlsx
+        header_detect: {scan_rows: 10, must_contain: [Dealer, Date, Department, Rating]}
+        header_row_hint: 3
+        banner_rows: ['R1-R2 content unknown: profile']
+    column_map: {Dealer: dealer_raw, Date: date, Department: department, Rating: rating_raw, Comments: comment, Vehicle: vehicle}
+    flags:
+      - "DECISION: treat as Newcastle (data owner instruction). Validate: check Dealer distinct values, vehicle brands, date range, region alignment with dealerships.csv"
+      - "If Dealer column has multiple distinct values, it may cover more than one site: split and re-assess"
+      - "Not in dealerships.csv under either name: add as NSW05 Newcastle with a note, or ask Head of CX to update the reference file"
+      - "Revenue data (monthly_revenue.csv) may be under 'Newcastle' or absent: check before any valuation"
+
+  - site_code: NSW06
+    name: Wollongong
+    status: active
+    files: [{pattern: '^Wollongong_[A-Za-z]{3}\d{2}-[A-Za-z]{3}\d{2}\.csv$', format: csv, delimiter: ',', count: 2}]
+    column_map: {Date: date, Dept: department, Rating: rating_raw, "Customer feedback": comment, Name: customer_name, Mobile: phone}
+    flags: ["Date-range filenames: check overlap/gap at boundary"]
+
+  - site_code: NSW07
+    name: Tamworth
+    status: active
+    files: [{pattern: '^Tamworth\.xlsx$', format: xlsx}]
+    column_map: {DATE: date, DEPT: department, "HOW WAS IT": rating_raw, COMMENTS: comment}
+    flags: ["'HOW WAS IT' may be text (Good/Bad) not numeric: profile first", "Upper-case headers: normalise on read"]
+
+  # ===================== QUEENSLAND =====================
+
+  - site_code: QLD01
+    name: Chermside
+    status: active
+    files:
+      - pattern: '^Chermside Q[1-4] \d{4}( FINAL( v2)?)?\.xlsx$'
+        format: xlsx
+        count: 5
+        expected_files:
+          - 'Chermside Q4 2025.xlsx'
+          - 'Chermside Q1 2026 FINAL.xlsx'
+          - 'Chermside Q1 2026 FINAL v2.xlsx'
+          - 'Chermside Q2 2026.xlsx'
+          - 'Chermside Q3 2026.xlsx'
+    schema_family: survey_export
+    column_map: {response_id: response_id, submitted_at: date, department: department, csat: rating_raw, verbatim: comment, vehicle: vehicle, dms_customer_no: customer_ref}
+    flags:
+      - "DUPLICATE VERSIONS: Q1 2026 FINAL vs FINAL v2. Diff on response_id; load one only; log which and why"
+      - "FORMAT UNCERTAINTY: V1 inventory says CSV, V6 says XLSX. If loader finds 0 matches on .xlsx, retry with .csv. Real file extension must be verified"
+      - "Quarters covered: Q4 2025, Q1-Q3 2026 (4 calendar quarters, 5 files due to Q1 FINAL + FINAL v2)"
+
+  - site_code: QLD02
+    name: Springwood
+    status: active
+    files: [{pattern: '^Springwood feedback\.xlsx$', format: xlsx}]
+    column_map: {Date: date, Department: department, Name: customer_name, Mobile: phone, Email: email, Rating: rating_raw, Comments: comment}
+
+  - site_code: QLD03
+    name: Ipswich
+    status: active
+    files: [{pattern: '^IPS_feedback_log\.xlsx$', format: xlsx}]
+    column_map: {Site: site_raw, Date: date, Dept: department, Rating: rating_raw, Notes: comment, "Logged by": staff}
+    flags: ["Assert Site == Ipswich on every row; route or reject otherwise"]
+
+  - site_code: QLD04
+    name: Southport
+    status: active
+    files: [{pattern: '^Southport Feedback Tracker\.xlsx$', format: xlsx}]
+    segments:
+      - id: dealership_feedback
+        sheet: 'Feedback'
+        header_row: 1
+        from_google_southport: 0
+        column_map: {Date: date, Department: department, Rating: rating_raw, Comments: comment, Vehicle: vehicle, Rego: rego, "Customer name": customer_name, Email: email}
+      - id: google_reviews
+        sheet: 'Google reviews (copied)'
+        header_row: 2
+        from_google_southport: 1
+        column_map: {Reviewer: customer_name, Stars: rating_raw, Review: comment, When: date}
+        department_default: Unknown
+    flags:
+      - "DECISION: binary column `from_google_southport` (1 for Google reviews from this sheet, 0 for everything else including all other sites)"
+      - "Google reviews are self-selected public reviews: different population, analyse separately or filter on the flag"
+      - "'When' may be relative text ('3 weeks ago'): date will be approximate or null"
+      - "'Stars' scale on Google is 1-5: confirm"
+
+  - site_code: QLD05
+    name: Noosa
+    status: active
+    files: [{pattern: '^Noosa feedback cards\.xlsx$', format: xlsx}]
+    column_map: {Date: date, Department: department, Rating: rating_raw, Comments: comment, "Card given by": staff}
+    flags: ["Paper cards handed out by staff: selection bias"]
+
+  - site_code: QLD06
+    name: Toowoomba
+    status: active
+    files:
+      - {pattern: '^Toowoomba feedback 2026\.xlsx$', role: detail, format: xlsx}
+      - {pattern: '^Toowoomba Q4 2025 summary\.xlsx$', role: EXCLUDED, reason: 'Pivot summary with no feedback records. Decision by data owner.', format: xlsx}
+    column_map: {Date: date, Department: department, Rating: rating_raw, Comments: comment}
+    flags:
+      - "DECIDED: summary file excluded"
+      - "CONFIRMED: no Toowoomba data for Q4 2025. Report as a known coverage gap"
+
+  - site_code: QLD07
+    name: Rockhampton
+    status: active
+    files: [{pattern: '^North QLD feedback \(Rocky \+ TSV\)\.xlsx$', format: xlsx, shared_with: QLD08}]
+    column_map: {Site: site_raw, Date: date, Department: department, Rating: rating_raw, Comments: comment}
+    site_routing:
+      column: Site
+      QLD07_patterns: ['ROCK', 'ROCKY', 'ROK', 'ROCKHAMPTON']   # known abbreviations in the data
+      QLD08_patterns: ['TSV', 'TOWNSVILLE']                       # verify actual values on profiling
+      unmapped_action: warn_and_report
+    flags:
+      - "Shared file: ingest once, route by Site column to QLD07 or QLD08"
+      - "DATA QUALITY: Site column contains variant abbreviations (ROK, ROCK, ROCKY for Rockhampton). Match must be case-insensitive and cover all known variants"
+      - "Assert zero unmapped rows after routing; any new variant means the pattern list needs updating"
+
+  - site_code: QLD08
+    name: Townsville
+    status: active
+    files: [{pattern: '^North QLD feedback \(Rocky \+ TSV\)\.xlsx$', format: xlsx, shared_with: QLD07}]
+    column_map: {Site: site_raw, Date: date, Department: department, Rating: rating_raw, Comments: comment}
+    site_routing: "See QLD07 for routing logic"

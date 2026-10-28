@@ -1,0 +1,65 @@
+response_id,submitted_at,department,csat,verbatim,vehicle,dms_customer_no
+05-00001,2025-10-01 10:21:00,Service,1,"I was told the service advisor would phone me with a quote before any work was done. That call never came, so I spent the day wondering what was happening with my car.",Veyra S4,37943
+05-00002,2025-10-02 15:57:00,Sales,5,"Every question I had got a straight answer, no jargon. I came in thinking the touchscreen would beat me and now I can run the lot. (rego CKB361)",Veyra S4,37968
+05-00003,2025-10-03 10:15:00,Service,2,"Honestly the explanation was the best I've had at any garage, Kylie even drew me a little diagram. But the wait was excessive, I counted nearly three hours on the clock.",Voltra Arc,38008
+05-00004,2025-10-03 16:01:00,Service,4,"Detailed and accurate explanation of the DPF regeneration issue, including what driving habits cause it. Not many places bother to go into that depth.",Veyra GT,38013
+05-00005,2025-10-06 16:59:00,Parts,5,,Veyra S4,38082
+05-00006,2025-10-09 15:03:00,Service,4,"Quick job, no dramas with timing. The oil leak I complained about is still dripping on my driveway though.",Voltra E3,38178
+05-00007,2025-10-13 17:19:00,Parts,1,"Back-order, back-order, back-order. That's all I ever hear.",Voltra Arc,38269
+05-00008,2025-10-16 10:46:00,Service,5,,Voltra Arc,38356
+05-00009,2025-10-16 10:46:00,Parts,1,"Yeah nah. Quoted one price at the counter, charged another at pickup, and the part took a fortnight to turn up when I was told it was on the shelf. Dont get it.",Voltra Arc,38008
+05-00010,2025-10-17 09:59:00,Sales,3,"Getting my first car was way easier than I thought it'd be, I was dreading it Wish Mick had rung me back like he said tho",Voltra Arc,38360
+05-00011,2025-10-20 10:42:00,Service,3,"Not impressed. No updates, had to chase every day, and Kylie acted like I was wasting his time.",Voltra Arc,38407
+05-00012,2025-10-21 10:52:00,Sales,2,No spare key on the day.,Voltra Arc,38438
+05-00013,2025-10-21 11:19:00,Service,2,Still rattles.,Voltra E3,38446
+05-00014,2025-10-21 14:22:00,Service,5,"staff very helpful, always say hello. i am very happy with how they treat me and my family. (rego MZM913)",Veyra S4,38449
+05-00015,2025-10-21 17:31:00,Service,4,"Moved here from interstate last month and this was my first visit. Didn't take long at all, was home before the kids got out of school.",Veyra S4,38450
+05-00016,2025-10-23 12:00:00,Service,5,,Voltra E3,38489
+05-00017,2025-10-24 08:19:00,Sales,5,,Voltra Arc,38513
+05-00018,2025-10-25 13:01:00,Service,4,"Fast turnaround, tank you. It was finished well within the time they gave me.",Veyra S4,38555
+05-00019,2025-10-27 10:45:00,Service,5,,Veyra GT,38571
+05-00020,2025-10-29 11:32:00,Service,4,,Voltra E3,38655
+05-00021,2025-10-29 16:27:00,Service,3,,Voltra E3,38659
+05-00022,2025-10-29 17:50:00,Service,5,i was walked through every line of the bill and what the parts were for. nothing left unclear.,Voltra Arc,38662
+05-00023,2025-10-30 09:35:00,Service,1,"Very hard to get any information. I call, they say they will find out, then nobody calls me back and I wait again.",Voltra E3,38715
+05-00024,2025-10-31 14:11:00,Sales,2,"New in town and they made me feel like a regular straight away, honestly. Delivery day though, I turned up at the time booked and no one had even started the paperwork, then it was all a rush at the end.",Voltra Arc,38730
+05-00025,2025-10-31 17:52:00,Sales,5,,Voltra Arc,38732
+05-00026,2025-11-02 12:35:00,Sales,4,explained.,Voltra Arc,38774
+05-00027,2025-11-03 11:18:00,Service,2,"Turnaround was brilliant for the EV. Updates were non-existent, I had to chase every bit of info. Call me on 0456 701 437.",Voltra E3,38799
+05-00028,2025-11-03 14:43:00,Service,2,,Veyra GT,38802
+05-00029,2025-11-03 14:54:00,Service,4,"Brilliant timing, ready right when promised. Shame about the dash being covered in finger smudges and a bit of oil on the gear knob.",Veyra S4,38815
+05-00030,2025-11-03 17:04:00,Service,5,"Been around cars my whole life and I tend to be wary of service desks. Ben was genuinely welcoming and spoke to me like an equal, no talking down. Refreshing.",Veyra S4,38816
+05-00031,2025-11-03 17:20:00,Parts,4,,Veyra GT,38825
+05-00032,2025-11-05 11:01:00,Service,4,Was a bit sceptical about the 'ready by 2pm' promise but they nailed it.,Veyra S4,38866
+05-00033,2025-11-06 14:09:00,Service,5,Swift. That's all.,Voltra E3,38883
+05-00034,2025-11-07 11:18:00,Service,3,there is now a long scratch down the driver's side that i am quite certain was not there before. i walked around the car in the yard before i left it. i would appreciate someone looking at the paintwork.,Voltra E3,38936
+05-00035,2025-11-07 11:22:00,Parts,4,"Lovely young lady at the parts counter helped me find the right wiper blades for my car. She was very patient and kind, and it was all done so quickly. I was home in time for my cuppa.",Voltra Arc,38356
+05-00036,2025-11-12 08:10:00,Service,4,,Veyra GT,39060
+05-00037,2025-11-12 09:51:00,Service,3,"the whole crew made me feel welcome from the moment i walked in, and aroha even made me a cuppa while i waited. however, i left two messages for the service manager about my voltra arc and neither was returned. i ended up driving in just to find out what was going on.",Voltra Arc,39079
+05-00038,2025-11-12 14:23:00,Service,5,,Voltra Arc,39080
+05-00039,2025-11-12 16:53:00,Parts,5,The part was in stock and handed over quick smart. No hanging about.,Veyra S4,38681
+05-00040,2025-11-14 08:05:00,Sales,4,staff here are very friendly peoples. kylie help me with much patience and always smile. i am thankful.,Voltra E3,39131
+05-00041,2025-11-15 11:57:00,Sales,1,"several emails sent, no responses received. i would appreciate a reply at some stage. Call me on 0496 985 822.",Veyra S4,39167
+05-00042,2025-11-17 08:19:00,Service,2,"Booked the Voltra Arc in for a dodgy brake noise. Noise is still there and I only found out it was ""done"" when I rang them myself. Nobody told me anything all day.",Voltra Arc,39201
+05-00043,2025-11-17 11:08:00,Service,5,Very good keeping me inform with phone and SMS. I am not need to call to ask. Thank you.,Voltra E3,39206
+05-00044,2025-11-26 14:27:00,Service,5,Faster than a pie at the footy. Car was done in no time.,Voltra Arc,39446
+05-00045,2025-11-28 09:36:00,Service,1,bolt left rattling in the boot after the service. found it under the spare wheel. what was it from??,Veyra GT,39545
+05-00046,2025-12-01 15:03:00,Service,5,"Warm, welcoming and genuinely happy to help. That's all I wanted to say.",Veyra GT,39592
+05-00047,2025-12-02 16:37:00,Sales,5,,Voltra Arc,38715
+05-00048,2025-12-02 17:16:00,Service,4,"Pleasant, friendly and approachable. Nice to be treated like a person.",Veyra GT,39617
+05-00049,2025-12-03 12:16:00,Sales,4,,Voltra Arc,39622
+05-00050,2025-12-03 17:44:00,Service,5,,Voltra E3,39631
+05-00051,2025-12-06 12:50:00,Service,5,,Veyra S4,39707
+05-00052,2025-12-08 12:57:00,Service,5,,Veyra S4,39729
+05-00053,2025-12-09 11:35:00,Service,3,"Ready an hour early, which was great with two kids bouncing off the walls. The bill, however, was $140 more than the quote.",Voltra Arc,39745
+05-00054,2025-12-10 17:04:00,Service,5,,Veyra S4,39779
+05-00055,2025-12-11 10:31:00,Sales,5,"Everyone was so nice to us, very helpful. The process it was easy, we did not need to worry about anything.",Voltra E3,39805
+05-00056,2025-12-13 09:47:00,Service,4,"I was quite hesitant coming in as I am not mechanically minded. The explanation of the work, in order and with simple wording, was most reassuring. I could repeat it to my husband afterwards, which says it all. (rego LWZ647)",Veyra GT,39864
+05-00057,2025-12-16 10:37:00,Service,3,,Veyra GT,39913
+05-00058,2025-12-19 10:08:00,Service,3,"Told me everything along the way, I was never in the dark. But the invoice had a 'diagnostic fee' that I was told would be waived.",Voltra Arc,40007
+05-00059,2025-12-20 09:08:00,Sales,5,"Wow, such nice people. I did not expect everyone to be so welcoming and helpful.",Voltra Arc,40016
+05-00060,2025-12-22 11:54:00,Service,2,Quote $199. Paid $327. Expain that.,Voltra Arc,40047
+05-00061,2025-12-23 17:53:00,Service,2,"Honestly, how hard is it to pass on a message? I've left about five for the service manager. Meanwhile my EV is still overheating.",Voltra Arc,40074
+05-00062,2025-12-24 12:54:00,Service,3,"Done before lunch, good stuff. Told them to call me before any extra work and heard nothing, so I had to ring to find out.",Voltra E3,40109
+05-00063,2025-12-29 09:21:00,Service,3,"I want to commend Arha for the way the whole job was laid out before any work began. Each item on the quote was described, along with why it was needed and roughly how long it would take, and I was given time to ask questions. Having said that, I collected the vehicle on Thursday and the original fault reappeared within the first twenty minutes of driving, so I can only conclude the repair was not carried out properly.",Voltra Arc,40146
+05-00064,2025-12-29 16:38:00,Parts,4,Very efficient. Ready on time.,Veyra GT,39894
