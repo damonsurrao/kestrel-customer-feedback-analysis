@@ -1,0 +1,28 @@
+site_code,site_name,site_status,source_file,source_sheet,source_row,from_google_southport,segment_id,date,department,rating_raw,comment,customer_name,phone,email,customer_ref,vehicle,model,rego,booking_ref,action_taken,staff,response_id,source_detail,dealer_raw,site_raw,_unmapped_nan,_unmapped_nan_2,_unmapped_nan_3,reject_reason,date_parsed,date_quality,department_raw,rating_std,rating_scale
+VIC02,Ringwood,active,Ringwood feedback Q1 2026.xlsx,,35,0,old_template,,,,,,,,,,,,,,,,,,,,,,all_data_columns_null,,,,,
+VIC04,Frankston,active,Frankston_CX_tracker.xlsx,,37,0,old_layout,,,,,,,,,,,,,,,,,,,,,,all_data_columns_null,,,,,
+VIC04,Frankston,active,Frankston_CX_tracker.xlsx,,61,0,old_layout,,,,,,,,,,,,,,,,,,,,,,all_data_columns_null,,,,,
+VIC04,Frankston,active,Frankston_CX_tracker.xlsx,,89,0,old_layout,,,,,,,,,,,,,,,,,,,,,,all_data_columns_null,,,,,
+VIC04,Frankston,active,Frankston_CX_tracker.xlsx,,108,0,old_layout,,,,,,,,,,,,,,,,,,,,,,all_data_columns_null,,,,,
+VIC04,Frankston,active,Frankston_CX_tracker.xlsx,,136,0,old_layout,,,,,,,,,,,,,,,,,,,,,,all_data_columns_null,,,,,
+VIC04,Frankston,active,Frankston_CX_tracker.xlsx,,158,0,old_layout,,,,,,,,,,,,,,,,,,,,,,all_data_columns_null,,,,,
+VIC04,Frankston,active,Frankston_CX_tracker.xlsx,,159,0,old_layout,,,,,,,,,,,,,,,,,,,,,,all_data_columns_null,,,,,
+VIC04,Frankston,active,Frankston_CX_tracker.xlsx,,189,0,new_layout,,,,,,,,,,,,,,,,,,,,,,all_data_columns_null,,,,,
+VIC04,Frankston,active,Frankston_CX_tracker.xlsx,,221,0,new_layout,,,,,,,,,,,,,,,,,,,,,,all_data_columns_null,,,,,
+VIC04,Frankston,active,Frankston_CX_tracker.xlsx,,254,0,new_layout,,,,,,,,,,,,,,,,,,,,,,all_data_columns_null,,,,,
+VIC04,Frankston,active,Frankston_CX_tracker.xlsx,,280,0,new_layout,,,,,,,,,,,,,,,,,,,,,,all_data_columns_null,,,,,
+VIC04,Frankston,active,Frankston_CX_tracker.xlsx,,317,0,new_layout,,,,,,,,,,,,,,,,,,,,,,all_data_columns_null,,,,,
+VIC09,Shepparton,closed,Shepparton feedback FINAL - site closed.xlsx,,54,0,,,,,,,,,,,,,,,,,,,,,,,all_data_columns_null,,,,,
+VIC02,Ringwood,active,Ringwood feedback Q1 2026.xlsx,,36,0,old_template,*** NEW TEMPLATE FROM FEB 2026 ***,,,,,,,,,,,,,,,,,,,,,banner_or_marker,,,,,
+VIC04,Frankston,active,Frankston_CX_tracker.xlsx,,36,0,old_layout,Total Oct 2025,Unknown,3.74,34 responses,,,,,,,,,,,,,,,,,,frankston_subtotal,,unparseable,,3.74,1-5
+VIC04,Frankston,active,Frankston_CX_tracker.xlsx,,60,0,old_layout,Total Nov 2025,Unknown,3.73,22 responses,,,,,,,,,,,,,,,,,,frankston_subtotal,,unparseable,,3.73,1-5
+VIC04,Frankston,active,Frankston_CX_tracker.xlsx,,88,0,old_layout,Total Dec 2025,Unknown,3.23,26 responses,,,,,,,,,,,,,,,,,,frankston_subtotal,,unparseable,,3.23,1-5
+VIC04,Frankston,active,Frankston_CX_tracker.xlsx,,107,0,old_layout,Total Jan 2026,Unknown,4.12,17 responses,,,,,,,,,,,,,,,,,,frankston_subtotal,,unparseable,,4.12,1-5
+VIC04,Frankston,active,Frankston_CX_tracker.xlsx,,135,0,old_layout,Total Feb 2026,Unknown,3.96,26 responses,,,,,,,,,,,,,,,,,,frankston_subtotal,,unparseable,,3.96,1-5
+VIC04,Frankston,active,Frankston_CX_tracker.xlsx,,157,0,old_layout,Total Mar 2026,Unknown,3.7,20 responses,,,,,,,,,,,,,,,,,,frankston_subtotal,,unparseable,,3.7,1-5
+VIC04,Frankston,active,Frankston_CX_tracker.xlsx,,188,0,new_layout,Total Apr 2026,Unknown,3.96,27 responses,,,,,,,,,,,,,,,,,,frankston_subtotal,,unparseable,,3.96,1-5
+VIC04,Frankston,active,Frankston_CX_tracker.xlsx,,220,0,new_layout,Total May 2026,Unknown,4,30 responses,,,,,,,,,,,,,,,,,,frankston_subtotal,,unparseable,,4.0,1-5
+VIC04,Frankston,active,Frankston_CX_tracker.xlsx,,253,0,new_layout,Total Jun 2026,Unknown,3.52,31 responses,,,,,,,,,,,,,,,,,,frankston_subtotal,,unparseable,,3.52,1-5
+VIC04,Frankston,active,Frankston_CX_tracker.xlsx,,279,0,new_layout,Total Jul 2026,Unknown,3.42,24 responses,,,,,,,,,,,,,,,,,,frankston_subtotal,,unparseable,,3.42,1-5
+VIC04,Frankston,active,Frankston_CX_tracker.xlsx,,316,0,new_layout,Total Aug 2026,Unknown,3.77,35 responses,,,,,,,,,,,,,,,,,,frankston_subtotal,,unparseable,,3.77,1-5
+VIC04,Frankston,active,Frankston_CX_tracker.xlsx,,334,0,new_layout,Total Sep 2026,Unknown,4.12,16 responses,,,,,,,,,,,,,,,,,,frankston_subtotal,,unparseable,,4.12,1-5

@@ -1053,7 +1053,7 @@ def main():
     combined = consolidate(args.feedback_dir)
 
     # Save CSV
-    combined.to_csv(args.output, index=False)
+    combined.to_csv(args.output, index=False, encoding='utf-8-sig')
     log.info(f"Saved CSV: {args.output} ({os.path.getsize(args.output) / 1024:.0f} KB)")
 
     # Optionally save parquet
