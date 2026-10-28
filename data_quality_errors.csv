@@ -1,0 +1,620 @@
+error_id,feedback_id,site_code,source_file,source_row,step,error_code,severity,field,original_value,error_description,action_taken
+ERR-00001,,VIC04,Frankston_CX_tracker.xlsx,36,4,DATE_UNPARSEABLE,warning,date,Total Oct 2025,Could not parse date value 'Total Oct 2025',Set date_parsed to NaT
+ERR-00002,,VIC04,Frankston_CX_tracker.xlsx,60,4,DATE_UNPARSEABLE,warning,date,Total Nov 2025,Could not parse date value 'Total Nov 2025',Set date_parsed to NaT
+ERR-00003,,VIC04,Frankston_CX_tracker.xlsx,88,4,DATE_UNPARSEABLE,warning,date,Total Dec 2025,Could not parse date value 'Total Dec 2025',Set date_parsed to NaT
+ERR-00004,,VIC04,Frankston_CX_tracker.xlsx,107,4,DATE_UNPARSEABLE,warning,date,Total Jan 2026,Could not parse date value 'Total Jan 2026',Set date_parsed to NaT
+ERR-00005,,VIC04,Frankston_CX_tracker.xlsx,135,4,DATE_UNPARSEABLE,warning,date,Total Feb 2026,Could not parse date value 'Total Feb 2026',Set date_parsed to NaT
+ERR-00006,,VIC04,Frankston_CX_tracker.xlsx,157,4,DATE_UNPARSEABLE,warning,date,Total Mar 2026,Could not parse date value 'Total Mar 2026',Set date_parsed to NaT
+ERR-00007,,VIC04,Frankston_CX_tracker.xlsx,188,4,DATE_UNPARSEABLE,warning,date,Total Apr 2026,Could not parse date value 'Total Apr 2026',Set date_parsed to NaT
+ERR-00008,,VIC04,Frankston_CX_tracker.xlsx,220,4,DATE_UNPARSEABLE,warning,date,Total May 2026,Could not parse date value 'Total May 2026',Set date_parsed to NaT
+ERR-00009,,VIC04,Frankston_CX_tracker.xlsx,253,4,DATE_UNPARSEABLE,warning,date,Total Jun 2026,Could not parse date value 'Total Jun 2026',Set date_parsed to NaT
+ERR-00010,,VIC04,Frankston_CX_tracker.xlsx,279,4,DATE_UNPARSEABLE,warning,date,Total Jul 2026,Could not parse date value 'Total Jul 2026',Set date_parsed to NaT
+ERR-00011,,VIC04,Frankston_CX_tracker.xlsx,316,4,DATE_UNPARSEABLE,warning,date,Total Aug 2026,Could not parse date value 'Total Aug 2026',Set date_parsed to NaT
+ERR-00012,,VIC04,Frankston_CX_tracker.xlsx,334,4,DATE_UNPARSEABLE,warning,date,Total Sep 2026,Could not parse date value 'Total Sep 2026',Set date_parsed to NaT
+ERR-00013,VIC09-07046,VIC09,Shepparton feedback FINAL - site closed.xlsx,55,4,DATE_UNPARSEABLE,warning,date,Site closed 31/3/26. Any further feedback goes to Bendigo. - Trish,Could not parse date value 'Site closed 31/3/26. Any further feedback goes to Bendigo. - Trish',Set date_parsed to NaT
+ERR-00014,QLD03-02999,QLD03,IPS_feedback_log.xlsx,9,4,DATE_APPROXIMATE,info,date,early Oct,Relative date 'early Oct' converted to approximate date 2025-10-10,Estimated as 2025-10-10
+ERR-00015,QLD03-03019,QLD03,IPS_feedback_log.xlsx,26,4,DATE_APPROXIMATE,info,date,mid Nov,Relative date 'mid Nov' converted to approximate date 2025-11-15,Estimated as 2025-11-15
+ERR-00016,QLD03-03061,QLD03,IPS_feedback_log.xlsx,73,4,DATE_APPROXIMATE,info,date,early Jan,Relative date 'early Jan' converted to approximate date 2026-01-10,Estimated as 2026-01-10
+ERR-00017,QLD03-03073,QLD03,IPS_feedback_log.xlsx,84,4,DATE_APPROXIMATE,info,date,wk1 Feb,Relative date 'wk1 Feb' converted to approximate date 2026-02-07,Estimated as 2026-02-07
+ERR-00018,QLD03-03125,QLD03,IPS_feedback_log.xlsx,137,4,DATE_APPROXIMATE,info,date,wk5 Mar,Relative date 'wk5 Mar' converted to approximate date 2026-03-28,Estimated as 2026-03-28
+ERR-00019,QLD03-03134,QLD03,IPS_feedback_log.xlsx,154,4,DATE_APPROXIMATE,info,date,early Apr,Relative date 'early Apr' converted to approximate date 2026-04-10,Estimated as 2026-04-10
+ERR-00020,QLD03-03191,QLD03,IPS_feedback_log.xlsx,192,4,DATE_APPROXIMATE,info,date,mid Jun,Relative date 'mid Jun' converted to approximate date 2026-06-15,Estimated as 2026-06-15
+ERR-00021,QLD03-03238,QLD03,IPS_feedback_log.xlsx,248,4,DATE_APPROXIMATE,info,date,Aug?,Relative date 'Aug?' converted to approximate date 2026-08-15,Estimated as 2026-08-15
+ERR-00022,QLD03-03239,QLD03,IPS_feedback_log.xlsx,258,4,DATE_APPROXIMATE,info,date,Aug?,Relative date 'Aug?' converted to approximate date 2026-08-15,Estimated as 2026-08-15
+ERR-00023,QLD03-03259,QLD03,IPS_feedback_log.xlsx,269,4,DATE_APPROXIMATE,info,date,mid Sep,Relative date 'mid Sep' converted to approximate date 2026-09-15,Estimated as 2026-09-15
+ERR-00024,QLD04-03492,QLD04,Southport Feedback Tracker.xlsx,3,4,DATE_APPROXIMATE,info,date,a month ago,Relative date 'a month ago' converted to approximate date 2026-08-31,Estimated as 2026-08-31
+ERR-00025,QLD04-03470,QLD04,Southport Feedback Tracker.xlsx,4,4,DATE_APPROXIMATE,info,date,2 months ago,Relative date '2 months ago' converted to approximate date 2026-08-01,Estimated as 2026-08-01
+ERR-00026,QLD04-03451,QLD04,Southport Feedback Tracker.xlsx,5,4,DATE_APPROXIMATE,info,date,3 months ago,Relative date '3 months ago' converted to approximate date 2026-07-02,Estimated as 2026-07-02
+ERR-00027,QLD04-03493,QLD04,Southport Feedback Tracker.xlsx,6,4,DATE_APPROXIMATE,info,date,a month ago,Relative date 'a month ago' converted to approximate date 2026-08-31,Estimated as 2026-08-31
+ERR-00028,QLD04-03507,QLD04,Southport Feedback Tracker.xlsx,7,4,DATE_APPROXIMATE,info,date,3 weeks ago,Relative date '3 weeks ago' converted to approximate date 2026-09-09,Estimated as 2026-09-09
+ERR-00029,QLD04-03428,QLD04,Southport Feedback Tracker.xlsx,8,4,DATE_APPROXIMATE,info,date,4 months ago,Relative date '4 months ago' converted to approximate date 2026-06-02,Estimated as 2026-06-02
+ERR-00030,QLD04-03514,QLD04,Southport Feedback Tracker.xlsx,9,4,DATE_APPROXIMATE,info,date,2 weeks ago,Relative date '2 weeks ago' converted to approximate date 2026-09-16,Estimated as 2026-09-16
+ERR-00031,QLD04-03407,QLD04,Southport Feedback Tracker.xlsx,10,4,DATE_APPROXIMATE,info,date,5 months ago,Relative date '5 months ago' converted to approximate date 2026-05-03,Estimated as 2026-05-03
+ERR-00032,,VIC04,Frankston_CX_tracker.xlsx,36,5,DEPT_MISSING,warning,department,,Department value is blank or missing,Set department to 'Unknown'
+ERR-00033,,VIC04,Frankston_CX_tracker.xlsx,60,5,DEPT_MISSING,warning,department,,Department value is blank or missing,Set department to 'Unknown'
+ERR-00034,,VIC04,Frankston_CX_tracker.xlsx,88,5,DEPT_MISSING,warning,department,,Department value is blank or missing,Set department to 'Unknown'
+ERR-00035,,VIC04,Frankston_CX_tracker.xlsx,107,5,DEPT_MISSING,warning,department,,Department value is blank or missing,Set department to 'Unknown'
+ERR-00036,,VIC04,Frankston_CX_tracker.xlsx,135,5,DEPT_MISSING,warning,department,,Department value is blank or missing,Set department to 'Unknown'
+ERR-00037,,VIC04,Frankston_CX_tracker.xlsx,157,5,DEPT_MISSING,warning,department,,Department value is blank or missing,Set department to 'Unknown'
+ERR-00038,,VIC04,Frankston_CX_tracker.xlsx,188,5,DEPT_MISSING,warning,department,,Department value is blank or missing,Set department to 'Unknown'
+ERR-00039,,VIC04,Frankston_CX_tracker.xlsx,220,5,DEPT_MISSING,warning,department,,Department value is blank or missing,Set department to 'Unknown'
+ERR-00040,,VIC04,Frankston_CX_tracker.xlsx,253,5,DEPT_MISSING,warning,department,,Department value is blank or missing,Set department to 'Unknown'
+ERR-00041,,VIC04,Frankston_CX_tracker.xlsx,279,5,DEPT_MISSING,warning,department,,Department value is blank or missing,Set department to 'Unknown'
+ERR-00042,,VIC04,Frankston_CX_tracker.xlsx,316,5,DEPT_MISSING,warning,department,,Department value is blank or missing,Set department to 'Unknown'
+ERR-00043,,VIC04,Frankston_CX_tracker.xlsx,334,5,DEPT_MISSING,warning,department,,Department value is blank or missing,Set department to 'Unknown'
+ERR-00044,VIC09-07046,VIC09,Shepparton feedback FINAL - site closed.xlsx,55,5,DEPT_MISSING,warning,department,,Department value is blank or missing,Set department to 'Unknown'
+ERR-00045,QLD04-03492,QLD04,Southport Feedback Tracker.xlsx,3,5,DEPT_MISSING,warning,department,,Department value is blank or missing,Set department to 'Unknown'
+ERR-00046,QLD04-03470,QLD04,Southport Feedback Tracker.xlsx,4,5,DEPT_MISSING,warning,department,,Department value is blank or missing,Set department to 'Unknown'
+ERR-00047,QLD04-03451,QLD04,Southport Feedback Tracker.xlsx,5,5,DEPT_MISSING,warning,department,,Department value is blank or missing,Set department to 'Unknown'
+ERR-00048,QLD04-03493,QLD04,Southport Feedback Tracker.xlsx,6,5,DEPT_MISSING,warning,department,,Department value is blank or missing,Set department to 'Unknown'
+ERR-00049,QLD04-03507,QLD04,Southport Feedback Tracker.xlsx,7,5,DEPT_MISSING,warning,department,,Department value is blank or missing,Set department to 'Unknown'
+ERR-00050,QLD04-03428,QLD04,Southport Feedback Tracker.xlsx,8,5,DEPT_MISSING,warning,department,,Department value is blank or missing,Set department to 'Unknown'
+ERR-00051,QLD04-03514,QLD04,Southport Feedback Tracker.xlsx,9,5,DEPT_MISSING,warning,department,,Department value is blank or missing,Set department to 'Unknown'
+ERR-00052,QLD04-03407,QLD04,Southport Feedback Tracker.xlsx,10,5,DEPT_MISSING,warning,department,,Department value is blank or missing,Set department to 'Unknown'
+ERR-00053,VIC09-07046,VIC09,Shepparton feedback FINAL - site closed.xlsx,55,6,RATING_MISSING,info,rating_raw,,Rating value is blank or missing,Set rating_std to NaN
+ERR-00054,NSW07-02105,NSW07,Tamworth.xlsx,15,6,RATING_MISSING,info,rating_raw,,Rating value is blank or missing,Set rating_std to NaN
+ERR-00055,NSW07-02119,NSW07,Tamworth.xlsx,29,6,RATING_MISSING,info,rating_raw,,Rating value is blank or missing,Set rating_std to NaN
+ERR-00056,NSW07-02124,NSW07,Tamworth.xlsx,34,6,RATING_MISSING,info,rating_raw,,Rating value is blank or missing,Set rating_std to NaN
+ERR-00057,NSW07-02136,NSW07,Tamworth.xlsx,46,6,RATING_MISSING,info,rating_raw,,Rating value is blank or missing,Set rating_std to NaN
+ERR-00058,NSW07-02146,NSW07,Tamworth.xlsx,56,6,RATING_MISSING,info,rating_raw,,Rating value is blank or missing,Set rating_std to NaN
+ERR-00059,NSW07-02180,NSW07,Tamworth.xlsx,90,6,RATING_MISSING,info,rating_raw,,Rating value is blank or missing,Set rating_std to NaN
+ERR-00060,NSW07-02200,NSW07,Tamworth.xlsx,110,6,RATING_MISSING,info,rating_raw,,Rating value is blank or missing,Set rating_std to NaN
+ERR-00061,NSW07-02212,NSW07,Tamworth.xlsx,122,6,RATING_MISSING,info,rating_raw,,Rating value is blank or missing,Set rating_std to NaN
+ERR-00062,NSW07-02225,NSW07,Tamworth.xlsx,135,6,RATING_MISSING,info,rating_raw,,Rating value is blank or missing,Set rating_std to NaN
+ERR-00063,NSW07-02229,NSW07,Tamworth.xlsx,139,6,RATING_MISSING,info,rating_raw,,Rating value is blank or missing,Set rating_std to NaN
+ERR-00064,VIC05-05948,VIC05,boxhill_survey_export_2025Q4.csv,3,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00065,VIC05-05960,VIC05,boxhill_survey_export_2025Q4.csv,15,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00066,VIC05-05973,VIC05,boxhill_survey_export_2025Q4.csv,28,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00067,VIC05-05987,VIC05,boxhill_survey_export_2025Q4.csv,42,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00068,VIC05-06002,VIC05,boxhill_survey_export_2025Q4.csv,57,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00069,VIC05-06027,VIC05,boxhill_survey_export_2026Q1.csv,18,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00070,VIC05-06029,VIC05,boxhill_survey_export_2026Q1.csv,20,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00071,VIC05-06032,VIC05,boxhill_survey_export_2026Q1.csv,23,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (email),Redacted email patterns
+ERR-00072,VIC05-06054,VIC05,boxhill_survey_export_2026Q1.csv,45,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00073,VIC05-06070,VIC05,boxhill_survey_export_2026Q1.csv,61,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00074,VIC05-06072,VIC05,boxhill_survey_export_2026Q1.csv,63,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00075,VIC05-06074,VIC05,boxhill_survey_export_2026Q1.csv,65,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00076,VIC05-06087,VIC05,boxhill_survey_export_2026Q1.csv,78,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00077,VIC05-06090,VIC05,boxhill_survey_export_2026Q2.csv,4,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00078,VIC05-06092,VIC05,boxhill_survey_export_2026Q2.csv,6,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00079,VIC05-06101,VIC05,boxhill_survey_export_2026Q2.csv,15,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00080,VIC05-06106,VIC05,boxhill_survey_export_2026Q2.csv,20,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00081,VIC05-06115,VIC05,boxhill_survey_export_2026Q2.csv,29,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (email),Redacted email patterns
+ERR-00082,VIC05-06117,VIC05,boxhill_survey_export_2026Q2.csv,31,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00083,VIC05-06121,VIC05,boxhill_survey_export_2026Q2.csv,35,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00084,VIC05-06127,VIC05,boxhill_survey_export_2026Q2.csv,41,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00085,VIC05-06129,VIC05,boxhill_survey_export_2026Q2.csv,43,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00086,VIC05-06154,VIC05,boxhill_survey_export_2026Q2.csv,68,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00087,VIC05-06159,VIC05,boxhill_survey_export_2026Q2.csv,73,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00088,VIC05-06167,VIC05,boxhill_survey_export_2026Q2.csv,81,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00089,VIC05-06169,VIC05,boxhill_survey_export_2026Q2.csv,83,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00090,VIC05-06175,VIC05,boxhill_survey_export_2026Q3.csv,6,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00091,VIC05-06181,VIC05,boxhill_survey_export_2026Q3.csv,12,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00092,VIC05-06193,VIC05,boxhill_survey_export_2026Q3.csv,24,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (email),Redacted email patterns
+ERR-00093,VIC05-06196,VIC05,boxhill_survey_export_2026Q3.csv,27,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00094,VIC05-06216,VIC05,boxhill_survey_export_2026Q3.csv,47,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00095,VIC05-06217,VIC05,boxhill_survey_export_2026Q3.csv,48,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00096,VIC05-06219,VIC05,boxhill_survey_export_2026Q3.csv,50,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00097,VIC05-06239,VIC05,boxhill_survey_export_2026Q3.csv,70,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00098,VIC05-06252,VIC05,boxhill_survey_export_2026Q3.csv,83,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00099,QLD01-02337,QLD01,Chermside Q1 2026 FINAL v2.xlsx,2,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00100,QLD01-02354,QLD01,Chermside Q1 2026 FINAL v2.xlsx,19,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (email),Redacted email patterns
+ERR-00101,QLD01-02361,QLD01,Chermside Q1 2026 FINAL v2.xlsx,26,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00102,QLD01-02371,QLD01,Chermside Q1 2026 FINAL v2.xlsx,36,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00103,QLD01-02427,QLD01,Chermside Q1 2026 FINAL v2.xlsx,92,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00104,QLD01-02445,QLD01,Chermside Q1 2026 FINAL v2.xlsx,110,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00105,QLD01-02499,QLD01,Chermside Q2 2026.xlsx,46,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00106,QLD01-02503,QLD01,Chermside Q2 2026.xlsx,50,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (email),Redacted email patterns
+ERR-00107,QLD01-02537,QLD01,Chermside Q2 2026.xlsx,84,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00108,QLD01-02559,QLD01,Chermside Q2 2026.xlsx,106,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00109,QLD01-02591,QLD01,Chermside Q3 2026.xlsx,22,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00110,QLD01-02633,QLD01,Chermside Q3 2026.xlsx,64,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00111,QLD01-02636,QLD01,Chermside Q3 2026.xlsx,67,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00112,QLD01-02663,QLD01,Chermside Q3 2026.xlsx,94,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00113,QLD01-02686,QLD01,Chermside Q3 2026.xlsx,117,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00114,QLD01-02257,QLD01,Chermside Q4 2025.xlsx,24,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (email),Redacted email patterns
+ERR-00115,QLD01-02310,QLD01,Chermside Q4 2025.xlsx,77,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (email),Redacted email patterns
+ERR-00116,QLD01-02332,QLD01,Chermside Q4 2025.xlsx,99,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00117,VIC01-04823,VIC01,Dandenong Customer Feedback 2025-26.xlsx,17,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00118,VIC01-04826,VIC01,Dandenong Customer Feedback 2025-26.xlsx,20,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00119,VIC01-04804,VIC01,Dandenong Customer Feedback 2025-26.xlsx,42,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00120,VIC01-04817,VIC01,Dandenong Customer Feedback 2025-26.xlsx,9,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00121,VIC01-04842,VIC01,Dandenong Customer Feedback 2025-26.xlsx,36,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00122,VIC01-04843,VIC01,Dandenong Customer Feedback 2025-26.xlsx,38,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00123,VIC01-04804,VIC01,Dandenong Customer Feedback 2025-26.xlsx,42,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00124,VIC01-04806,VIC01,Dandenong Customer Feedback 2025-26.xlsx,44,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00125,VIC01-04840,VIC01,Dandenong Customer Feedback 2025-26.xlsx,34,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00126,VIC01-04818,VIC01,Dandenong Customer Feedback 2025-26.xlsx,12,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00127,VIC01-04820,VIC01,Dandenong Customer Feedback 2025-26.xlsx,14,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00128,VIC01-04826,VIC01,Dandenong Customer Feedback 2025-26.xlsx,20,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00129,VIC01-04828,VIC01,Dandenong Customer Feedback 2025-26.xlsx,22,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00130,VIC01-04845,VIC01,Dandenong Customer Feedback 2025-26.xlsx,40,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00131,VIC01-04833,VIC01,Dandenong Customer Feedback 2025-26.xlsx,27,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00132,VIC01-04837,VIC01,Dandenong Customer Feedback 2025-26.xlsx,31,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00133,VIC01-04838,VIC01,Dandenong Customer Feedback 2025-26.xlsx,32,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00134,VIC01-04831,VIC01,Dandenong Customer Feedback 2025-26.xlsx,25,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00135,VIC01-04813,VIC01,Dandenong Customer Feedback 2025-26.xlsx,7,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00136,VIC01-04814,VIC01,Dandenong Customer Feedback 2025-26.xlsx,8,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00137,VIC01-04832,VIC01,Dandenong Customer Feedback 2025-26.xlsx,26,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00138,VIC01-04836,VIC01,Dandenong Customer Feedback 2025-26.xlsx,30,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00139,VIC01-04817,VIC01,Dandenong Customer Feedback 2025-26.xlsx,9,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00140,VIC01-04818,VIC01,Dandenong Customer Feedback 2025-26.xlsx,12,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (email),Redacted email patterns
+ERR-00141,VIC01-04825,VIC01,Dandenong Customer Feedback 2025-26.xlsx,19,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00142,VIC01-04840,VIC01,Dandenong Customer Feedback 2025-26.xlsx,34,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00143,VIC01-04829,VIC01,Dandenong Customer Feedback 2025-26.xlsx,23,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00144,VIC01-04833,VIC01,Dandenong Customer Feedback 2025-26.xlsx,27,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00145,VIC01-04838,VIC01,Dandenong Customer Feedback 2025-26.xlsx,32,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (email),Redacted email patterns
+ERR-00146,VIC01-04843,VIC01,Dandenong Customer Feedback 2025-26.xlsx,38,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00147,VIC01-04804,VIC01,Dandenong Customer Feedback 2025-26.xlsx,42,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00148,VIC01-04806,VIC01,Dandenong Customer Feedback 2025-26.xlsx,44,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00149,VIC01-04715,VIC01,Dandenong Customer Feedback 2025-26.xlsx,54,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00150,VIC01-04817,VIC01,Dandenong Customer Feedback 2025-26.xlsx,9,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00151,VIC01-04824,VIC01,Dandenong Customer Feedback 2025-26.xlsx,18,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00152,VIC01-04825,VIC01,Dandenong Customer Feedback 2025-26.xlsx,19,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00153,VIC01-04828,VIC01,Dandenong Customer Feedback 2025-26.xlsx,22,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (email),Redacted email patterns
+ERR-00154,VIC01-04829,VIC01,Dandenong Customer Feedback 2025-26.xlsx,23,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00155,VIC01-04840,VIC01,Dandenong Customer Feedback 2025-26.xlsx,34,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00156,VIC01-04845,VIC01,Dandenong Customer Feedback 2025-26.xlsx,40,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00157,VIC01-04846,VIC01,Dandenong Customer Feedback 2025-26.xlsx,41,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00158,VIC01-04763,VIC01,Dandenong Customer Feedback 2025-26.xlsx,49,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00159,VIC01-04764,VIC01,Dandenong Customer Feedback 2025-26.xlsx,50,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00160,VIC01-04821,VIC01,Dandenong Customer Feedback 2025-26.xlsx,15,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00161,VIC01-04837,VIC01,Dandenong Customer Feedback 2025-26.xlsx,31,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00162,VIC01-04844,VIC01,Dandenong Customer Feedback 2025-26.xlsx,39,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (email),Redacted email patterns
+ERR-00163,VIC01-04846,VIC01,Dandenong Customer Feedback 2025-26.xlsx,41,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00164,VIC01-04804,VIC01,Dandenong Customer Feedback 2025-26.xlsx,42,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00165,VIC01-04810,VIC01,Dandenong Customer Feedback 2025-26.xlsx,48,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (email),Redacted email patterns
+ERR-00166,VIC01-04824,VIC01,Dandenong Customer Feedback 2025-26.xlsx,18,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00167,VIC01-04825,VIC01,Dandenong Customer Feedback 2025-26.xlsx,19,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00168,VIC01-04833,VIC01,Dandenong Customer Feedback 2025-26.xlsx,27,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (email),Redacted email patterns
+ERR-00169,VIC01-04834,VIC01,Dandenong Customer Feedback 2025-26.xlsx,28,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00170,VIC01-04841,VIC01,Dandenong Customer Feedback 2025-26.xlsx,35,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00171,VIC02-04959,VIC02,Ringwood feedback Q1 2026.xlsx,14,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00172,VIC02-04969,VIC02,Ringwood feedback Q1 2026.xlsx,24,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00173,VIC02-04971,VIC02,Ringwood feedback Q1 2026.xlsx,26,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00174,VIC02-04984,VIC02,Ringwood feedback Q1 2026.xlsx,42,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00175,VIC02-04999,VIC02,Ringwood feedback Q1 2026.xlsx,57,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00176,VIC02-05004,VIC02,Ringwood feedback Q1 2026.xlsx,62,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00177,VIC02-05013,VIC02,Ringwood feedback Q1 2026.xlsx,71,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00178,VIC02-05034,VIC02,Ringwood feedback Q1 2026.xlsx,92,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00179,VIC02-05043,VIC02,Ringwood feedback Q1 2026.xlsx,101,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00180,VIC02-05049,VIC02,Ringwood feedback Q1 2026.xlsx,107,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (email),Redacted email patterns
+ERR-00181,VIC02-05053,VIC02,Ringwood feedback Q1 2026.xlsx,111,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00182,VIC02-05067,VIC02,Ringwood feedback Q2 2026.xlsx,10,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00183,VIC02-05071,VIC02,Ringwood feedback Q2 2026.xlsx,14,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00184,VIC02-05074,VIC02,Ringwood feedback Q2 2026.xlsx,17,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00185,VIC02-05084,VIC02,Ringwood feedback Q2 2026.xlsx,27,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00186,VIC02-05090,VIC02,Ringwood feedback Q2 2026.xlsx,33,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (email),Redacted email patterns
+ERR-00187,VIC02-05109,VIC02,Ringwood feedback Q2 2026.xlsx,52,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (email),Redacted email patterns
+ERR-00188,VIC02-05124,VIC02,Ringwood feedback Q2 2026.xlsx,67,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00189,VIC02-05126,VIC02,Ringwood feedback Q2 2026.xlsx,69,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00190,VIC02-05141,VIC02,Ringwood feedback Q2 2026.xlsx,84,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00191,VIC02-05151,VIC02,Ringwood feedback Q2 2026.xlsx,94,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00192,VIC02-05153,VIC02,Ringwood feedback Q2 2026.xlsx,96,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00193,VIC02-05154,VIC02,Ringwood feedback Q2 2026.xlsx,97,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (email),Redacted email patterns
+ERR-00194,VIC02-05187,VIC02,Ringwood feedback Q3 2026.xlsx,17,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00195,VIC02-05203,VIC02,Ringwood feedback Q3 2026.xlsx,33,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00196,VIC02-05229,VIC02,Ringwood feedback Q3 2026.xlsx,59,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00197,VIC02-05235,VIC02,Ringwood feedback Q3 2026.xlsx,65,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00198,VIC02-05238,VIC02,Ringwood feedback Q3 2026.xlsx,68,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00199,VIC02-05258,VIC02,Ringwood feedback Q3 2026.xlsx,88,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00200,VIC02-04852,VIC02,Ringwood feedback Q4 2025.xlsx,7,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00201,VIC02-04867,VIC02,Ringwood feedback Q4 2025.xlsx,22,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00202,VIC02-04883,VIC02,Ringwood feedback Q4 2025.xlsx,38,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00203,VIC02-04887,VIC02,Ringwood feedback Q4 2025.xlsx,42,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00204,VIC02-04894,VIC02,Ringwood feedback Q4 2025.xlsx,49,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00205,VIC02-04898,VIC02,Ringwood feedback Q4 2025.xlsx,53,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00206,VIC02-04901,VIC02,Ringwood feedback Q4 2025.xlsx,56,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00207,VIC02-04906,VIC02,Ringwood feedback Q4 2025.xlsx,61,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00208,VIC02-04908,VIC02,Ringwood feedback Q4 2025.xlsx,63,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00209,VIC02-04909,VIC02,Ringwood feedback Q4 2025.xlsx,64,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00210,VIC02-04914,VIC02,Ringwood feedback Q4 2025.xlsx,69,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (email),Redacted email patterns
+ERR-00211,VIC02-04919,VIC02,Ringwood feedback Q4 2025.xlsx,74,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00212,VIC02-04921,VIC02,Ringwood feedback Q4 2025.xlsx,76,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00213,VIC02-04944,VIC02,Ringwood feedback Q4 2025.xlsx,100,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (email),Redacted email patterns
+ERR-00214,VIC03-05336,VIC03,ESSENDON - feedback register.xlsx,5,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00215,VIC03-05426,VIC03,ESSENDON - feedback register.xlsx,15,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00216,VIC03-05607,VIC03,ESSENDON - feedback register.xlsx,29,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00217,VIC03-05391,VIC03,ESSENDON - feedback register.xlsx,32,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00218,VIC03-05484,VIC03,ESSENDON - feedback register.xlsx,47,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00219,VIC03-05392,VIC03,ESSENDON - feedback register.xlsx,9,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00220,VIC03-05460,VIC03,ESSENDON - feedback register.xlsx,17,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (email),Redacted email patterns
+ERR-00221,VIC03-05534,VIC03,ESSENDON - feedback register.xlsx,23,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00222,VIC03-05606,VIC03,ESSENDON - feedback register.xlsx,28,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00223,VIC03-05408,VIC03,ESSENDON - feedback register.xlsx,34,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (email),Redacted email patterns
+ERR-00224,VIC03-05436,VIC03,ESSENDON - feedback register.xlsx,40,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00225,VIC03-05517,VIC03,ESSENDON - feedback register.xlsx,57,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00226,VIC03-05526,VIC03,ESSENDON - feedback register.xlsx,61,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (email),Redacted email patterns
+ERR-00227,VIC03-05538,VIC03,ESSENDON - feedback register.xlsx,68,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00228,VIC03-05549,VIC03,ESSENDON - feedback register.xlsx,73,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00229,VIC03-05575,VIC03,ESSENDON - feedback register.xlsx,80,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00230,VIC03-05449,VIC03,ESSENDON - feedback register.xlsx,96,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00231,VIC03-05455,VIC03,ESSENDON - feedback register.xlsx,99,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00232,VIC03-05453,VIC03,ESSENDON - feedback register.xlsx,101,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00233,VIC03-05463,VIC03,ESSENDON - feedback register.xlsx,107,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00234,VIC03-05533,VIC03,ESSENDON - feedback register.xlsx,152,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00235,VIC03-05536,VIC03,ESSENDON - feedback register.xlsx,153,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00236,VIC03-05558,VIC03,ESSENDON - feedback register.xlsx,167,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00237,VIC03-05577,VIC03,ESSENDON - feedback register.xlsx,177,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00238,VIC03-05587,VIC03,ESSENDON - feedback register.xlsx,186,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00239,VIC03-05588,VIC03,ESSENDON - feedback register.xlsx,187,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00240,VIC03-05616,VIC03,ESSENDON - feedback register.xlsx,210,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00241,VIC03-05620,VIC03,ESSENDON - feedback register.xlsx,212,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00242,VIC03-05329,VIC03,ESSENDON - feedback register.xlsx,3,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00243,VIC03-05330,VIC03,ESSENDON - feedback register.xlsx,4,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00244,VIC03-05485,VIC03,ESSENDON - feedback register.xlsx,21,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00245,VIC03-05534,VIC03,ESSENDON - feedback register.xlsx,23,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00246,VIC04-05641,VIC04,Frankston_CX_tracker.xlsx,2,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00247,VIC04-05662,VIC04,Frankston_CX_tracker.xlsx,23,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (email),Redacted email patterns
+ERR-00248,VIC04-05663,VIC04,Frankston_CX_tracker.xlsx,24,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00249,VIC04-05676,VIC04,Frankston_CX_tracker.xlsx,39,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00250,VIC04-05680,VIC04,Frankston_CX_tracker.xlsx,43,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00251,VIC04-05698,VIC04,Frankston_CX_tracker.xlsx,63,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (email),Redacted email patterns
+ERR-00252,VIC04-05704,VIC04,Frankston_CX_tracker.xlsx,69,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00253,VIC04-05708,VIC04,Frankston_CX_tracker.xlsx,73,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00254,VIC04-05712,VIC04,Frankston_CX_tracker.xlsx,77,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (email),Redacted email patterns
+ERR-00255,VIC04-05726,VIC04,Frankston_CX_tracker.xlsx,93,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00256,VIC04-05778,VIC04,Frankston_CX_tracker.xlsx,150,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00257,VIC04-05779,VIC04,Frankston_CX_tracker.xlsx,151,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00258,VIC04-05781,VIC04,Frankston_CX_tracker.xlsx,153,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00259,VIC04-05785,VIC04,Frankston_CX_tracker.xlsx,161,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (email),Redacted email patterns
+ERR-00260,VIC04-05792,VIC04,Frankston_CX_tracker.xlsx,168,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00261,VIC04-05805,VIC04,Frankston_CX_tracker.xlsx,181,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00262,VIC04-05818,VIC04,Frankston_CX_tracker.xlsx,196,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00263,VIC04-05821,VIC04,Frankston_CX_tracker.xlsx,199,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00264,VIC04-05825,VIC04,Frankston_CX_tracker.xlsx,203,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00265,VIC04-05832,VIC04,Frankston_CX_tracker.xlsx,210,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00266,VIC04-05834,VIC04,Frankston_CX_tracker.xlsx,212,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00267,VIC04-05891,VIC04,Frankston_CX_tracker.xlsx,273,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00268,VIC04-05897,VIC04,Frankston_CX_tracker.xlsx,281,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00269,VIC06-06336,VIC06,Geelong Feedback.xlsx,17,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00270,VIC06-06338,VIC06,Geelong Feedback.xlsx,19,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00271,VIC06-06339,VIC06,Geelong Feedback.xlsx,20,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00272,VIC06-06361,VIC06,Geelong Feedback.xlsx,42,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (email),Redacted email patterns
+ERR-00273,VIC06-06369,VIC06,Geelong Feedback.xlsx,50,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00274,VIC06-06385,VIC06,Geelong Feedback.xlsx,66,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00275,VIC06-06330,VIC06,Geelong Feedback.xlsx,11,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00276,VIC06-06363,VIC06,Geelong Feedback.xlsx,44,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00277,VIC06-06371,VIC06,Geelong Feedback.xlsx,52,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00278,VIC06-06376,VIC06,Geelong Feedback.xlsx,57,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00279,VIC06-06382,VIC06,Geelong Feedback.xlsx,63,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00280,VIC06-06405,VIC06,Geelong Feedback.xlsx,86,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00281,VIC06-06423,VIC06,Geelong Feedback.xlsx,104,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00282,VIC06-06431,VIC06,Geelong Feedback.xlsx,112,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (email),Redacted email patterns
+ERR-00283,VIC06-06436,VIC06,Geelong Feedback.xlsx,117,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00284,VIC06-06466,VIC06,Geelong Feedback.xlsx,147,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00285,VIC06-06495,VIC06,Geelong Feedback.xlsx,176,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00286,VIC06-06500,VIC06,Geelong Feedback.xlsx,181,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00287,VIC06-06505,VIC06,Geelong Feedback.xlsx,186,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00288,VIC06-06507,VIC06,Geelong Feedback.xlsx,188,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00289,VIC06-06513,VIC06,Geelong Feedback.xlsx,194,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00290,VIC06-06514,VIC06,Geelong Feedback.xlsx,195,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00291,VIC06-06541,VIC06,Geelong Feedback.xlsx,222,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00292,VIC06-06546,VIC06,Geelong Feedback.xlsx,227,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00293,VIC06-06551,VIC06,Geelong Feedback.xlsx,232,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00294,VIC06-06555,VIC06,Geelong Feedback.xlsx,236,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00295,VIC07-06560,VIC07,Ballarat - Customer Satisfaction.xlsx,3,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00296,VIC07-06577,VIC07,Ballarat - Customer Satisfaction.xlsx,20,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00297,VIC07-06578,VIC07,Ballarat - Customer Satisfaction.xlsx,21,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00298,VIC07-06588,VIC07,Ballarat - Customer Satisfaction.xlsx,31,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00299,VIC07-06590,VIC07,Ballarat - Customer Satisfaction.xlsx,33,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00300,VIC07-06603,VIC07,Ballarat - Customer Satisfaction.xlsx,46,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00301,VIC07-06608,VIC07,Ballarat - Customer Satisfaction.xlsx,51,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00302,VIC07-06617,VIC07,Ballarat - Customer Satisfaction.xlsx,60,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00303,VIC07-06620,VIC07,Ballarat - Customer Satisfaction.xlsx,63,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00304,VIC07-06632,VIC07,Ballarat - Customer Satisfaction.xlsx,75,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00305,VIC07-06651,VIC07,Ballarat - Customer Satisfaction.xlsx,94,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00306,VIC07-06654,VIC07,Ballarat - Customer Satisfaction.xlsx,97,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00307,VIC07-06665,VIC07,Ballarat - Customer Satisfaction.xlsx,108,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00308,VIC07-06669,VIC07,Ballarat - Customer Satisfaction.xlsx,112,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00309,VIC07-06684,VIC07,Ballarat - Customer Satisfaction.xlsx,127,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00310,VIC07-06687,VIC07,Ballarat - Customer Satisfaction.xlsx,130,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00311,VIC07-06727,VIC07,Ballarat - Customer Satisfaction.xlsx,171,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00312,VIC07-06732,VIC07,Ballarat - Customer Satisfaction.xlsx,177,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00313,VIC07-06734,VIC07,Ballarat - Customer Satisfaction.xlsx,179,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00314,VIC07-06740,VIC07,Ballarat - Customer Satisfaction.xlsx,185,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00315,VIC07-06741,VIC07,Ballarat - Customer Satisfaction.xlsx,186,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00316,VIC07-06744,VIC07,Ballarat - Customer Satisfaction.xlsx,189,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00317,VIC07-06746,VIC07,Ballarat - Customer Satisfaction.xlsx,191,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00318,VIC07-06747,VIC07,Ballarat - Customer Satisfaction.xlsx,192,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00319,VIC07-06751,VIC07,Ballarat - Customer Satisfaction.xlsx,196,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00320,VIC07-06765,VIC07,Ballarat - Customer Satisfaction.xlsx,210,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00321,VIC07-06767,VIC07,Ballarat - Customer Satisfaction.xlsx,212,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00322,VIC07-06784,VIC07,Ballarat - Customer Satisfaction.xlsx,229,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00323,VIC07-06787,VIC07,Ballarat - Customer Satisfaction.xlsx,232,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00324,VIC07-06795,VIC07,Ballarat - Customer Satisfaction.xlsx,240,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00325,VIC07-06806,VIC07,Ballarat - Customer Satisfaction.xlsx,251,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00326,VIC07-06808,VIC07,Ballarat - Customer Satisfaction.xlsx,253,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00327,VIC07-06826,VIC07,Ballarat - Customer Satisfaction.xlsx,271,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00328,VIC07-06829,VIC07,Ballarat - Customer Satisfaction.xlsx,274,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00329,VIC07-06831,VIC07,Ballarat - Customer Satisfaction.xlsx,276,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00330,VIC08-06853,VIC08,bendigo feedback.csv,5,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00331,VIC08-06868,VIC08,bendigo feedback.csv,20,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00332,VIC08-06872,VIC08,bendigo feedback.csv,24,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00333,VIC08-06907,VIC08,bendigo feedback.csv,59,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00334,VIC08-06915,VIC08,bendigo feedback.csv,67,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00335,VIC08-06929,VIC08,bendigo feedback.csv,81,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00336,VIC08-06936,VIC08,bendigo feedback.csv,88,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00337,VIC08-06945,VIC08,bendigo feedback.csv,97,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00338,VIC08-06947,VIC08,bendigo feedback.csv,100,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00339,VIC08-06950,VIC08,bendigo feedback.csv,102,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00340,VIC08-06975,VIC08,bendigo feedback.csv,127,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00341,VIC08-06982,VIC08,bendigo feedback.csv,134,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00342,VIC08-06985,VIC08,bendigo feedback.csv,137,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00343,VIC08-06987,VIC08,bendigo feedback.csv,139,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00344,VIC08-06988,VIC08,bendigo feedback.csv,140,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00345,VIC09-07004,VIC09,Shepparton feedback FINAL - site closed.xlsx,17,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (email),Redacted email patterns
+ERR-00346,VIC09-07009,VIC09,Shepparton feedback FINAL - site closed.xlsx,23,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00347,VIC09-07018,VIC09,Shepparton feedback FINAL - site closed.xlsx,32,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00348,VIC09-07019,VIC09,Shepparton feedback FINAL - site closed.xlsx,33,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00349,VIC09-07024,VIC09,Shepparton feedback FINAL - site closed.xlsx,38,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00350,VIC09-07028,VIC09,Shepparton feedback FINAL - site closed.xlsx,42,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00351,VIC09-07031,VIC09,Shepparton feedback FINAL - site closed.xlsx,45,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00352,NSW01-00016,NSW01,Parramatta_Feedback_2025-10.xlsx,17,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00353,NSW01-00038,NSW01,Parramatta_Feedback_2025-10.xlsx,39,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00354,NSW01-00040,NSW01,Parramatta_Feedback_2025-10.xlsx,41,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00355,NSW01-00103,NSW01,Parramatta_Feedback_2025-12.xlsx,22,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00356,NSW01-00105,NSW01,Parramatta_Feedback_2025-12.xlsx,24,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00357,NSW01-00131,NSW01,Parramatta_Feedback_2026-01.xlsx,14,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00358,NSW01-00132,NSW01,Parramatta_Feedback_2026-01.xlsx,15,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00359,NSW01-00139,NSW01,Parramatta_Feedback_2026-01.xlsx,22,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00360,NSW01-00149,NSW01,Parramatta_Feedback_2026-01.xlsx,32,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00361,NSW01-00157,NSW01,Parramatta_Feedback_2026-01.xlsx,40,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00362,NSW01-00168,NSW01,Parramatta_Feedback_2026-02.xlsx,9,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00363,NSW01-00175,NSW01,Parramatta_Feedback_2026-02.xlsx,16,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00364,NSW01-00194,NSW01,Parramatta_Feedback_2026-03.xlsx,4,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00365,NSW01-00216,NSW01,Parramatta_Feedback_2026-03.xlsx,26,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00366,NSW01-00224,NSW01,Parramatta_Feedback_2026-03.xlsx,34,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00367,NSW01-00225,NSW01,Parramatta_Feedback_2026-03.xlsx,35,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (email),Redacted email patterns
+ERR-00368,NSW01-00231,NSW01,Parramatta_Feedback_2026-03.xlsx,41,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00369,NSW01-00252,NSW01,Parramatta_Feedback_2026-04.xlsx,22,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00370,NSW01-00262,NSW01,Parramatta_Feedback_2026-04.xlsx,32,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00371,NSW01-00264,NSW01,Parramatta_Feedback_2026-04.xlsx,34,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00372,NSW01-00268,NSW01,Parramatta_Feedback_2026-05.xlsx,4,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00373,NSW01-00276,NSW01,Parramatta_Feedback_2026-05.xlsx,9,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00374,NSW01-00273,NSW01,Parramatta_Feedback_2026-05.xlsx,12,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00375,NSW01-00278,NSW01,Parramatta_Feedback_2026-05.xlsx,14,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00376,NSW01-00280,NSW01,Parramatta_Feedback_2026-05.xlsx,16,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00377,NSW01-00287,NSW01,Parramatta_Feedback_2026-05.xlsx,24,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (email),Redacted email patterns
+ERR-00378,NSW01-00293,NSW01,Parramatta_Feedback_2026-05.xlsx,30,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (email),Redacted email patterns
+ERR-00379,NSW01-00302,NSW01,Parramatta_Feedback_2026-05.xlsx,40,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00380,NSW01-00304,NSW01,Parramatta_Feedback_2026-05.xlsx,42,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00381,NSW01-00320,NSW01,Parramatta_Feedback_2026-06.xlsx,13,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00382,NSW01-00343,NSW01,Parramatta_Feedback_2026-06.xlsx,36,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00383,NSW01-00344,NSW01,Parramatta_Feedback_2026-06.xlsx,37,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00384,NSW01-00348,NSW01,Parramatta_Feedback_2026-06.xlsx,41,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00385,NSW01-00365,NSW01,Parramatta_Feedback_2026-07.xlsx,9,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00386,NSW01-00366,NSW01,Parramatta_Feedback_2026-07.xlsx,10,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00387,NSW01-00376,NSW01,Parramatta_Feedback_2026-07.xlsx,20,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00388,NSW01-00400,NSW01,Parramatta_Feedback_2026-08.xlsx,7,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00389,NSW01-00401,NSW01,Parramatta_Feedback_2026-08.xlsx,8,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00390,NSW01-00418,NSW01,Parramatta_Feedback_2026-08.xlsx,25,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00391,NSW01-00423,NSW01,Parramatta_Feedback_2026-08.xlsx,30,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (email),Redacted email patterns
+ERR-00392,NSW01-00432,NSW01,Parramatta_Feedback_2026-08.xlsx,39,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00393,NSW01-00435,NSW01,Parramatta_Feedback_2026-09.xlsx,3,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00394,NSW01-00436,NSW01,Parramatta_Feedback_2026-09.xlsx,4,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00395,NSW01-00448,NSW01,Parramatta_Feedback_2026-09.xlsx,16,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00396,NSW01-00465,NSW01,Parramatta_Feedback_2026-09.xlsx,33,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00397,NSW01-00466,NSW01,Parramatta_Feedback_2026-09.xlsx,34,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00398,NSW02-00882,NSW02,Penrith Feedback.xlsx,5,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00399,NSW02-00891,NSW02,Penrith Feedback.xlsx,15,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00400,NSW02-00892,NSW02,Penrith Feedback.xlsx,16,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00401,NSW02-00893,NSW02,Penrith Feedback.xlsx,17,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00402,NSW02-00832,NSW02,Penrith Feedback.xlsx,8,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00403,NSW02-00891,NSW02,Penrith Feedback.xlsx,15,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00404,NSW02-00901,NSW02,Penrith Feedback.xlsx,25,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00405,NSW02-00881,NSW02,Penrith Feedback.xlsx,4,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00406,NSW02-00896,NSW02,Penrith Feedback.xlsx,20,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00407,NSW02-00906,NSW02,Penrith Feedback.xlsx,30,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00408,NSW02-00889,NSW02,Penrith Feedback.xlsx,13,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00409,NSW02-00904,NSW02,Penrith Feedback.xlsx,28,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00410,NSW02-00906,NSW02,Penrith Feedback.xlsx,30,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00411,NSW02-00883,NSW02,Penrith Feedback.xlsx,6,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00412,NSW02-00893,NSW02,Penrith Feedback.xlsx,17,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00413,NSW02-00894,NSW02,Penrith Feedback.xlsx,18,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00414,NSW02-00906,NSW02,Penrith Feedback.xlsx,30,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00415,NSW02-00914,NSW02,Penrith Feedback.xlsx,38,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00416,NSW02-00920,NSW02,Penrith Feedback.xlsx,44,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00417,NSW02-00885,NSW02,Penrith Feedback.xlsx,9,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00418,NSW02-00900,NSW02,Penrith Feedback.xlsx,24,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00419,NSW02-00901,NSW02,Penrith Feedback.xlsx,25,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00420,NSW02-00880,NSW02,Penrith Feedback.xlsx,3,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00421,NSW02-00882,NSW02,Penrith Feedback.xlsx,5,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00422,NSW02-00884,NSW02,Penrith Feedback.xlsx,7,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (email),Redacted email patterns
+ERR-00423,NSW02-00886,NSW02,Penrith Feedback.xlsx,10,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00424,NSW02-00899,NSW02,Penrith Feedback.xlsx,23,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00425,NSW02-00901,NSW02,Penrith Feedback.xlsx,25,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00426,NSW02-00909,NSW02,Penrith Feedback.xlsx,33,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00427,NSW02-00914,NSW02,Penrith Feedback.xlsx,38,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00428,NSW02-00917,NSW02,Penrith Feedback.xlsx,41,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00429,NSW02-00884,NSW02,Penrith Feedback.xlsx,7,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00430,NSW02-00906,NSW02,Penrith Feedback.xlsx,30,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00431,NSW02-00886,NSW02,Penrith Feedback.xlsx,10,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00432,NSW02-00892,NSW02,Penrith Feedback.xlsx,16,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00433,NSW02-00897,NSW02,Penrith Feedback.xlsx,21,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00434,NSW02-00904,NSW02,Penrith Feedback.xlsx,28,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00435,NSW02-00914,NSW02,Penrith Feedback.xlsx,38,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00436,NSW02-00868,NSW02,Penrith Feedback.xlsx,47,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00437,NSW02-00879,NSW02,Penrith Feedback.xlsx,2,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00438,NSW02-00886,NSW02,Penrith Feedback.xlsx,10,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00439,NSW02-00902,NSW02,Penrith Feedback.xlsx,26,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00440,NSW02-00909,NSW02,Penrith Feedback.xlsx,33,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00441,NSW02-00914,NSW02,Penrith Feedback.xlsx,38,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00442,NSW03-00926,NSW03,chatswood_2025_q4.csv,5,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00443,NSW03-00933,NSW03,chatswood_2025_q4.csv,12,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00444,NSW03-00939,NSW03,chatswood_2025_q4.csv,18,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00445,NSW03-00943,NSW03,chatswood_2025_q4.csv,22,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00446,NSW03-00951,NSW03,chatswood_2025_q4.csv,30,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00447,NSW03-00953,NSW03,chatswood_2025_q4.csv,32,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00448,NSW03-00955,NSW03,chatswood_2025_q4.csv,34,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (email),Redacted email patterns
+ERR-00449,NSW03-00978,NSW03,chatswood_2025_q4.csv,57,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00450,NSW03-00985,NSW03,chatswood_2025_q4.csv,64,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00451,NSW03-00999,NSW03,chatswood_2026_q1.csv,10,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00452,NSW03-01001,NSW03,chatswood_2026_q1.csv,12,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00453,NSW03-01049,NSW03,chatswood_2026_q2.csv,4,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00454,NSW03-01059,NSW03,chatswood_2026_q2.csv,14,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00455,NSW03-01068,NSW03,chatswood_2026_q2.csv,23,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00456,NSW03-01069,NSW03,chatswood_2026_q2.csv,24,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00457,NSW03-01072,NSW03,chatswood_2026_q2.csv,27,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00458,NSW03-01073,NSW03,chatswood_2026_q2.csv,28,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00459,NSW03-01074,NSW03,chatswood_2026_q2.csv,29,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00460,NSW03-01087,NSW03,chatswood_2026_q2.csv,42,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00461,NSW03-01111,NSW03,chatswood_2026_q2.csv,66,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00462,NSW03-01131,NSW03,chatswood_2026_q3.csv,8,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00463,NSW03-01135,NSW03,chatswood_2026_q3.csv,14,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00464,NSW03-01139,NSW03,chatswood_2026_q3.csv,18,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00465,NSW03-01140,NSW03,chatswood_2026_q3.csv,19,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (email),Redacted email patterns
+ERR-00466,NSW03-01151,NSW03,chatswood_2026_q3.csv,30,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00467,NSW03-01165,NSW03,chatswood_2026_q3.csv,44,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (email),Redacted email patterns
+ERR-00468,NSW03-01166,NSW03,chatswood_2026_q3.csv,45,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00469,NSW03-01168,NSW03,chatswood_2026_q3.csv,47,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00470,NSW03-01172,NSW03,chatswood_2026_q3.csv,51,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00471,NSW03-01175,NSW03,chatswood_2026_q3.csv,54,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00472,NSW03-01183,NSW03,chatswood_2026_q3.csv,62,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00473,NSW03-01189,NSW03,chatswood_2026_q3.csv,68,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00474,NSW03-01192,NSW03,chatswood_2026_q3.csv,71,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00475,NSW03-01193,NSW03,chatswood_2026_q3.csv,72,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00476,NSW03-01198,NSW03,chatswood_2026_q3.csv,77,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00477,NSW04-01283,NSW04,liverpool_q1_2026.csv,4,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00478,NSW04-01298,NSW04,liverpool_q1_2026.csv,14,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00479,NSW04-01324,NSW04,liverpool_q1_2026.csv,39,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00480,NSW04-01328,NSW04,liverpool_q1_2026.csv,43,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00481,NSW04-01335,NSW04,liverpool_q1_2026.csv,50,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00482,NSW04-01353,NSW04,liverpool_q1_2026.csv,66,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (email),Redacted email patterns
+ERR-00483,NSW04-01365,NSW04,liverpool_q2_2026.csv,4,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00484,NSW04-01375,NSW04,liverpool_q2_2026.csv,14,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00485,NSW04-01377,NSW04,liverpool_q2_2026.csv,16,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00486,NSW04-01392,NSW04,liverpool_q2_2026.csv,26,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00487,NSW04-01399,NSW04,liverpool_q2_2026.csv,33,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00488,NSW04-01400,NSW04,liverpool_q2_2026.csv,34,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00489,NSW04-01405,NSW04,liverpool_q2_2026.csv,39,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00490,NSW04-01286,NSW04,liverpool_q3_2026.csv,2,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00491,NSW04-01452,NSW04,liverpool_q3_2026.csv,22,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00492,NSW04-01457,NSW04,liverpool_q3_2026.csv,27,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00493,NSW04-01482,NSW04,liverpool_q3_2026.csv,61,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00494,NSW04-01504,NSW04,liverpool_q3_2026.csv,63,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00495,NSW04-01500,NSW04,liverpool_q3_2026.csv,83,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (email),Redacted email patterns
+ERR-00496,NSW04-01503,NSW04,liverpool_q3_2026.csv,86,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00497,NSW04-01201,NSW04,liverpool_q4_2025.csv,2,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00498,NSW04-01221,NSW04,liverpool_q4_2025.csv,22,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00499,NSW04-01254,NSW04,liverpool_q4_2025.csv,55,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00500,NSW04-01265,NSW04,liverpool_q4_2025.csv,66,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00501,NSW04-01266,NSW04,liverpool_q4_2025.csv,67,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00502,NSW05-01513,NSW05,Hunter Motors feedback 25-26.xlsx,7,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00503,NSW05-01538,NSW05,Hunter Motors feedback 25-26.xlsx,32,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00504,NSW05-01558,NSW05,Hunter Motors feedback 25-26.xlsx,53,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00505,NSW05-01565,NSW05,Hunter Motors feedback 25-26.xlsx,60,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00506,NSW05-01566,NSW05,Hunter Motors feedback 25-26.xlsx,61,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00507,NSW05-01568,NSW05,Hunter Motors feedback 25-26.xlsx,63,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (email),Redacted email patterns
+ERR-00508,NSW05-01583,NSW05,Hunter Motors feedback 25-26.xlsx,78,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00509,NSW05-01608,NSW05,Hunter Motors feedback 25-26.xlsx,103,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00510,NSW05-01609,NSW05,Hunter Motors feedback 25-26.xlsx,104,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00511,NSW05-01610,NSW05,Hunter Motors feedback 25-26.xlsx,105,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00512,NSW05-01647,NSW05,Hunter Motors feedback 25-26.xlsx,142,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00513,NSW05-01652,NSW05,Hunter Motors feedback 25-26.xlsx,147,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00514,NSW05-01662,NSW05,Hunter Motors feedback 25-26.xlsx,157,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00515,NSW05-01663,NSW05,Hunter Motors feedback 25-26.xlsx,158,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00516,NSW05-01671,NSW05,Hunter Motors feedback 25-26.xlsx,166,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00517,NSW05-01676,NSW05,Hunter Motors feedback 25-26.xlsx,171,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00518,NSW05-01678,NSW05,Hunter Motors feedback 25-26.xlsx,173,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00519,NSW05-01683,NSW05,Hunter Motors feedback 25-26.xlsx,178,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00520,NSW05-01688,NSW05,Hunter Motors feedback 25-26.xlsx,183,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00521,NSW05-01700,NSW05,Hunter Motors feedback 25-26.xlsx,195,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00522,NSW05-01709,NSW05,Hunter Motors feedback 25-26.xlsx,204,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00523,NSW05-01717,NSW05,Hunter Motors feedback 25-26.xlsx,212,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00524,NSW05-01725,NSW05,Hunter Motors feedback 25-26.xlsx,220,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00525,NSW05-01726,NSW05,Hunter Motors feedback 25-26.xlsx,221,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00526,NSW05-01731,NSW05,Hunter Motors feedback 25-26.xlsx,227,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00527,NSW05-01740,NSW05,Hunter Motors feedback 25-26.xlsx,236,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00528,NSW05-01743,NSW05,Hunter Motors feedback 25-26.xlsx,239,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00529,NSW05-01748,NSW05,Hunter Motors feedback 25-26.xlsx,244,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00530,NSW05-01749,NSW05,Hunter Motors feedback 25-26.xlsx,245,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00531,NSW05-01763,NSW05,Hunter Motors feedback 25-26.xlsx,260,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (email),Redacted email patterns
+ERR-00532,NSW05-01784,NSW05,Hunter Motors feedback 25-26.xlsx,281,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00533,NSW05-01793,NSW05,Hunter Motors feedback 25-26.xlsx,290,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (email),Redacted email patterns
+ERR-00534,NSW05-01807,NSW05,Hunter Motors feedback 25-26.xlsx,304,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00535,NSW06-01947,NSW06,Wollongong_Apr26-Sep26.csv,2,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00536,NSW06-01968,NSW06,Wollongong_Apr26-Sep26.csv,23,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00537,NSW06-01986,NSW06,Wollongong_Apr26-Sep26.csv,41,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00538,NSW06-01992,NSW06,Wollongong_Apr26-Sep26.csv,48,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00539,NSW06-02004,NSW06,Wollongong_Apr26-Sep26.csv,60,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00540,NSW06-02032,NSW06,Wollongong_Apr26-Sep26.csv,89,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00541,NSW06-02038,NSW06,Wollongong_Apr26-Sep26.csv,95,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00542,NSW06-02051,NSW06,Wollongong_Apr26-Sep26.csv,108,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00543,NSW06-02074,NSW06,Wollongong_Apr26-Sep26.csv,131,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00544,NSW06-02081,NSW06,Wollongong_Apr26-Sep26.csv,138,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00545,NSW06-02085,NSW06,Wollongong_Apr26-Sep26.csv,142,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00546,NSW06-02087,NSW06,Wollongong_Apr26-Sep26.csv,144,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00547,NSW06-01810,NSW06,Wollongong_Oct25-Mar26.csv,2,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00548,NSW06-01812,NSW06,Wollongong_Oct25-Mar26.csv,4,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00549,NSW06-01814,NSW06,Wollongong_Oct25-Mar26.csv,6,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (email),Redacted email patterns
+ERR-00550,NSW06-01817,NSW06,Wollongong_Oct25-Mar26.csv,9,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00551,NSW06-01830,NSW06,Wollongong_Oct25-Mar26.csv,22,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00552,NSW06-01837,NSW06,Wollongong_Oct25-Mar26.csv,29,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00553,NSW06-01841,NSW06,Wollongong_Oct25-Mar26.csv,33,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00554,NSW06-01843,NSW06,Wollongong_Oct25-Mar26.csv,35,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00555,NSW06-01857,NSW06,Wollongong_Oct25-Mar26.csv,49,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00556,NSW06-01858,NSW06,Wollongong_Oct25-Mar26.csv,50,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00557,NSW06-01869,NSW06,Wollongong_Oct25-Mar26.csv,61,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (email),Redacted email patterns
+ERR-00558,NSW06-01876,NSW06,Wollongong_Oct25-Mar26.csv,68,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00559,NSW06-01896,NSW06,Wollongong_Oct25-Mar26.csv,88,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00560,NSW06-01905,NSW06,Wollongong_Oct25-Mar26.csv,98,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00561,NSW06-01918,NSW06,Wollongong_Oct25-Mar26.csv,111,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00562,NSW06-01920,NSW06,Wollongong_Oct25-Mar26.csv,113,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00563,NSW06-01927,NSW06,Wollongong_Oct25-Mar26.csv,120,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00564,NSW07-02105,NSW07,Tamworth.xlsx,15,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00565,NSW07-02139,NSW07,Tamworth.xlsx,49,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (email),Redacted email patterns
+ERR-00566,NSW07-02151,NSW07,Tamworth.xlsx,61,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (email),Redacted email patterns
+ERR-00567,NSW07-02160,NSW07,Tamworth.xlsx,70,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00568,NSW07-02183,NSW07,Tamworth.xlsx,93,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00569,NSW07-02197,NSW07,Tamworth.xlsx,107,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00570,NSW07-02198,NSW07,Tamworth.xlsx,108,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00571,NSW07-02212,NSW07,Tamworth.xlsx,122,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00572,NSW07-02216,NSW07,Tamworth.xlsx,126,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (rego),Redacted rego patterns
+ERR-00573,QLD02-02828,QLD02,Springwood feedback.xlsx,145,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00574,QLD02-02891,QLD02,Springwood feedback.xlsx,211,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00575,QLD02-02905,QLD02,Springwood feedback.xlsx,225,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (email),Redacted email patterns
+ERR-00576,QLD02-02924,QLD02,Springwood feedback.xlsx,244,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00577,QLD02-02931,QLD02,Springwood feedback.xlsx,251,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00578,QLD02-02944,QLD02,Springwood feedback.xlsx,264,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00579,QLD03-03030,QLD03,IPS_feedback_log.xlsx,42,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00580,QLD03-03065,QLD03,IPS_feedback_log.xlsx,77,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (email),Redacted email patterns
+ERR-00581,QLD03-03101,QLD03,IPS_feedback_log.xlsx,113,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00582,QLD03-03122,QLD03,IPS_feedback_log.xlsx,134,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00583,QLD03-03143,QLD03,IPS_feedback_log.xlsx,155,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00584,QLD03-03167,QLD03,IPS_feedback_log.xlsx,179,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00585,QLD04-03311,QLD04,Southport Feedback Tracker.xlsx,48,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (email),Redacted email patterns
+ERR-00586,QLD04-03331,QLD04,Southport Feedback Tracker.xlsx,68,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00587,QLD04-03400,QLD04,Southport Feedback Tracker.xlsx,138,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (email),Redacted email patterns
+ERR-00588,QLD04-03452,QLD04,Southport Feedback Tracker.xlsx,188,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00589,QLD04-03490,QLD04,Southport Feedback Tracker.xlsx,227,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00590,QLD06-03627,QLD06,Toowoomba feedback 2026.xlsx,57,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00591,QLD06-03632,QLD06,Toowoomba feedback 2026.xlsx,62,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (email),Redacted email patterns
+ERR-00592,QLD06-03651,QLD06,Toowoomba feedback 2026.xlsx,81,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00593,QLD06-03687,QLD06,Toowoomba feedback 2026.xlsx,117,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (email),Redacted email patterns
+ERR-00594,QLD06-03765,QLD06,Toowoomba feedback 2026.xlsx,197,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00595,QLD06-03774,QLD06,Toowoomba feedback 2026.xlsx,206,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00596,QLD08-04298,QLD08,North QLD feedback (Rocky + TSV).xlsx,21,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00597,QLD08-04310,QLD07,North QLD feedback (Rocky + TSV).xlsx,42,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00598,QLD08-04351,QLD08,North QLD feedback (Rocky + TSV).xlsx,103,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00599,QLD08-04291,QLD08,North QLD feedback (Rocky + TSV).xlsx,13,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00600,QLD08-04211,QLD08,North QLD feedback (Rocky + TSV).xlsx,28,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (email),Redacted email patterns
+ERR-00601,QLD08-04302,QLD07,North QLD feedback (Rocky + TSV).xlsx,30,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (email),Redacted email patterns
+ERR-00602,QLD08-04304,QLD07,North QLD feedback (Rocky + TSV).xlsx,33,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00603,QLD08-04320,QLD08,North QLD feedback (Rocky + TSV).xlsx,56,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00604,QLD08-04344,QLD08,North QLD feedback (Rocky + TSV).xlsx,93,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (email),Redacted email patterns
+ERR-00605,QLD08-04356,QLD07,North QLD feedback (Rocky + TSV).xlsx,108,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00606,QLD08-04259,QLD07,North QLD feedback (Rocky + TSV).xlsx,109,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00607,QLD08-04358,QLD08,North QLD feedback (Rocky + TSV).xlsx,112,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00608,QLD08-04293,QLD08,North QLD feedback (Rocky + TSV).xlsx,16,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00609,QLD08-04295,QLD07,North QLD feedback (Rocky + TSV).xlsx,18,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00610,QLD08-04357,QLD08,North QLD feedback (Rocky + TSV).xlsx,110,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00611,QLD08-04358,QLD08,North QLD feedback (Rocky + TSV).xlsx,112,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (email),Redacted email patterns
+ERR-00612,QLD08-04279,QLD08,North QLD feedback (Rocky + TSV).xlsx,139,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00613,QLD08-04308,QLD08,North QLD feedback (Rocky + TSV).xlsx,38,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00614,QLD08-04237,QLD07,North QLD feedback (Rocky + TSV).xlsx,75,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00615,QLD08-04334,QLD08,North QLD feedback (Rocky + TSV).xlsx,78,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00616,QLD08-04342,QLD08,North QLD feedback (Rocky + TSV).xlsx,90,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns
+ERR-00617,QLD08-04343,QLD08,North QLD feedback (Rocky + TSV).xlsx,91,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (email),Redacted email patterns
+ERR-00618,QLD08-04265,QLD07,North QLD feedback (Rocky + TSV).xlsx,117,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (email),Redacted email patterns
+ERR-00619,QLD08-04362,QLD08,North QLD feedback (Rocky + TSV).xlsx,118,11,PII_IN_COMMENT,info,comment,[redacted],Comment contains embedded PII (phone),Redacted phone patterns

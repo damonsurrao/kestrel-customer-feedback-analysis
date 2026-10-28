@@ -111,6 +111,20 @@ JUNK_PATTERNS = [
     re.compile(r"^NOTE:", re.IGNORECASE),
 ]
 
+# ─────────────────────────────────────────────────────────────────────
+# Test / junk row detection by comment content
+# ─────────────────────────────────────────────────────────────────────
+# These exact comment strings (case-insensitive) identify rows that were
+# submitted while testing a new feedback form.  The corresponding date
+# values ("asdf", "TEST", "01/01/1900", and a free-text note about site
+# closure) are not real feedback and must be rejected outright.
+TEST_COMMENT_PATTERNS = [
+    re.compile(r"^\s*testing\s+new\s+form\s*$", re.IGNORECASE),
+    re.compile(r"^\s*asdf\s*$", re.IGNORECASE),
+    re.compile(r"^\s*test\s*-\s*ignore\s*$", re.IGNORECASE),
+    re.compile(r"^\s*TEST\s+TEST\s*$"),
+]
+
 # Frankston subtotal pattern — captured separately for reconciliation
 SUBTOTAL_PATTERN = re.compile(r"^Total\s+[A-Za-z]{3}\s+\d{4}", re.IGNORECASE)
 
@@ -290,6 +304,28 @@ def drop_junk_rows(df: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
         rejects.append(junk_rows)
         df = df[~junk_mask].copy()
 
+    # 1c. Test / form-testing rows — identified by comment content.
+    # Four known rows have junk date values ("asdf", "TEST", "01/01/1900",
+    # "Site closed 31/3/26…") and comments confirming they are test
+    # submissions: "testing new form", "asdf", "test - ignore", "TEST TEST".
+    if "comment" in df.columns:
+        test_mask = pd.Series(False, index=df.index)
+        for idx, row in df.iterrows():
+            comment = row.get("comment")
+            if pd.notna(comment) and str(comment).strip():
+                for pat in TEST_COMMENT_PATTERNS:
+                    if pat.search(str(comment).strip()):
+                        test_mask.at[idx] = True
+                        break
+        test_count = test_mask.sum()
+        if test_count > 0:
+            log.info(f"  Step 1c: Dropping {test_count} test/form-testing rows "
+                     f"(identified by comment content)")
+            test_rows = df[test_mask].copy()
+            test_rows["reject_reason"] = "test_submission"
+            rejects.append(test_rows)
+            df = df[~test_mask].copy()
+
     rejected = pd.concat(rejects, ignore_index=True) if rejects else pd.DataFrame()
     return df, rejected
 
@@ -392,6 +428,86 @@ def parse_excel_serial(value) -> str | None:
     return None
 
 
+# ── Month abbreviation lookup for vague date parsing ──
+_MONTH_ABBR = {
+    "jan": 1, "feb": 2, "mar": 3, "apr": 4, "may": 5, "jun": 6,
+    "jul": 7, "aug": 8, "sep": 9, "oct": 10, "nov": 11, "dec": 12,
+    "january": 1, "february": 2, "march": 3, "april": 4,
+    "june": 6, "july": 7, "august": 8, "september": 9,
+    "october": 10, "november": 11, "december": 12,
+}
+
+
+def _parse_vague_date(raw: str) -> str | None:
+    """
+    Parse informal / vague date strings into YYYY-MM-DD estimates.
+
+    The reporting period is Oct 2025 – Sep 2026, so months Oct-Dec are
+    assumed to be 2025 and Jan-Sep are assumed to be 2026.
+
+    Supported patterns (all case-insensitive):
+      "wkN <month>"  → week N of that month (day = N * 7, clamped to month)
+      "early <month>" → 10th of the month (first third)
+      "mid <month>"   → 15th of the month (middle)
+      "late <month>"  → 25th of the month (last third)
+      "<month>?"      → uncertain month, use 15th (mid-point)
+
+    Returns YYYY-MM-DD string or None if the pattern doesn't match.
+    """
+    text = raw.strip().lower()
+
+    # Pattern: "wkN month" e.g. "wk5 mar", "wk1 feb"
+    wk_match = re.match(r"^wk\s*(\d+)\s+(\w+)$", text)
+    if wk_match:
+        week_num = int(wk_match.group(1))
+        month_str = wk_match.group(2)
+        month = _MONTH_ABBR.get(month_str)
+        if month:
+            year = 2025 if month >= 10 else 2026
+            # Approximate: week N → day = N * 7, clamped to valid range
+            day = min(week_num * 7, 28)  # 28 is safe for all months
+            day = max(1, day)
+            return f"{year}-{month:02d}-{day:02d}"
+
+    # Pattern: "early month" e.g. "early apr", "early jan"
+    early_match = re.match(r"^early\s+(\w+)$", text)
+    if early_match:
+        month_str = early_match.group(1)
+        month = _MONTH_ABBR.get(month_str)
+        if month:
+            year = 2025 if month >= 10 else 2026
+            return f"{year}-{month:02d}-10"
+
+    # Pattern: "mid month" e.g. "mid jun", "mid nov", "mid sep"
+    mid_match = re.match(r"^mid\s+(\w+)$", text)
+    if mid_match:
+        month_str = mid_match.group(1)
+        month = _MONTH_ABBR.get(month_str)
+        if month:
+            year = 2025 if month >= 10 else 2026
+            return f"{year}-{month:02d}-15"
+
+    # Pattern: "late month" e.g. "late oct"
+    late_match = re.match(r"^late\s+(\w+)$", text)
+    if late_match:
+        month_str = late_match.group(1)
+        month = _MONTH_ABBR.get(month_str)
+        if month:
+            year = 2025 if month >= 10 else 2026
+            return f"{year}-{month:02d}-25"
+
+    # Pattern: "month?" e.g. "Aug?", "aug?"  — uncertain month
+    q_match = re.match(r"^(\w+)\s*\?\s*$", text)
+    if q_match:
+        month_str = q_match.group(1)
+        month = _MONTH_ABBR.get(month_str)
+        if month:
+            year = 2025 if month >= 10 else 2026
+            return f"{year}-{month:02d}-15"
+
+    return None
+
+
 def parse_date_value(value, site_code: str = "") -> tuple[str | None, str]:
     """
     Attempt to parse a date value into YYYY-MM-DD.
@@ -410,6 +526,32 @@ def parse_date_value(value, site_code: str = "") -> tuple[str | None, str]:
         return None, "unparseable"
 
     raw = str(value).strip()
+
+    # ── Sentinel / bogus date rejection ──
+    # 01/01/1900 is the Excel epoch base date — it appears when someone
+    # opens a form and submits without entering a real date.  Reject it
+    # as unparseable so it doesn't pollute the dataset.
+    if raw in ("01/01/1900", "1/1/1900", "1900-01-01"):
+        return None, "unparseable"
+
+    # ── Informal / vague date strings (Ipswich QLD03 special cases) ──
+    # These are hand-typed dates from the Ipswich feedback spreadsheet
+    # where the person entering data wrote approximate descriptions
+    # instead of exact dates.  We convert them to a reasonable mid-point
+    # estimate and mark quality as "approximate".
+    #
+    # Patterns handled:
+    #   "wk5 Mar"   → week 5 of March (≈ last week) → 2026-03-29
+    #   "wk1 Feb"   → week 1 of February            → 2026-02-07
+    #   "early Apr"  → first third of April           → 2026-04-10
+    #   "early Jan"  → first third of January         → 2026-01-10
+    #   "mid Jun"    → middle of June                 → 2026-06-15
+    #   "mid Nov"    → middle of November             → 2025-11-15
+    #   "mid Sep"    → middle of September            → 2026-09-15
+    #   "Aug?"       → uncertain month, use mid-point → 2026-08-15
+    vague_parsed = _parse_vague_date(raw)
+    if vague_parsed is not None:
+        return vague_parsed, "approximate"
 
     # Try Excel serial first (pure numeric)
     if re.match(r"^\d{5}(\.\d+)?$", raw):
@@ -497,6 +639,87 @@ def normalise_dates(df: pd.DataFrame) -> pd.DataFrame:
     df = df.copy()
     df["date_parsed"] = parsed_dates
     df["date_quality"] = qualities
+
+    # ── Neighbour interpolation for blank / missing dates ──
+    # If a row has no date at all (blank cell), we look at the rows
+    # immediately above and below it *within the same site and source
+    # file* (sorted by source_row) to estimate a date.  If both
+    # neighbours have parsed dates, we take the earlier one; if only
+    # one side has a date, we use that.  This is marked "approximate".
+    blank_date_mask = (
+        (df["date_quality"] == "unparseable") &
+        (df["date"].isna() | (df["date"].astype(str).str.strip() == ""))
+    )
+    if blank_date_mask.any():
+        interpolated = 0
+        for idx in df[blank_date_mask].index:
+            row = df.loc[idx]
+            site = row.get("site_code", "")
+            src_file = row.get("source_file", "")
+            # Find rows from the same site & source file
+            same_context = df[
+                (df["site_code"] == site) &
+                (df["source_file"] == src_file) &
+                (df["date_parsed"].notna())
+            ]
+            if same_context.empty:
+                continue
+            # Rows above (earlier source_row) and below (later source_row)
+            src_row_val = row.get("source_row", "")
+            try:
+                src_row_num = int(src_row_val)
+            except (ValueError, TypeError):
+                continue
+            above = same_context[
+                same_context["source_row"].apply(
+                    lambda x: int(x) if str(x).isdigit() else -1
+                ) < src_row_num
+            ]
+            below = same_context[
+                same_context["source_row"].apply(
+                    lambda x: int(x) if str(x).isdigit() else 999999
+                ) > src_row_num
+            ]
+            # Take the closest neighbour from each side
+            above_date = None
+            below_date = None
+            if not above.empty:
+                above_sorted = above.copy()
+                above_sorted["_sr"] = above_sorted["source_row"].astype(int)
+                closest_above = above_sorted.loc[above_sorted["_sr"].idxmax()]
+                above_date = closest_above["date_parsed"]
+            if not below.empty:
+                below_sorted = below.copy()
+                below_sorted["_sr"] = below_sorted["source_row"].astype(int)
+                closest_below = below_sorted.loc[below_sorted["_sr"].idxmin()]
+                below_date = closest_below["date_parsed"]
+
+            # Pick a date: prefer the earlier one if both exist, otherwise
+            # whichever is available
+            estimated = above_date or below_date
+            if above_date and below_date:
+                estimated = min(above_date, below_date)
+
+            if estimated:
+                df.at[idx, "date_parsed"] = estimated
+                df.at[idx, "date_quality"] = "approximate"
+                interpolated += 1
+                log_error(
+                    step=4, error_code="DATE_INTERPOLATED",
+                    error_description=(
+                        f"Blank date interpolated from neighbouring rows → {estimated}"
+                    ),
+                    severity="info",
+                    action_taken=f"Estimated as {estimated} from adjacent rows",
+                    field="date", original_value="(blank)",
+                    site_code=str(site),
+                    source_file=str(row.get("source_file", "")),
+                    source_row=str(row.get("source_row", "")),
+                )
+        if interpolated > 0:
+            log.info(f"  Step 4: Interpolated {interpolated} blank dates from neighbours")
+            # Update quality counts
+            qualities = df["date_quality"].tolist()
 
     exact_count = sum(1 for q in qualities if q == "exact")
     approximate = sum(1 for q in qualities if q == "approximate")
