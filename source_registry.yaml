@@ -265,9 +265,9 @@ sites:
           - 'Chermside Q1 2026 FINAL v2.xlsx'
           - 'Chermside Q2 2026.xlsx'
           - 'Chermside Q3 2026.xlsx'
-    schema_family: survey_export
-    column_map: {response_id: response_id, submitted_at: date, department: department, csat: rating_raw, verbatim: comment, vehicle: vehicle, dms_customer_no: customer_ref}
+    column_map: {Ref: response_id, Date: date, department: department, Rating: rating_raw, Comments: comment, "Customer No": customer_ref, Model: model}
     flags:
+      - "CORRECTED: original registry assumed survey_export schema (like Box Hill) but actual files use standard column names: Ref, Date, department, Rating, Comments, Customer No, Model. schema_family removed"
       - "DUPLICATE VERSIONS: Q1 2026 FINAL vs FINAL v2. Diff on response_id; load one only; log which and why"
       - "FORMAT UNCERTAINTY: V1 inventory says CSV, V6 says XLSX. If loader finds 0 matches on .xlsx, retry with .csv. Real file extension must be verified"
       - "Quarters covered: Q4 2025, Q1-Q3 2026 (4 calendar quarters, 5 files due to Q1 FINAL + FINAL v2)"
