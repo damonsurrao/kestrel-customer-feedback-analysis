@@ -81,7 +81,12 @@ CANONICAL_COLUMNS = [
 # Each dict has:
 #   site_code, name, status
 #   file_pattern (regex), file_format (xlsx|csv), delimiter (csv only)
-#   sheets: None (all/default), dict with include_pattern / skip_if_empty
+#   sheets: None (default/single sheet) or dict:
+#       include_pattern: regex to match sheet names (optional)
+#       load_all_non_empty: True → iterate all non-empty sheets
+#       skip_if_empty: True → skip sheets with no data rows
+#       sheet_name_to_column: canonical column to populate from sheet name
+#           e.g. "department" for Essendon where sheets = Sales/Service/Parts
 #   header_row_hint: 0-based int or None (auto-detect)
 #   header_detect_must_contain: list of strings to scan for
 #   column_map: {source_col: canonical_col}
@@ -152,13 +157,18 @@ def build_site_configs():
     })
 
     # ── VIC03 Essendon ──
+    # 3 sheets: Sales, Service, Parts — sheet name IS the department
     configs.append({
         "site_code": "VIC03",
         "name": "Essendon",
         "status": "active",
         "file_pattern": r"^ESSENDON - feedback register\.xlsx$",
         "file_format": "xlsx",
-        "sheets": None,
+        "sheets": {
+            "load_all_non_empty": True,
+            "skip_if_empty": True,
+            "sheet_name_to_column": "department",
+        },
         "header_detect_must_contain": None,
         "header_row_hint": 0,
         "column_map": {
@@ -230,13 +240,14 @@ def build_site_configs():
     })
 
     # ── VIC06 Geelong ──
+    # 2 sheets: 2025, 2026 — both have the same layout with header detection
     configs.append({
         "site_code": "VIC06",
         "name": "Geelong",
         "status": "active",
         "file_pattern": r"^Geelong Feedback\.xlsx$",
         "file_format": "xlsx",
-        "sheets": None,
+        "sheets": {"load_all_non_empty": True, "skip_if_empty": True},
         "header_detect_must_contain": ["Date", "Department", "Rating"],
         "header_row_hint": None,
         "column_map": {
@@ -332,13 +343,14 @@ def build_site_configs():
     })
 
     # ── NSW02 Penrith ──
+    # 12 monthly sheets (Oct 25 … Sep 26), same layout as Dandenong
     configs.append({
         "site_code": "NSW02",
         "name": "Penrith",
         "status": "active",
         "file_pattern": r"^Penrith Feedback\.xlsx$",
         "file_format": "xlsx",
-        "sheets": None,
+        "sheets": {"load_all_non_empty": True, "skip_if_empty": True},
         "header_detect_must_contain": None,
         "header_row_hint": 0,
         "column_map": {
@@ -615,14 +627,15 @@ def build_site_configs():
     })
 
     # ── QLD07 Rockhampton + QLD08 Townsville (shared file) ──
-    # Loaded once under QLD07; rows carry site_raw for later routing
+    # Loaded once under QLD07; rows carry site_raw for later routing.
+    # 4 quarterly sheets: Q4 2025, Q1 2026, Q2 2026, Q3 2026
     configs.append({
         "site_code": "QLD07",  # primary loader; site_raw column tells you which site
         "name": "Rockhampton+Townsville",
         "status": "active",
         "file_pattern": r"^North QLD feedback \(Rocky \+ TSV\)\.xlsx$",
         "file_format": "xlsx",
-        "sheets": None,
+        "sheets": {"load_all_non_empty": True, "skip_if_empty": True},
         "header_detect_must_contain": None,
         "header_row_hint": 0,
         "column_map": {
@@ -797,33 +810,62 @@ def load_simple_xlsx(filepath: Path, cfg: dict, sheet_name=0) -> pd.DataFrame:
     return df, row_offset
 
 
-def load_dandenong(filepath: Path, cfg: dict) -> list[pd.DataFrame]:
-    """VIC01 Dandenong: multi-sheet workbook, header detection per sheet."""
+def load_multi_sheet_xlsx(filepath: Path, cfg: dict) -> list[pd.DataFrame]:
+    """
+    Generic multi-sheet loader.  Iterates all (or pattern-filtered)
+    non-empty sheets in the workbook, applies the site's column_map
+    and header detection to each, and returns one DataFrame per sheet.
+
+    Config options (in cfg["sheets"]):
+      load_all_non_empty : True → iterate every sheet
+      include_pattern    : regex → only sheets whose name matches
+      skip_if_empty      : True → skip sheets with 0 data rows
+      sheet_name_to_column : canonical column name (e.g. "department")
+          → populate that column with the sheet name for every row
+          (used for Essendon where sheets = Sales / Service / Parts)
+    """
+    sheets_cfg = cfg["sheets"]
+    include_re = re.compile(sheets_cfg["include_pattern"]) if "include_pattern" in sheets_cfg else None
+
     frames = []
     xl = pd.ExcelFile(filepath)
-    include_re = re.compile(cfg["sheets"]["include_pattern"])
 
     for sheet in xl.sheet_names:
-        if not include_re.match(sheet):
+        # Filter by pattern if one is set
+        if include_re and not include_re.match(sheet):
             log.info(f"  Skipping sheet '{sheet}' (doesn't match pattern)")
             continue
 
+        # Quick emptiness check (read headerless)
         raw = pd.read_excel(xl, sheet_name=sheet, header=None, dtype=str)
-        if raw.dropna(how="all").empty:
+        if sheets_cfg.get("skip_if_empty") and raw.dropna(how="all").empty:
             log.info(f"  Skipping sheet '{sheet}' (empty)")
             continue
 
-        hdr_row = detect_header_row(raw, cfg["header_detect_must_contain"])
-        if hdr_row is None:
-            log.warning(f"  Header not found in sheet '{sheet}'; skipping")
-            continue
+        # Header detection
+        must_contain = cfg.get("header_detect_must_contain")
+        if must_contain:
+            hdr_row = detect_header_row(raw, must_contain)
+            if hdr_row is None:
+                log.warning(f"  Header not found in sheet '{sheet}'; skipping")
+                continue
+        else:
+            hdr_row = cfg.get("header_row_hint", 0) or 0
 
         df = pd.read_excel(xl, sheet_name=sheet, header=hdr_row, dtype=str)
+        row_offset = hdr_row + 1
+
         df = apply_column_map(df, cfg["column_map"])
+
+        # Populate a column from the sheet name if configured
+        col_from_sheet = sheets_cfg.get("sheet_name_to_column")
+        if col_from_sheet:
+            df[col_from_sheet] = sheet
+
         df = add_provenance(
             df, cfg["site_code"], cfg["name"], cfg["status"],
             filepath.name, sheet, cfg["from_google_southport"], None,
-            row_offset=hdr_row + 1,
+            row_offset=row_offset,
         )
         frames.append(df)
         log.info(f"  Sheet '{sheet}': {len(df)} rows (header at row {hdr_row})")
@@ -988,11 +1030,11 @@ def _load_one_file(filepath: Path, cfg: dict) -> list[pd.DataFrame]:
     """Dispatch to the right loader based on config."""
     site_code = cfg["site_code"]
 
-    # ── Dandenong: multi-sheet with per-sheet header detection ──
-    if site_code == "VIC01":
-        return load_dandenong(filepath, cfg)
+    # ── Multi-sheet xlsx (Dandenong, Essendon, Geelong, Penrith, North QLD) ──
+    if cfg.get("sheets") and cfg["file_format"] == "xlsx":
+        return load_multi_sheet_xlsx(filepath, cfg)
 
-    # ── Segmented xlsx (Ringwood, Frankston) ──
+    # ── Segmented xlsx (Ringwood, Frankston, Southport) ──
     if cfg.get("segments") and cfg["file_format"] == "xlsx":
         # Southport has named sheets per segment
         if site_code == "QLD04":

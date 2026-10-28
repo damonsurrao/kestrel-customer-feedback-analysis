@@ -18,6 +18,12 @@ Steps:
   10. Dedup on (site_code, date, department, rating_raw, comment_hash)
   11. PII redaction (hash names/phones/emails/rego; scan comments)
   12. Add derived columns (rating_scale, date_quality)
+  13. Assign feedback_id (site_code + sequence, e.g. VIC01-00001)
+
+Outputs:
+  - consolidated_clean.csv   — the cleaned dataset
+  - data_quality_errors.csv  — one row per error, linked to feedback_id
+  - rejects.csv              — rows removed entirely
 
 Usage:
     python clean.py --input consolidated_raw.csv --output consolidated_clean.csv
@@ -40,6 +46,46 @@ logging.basicConfig(
     format="%(asctime)s [%(levelname)s] %(message)s",
 )
 log = logging.getLogger(__name__)
+
+# ─────────────────────────────────────────────────────────────────────
+# Error log collector
+# ─────────────────────────────────────────────────────────────────────
+
+_error_log: list[dict] = []
+_error_counter: int = 0
+
+
+def log_error(
+    *,
+    step: int,
+    error_code: str,
+    error_description: str,
+    severity: str = "warning",
+    action_taken: str = "",
+    field: str = "",
+    original_value: str = "",
+    feedback_id: str = "",
+    source_file: str = "",
+    source_row: str = "",
+    site_code: str = "",
+):
+    """Append one error record to the in-memory error log."""
+    global _error_counter
+    _error_counter += 1
+    _error_log.append({
+        "error_id": f"ERR-{_error_counter:05d}",
+        "feedback_id": feedback_id,
+        "site_code": site_code,
+        "source_file": source_file,
+        "source_row": source_row,
+        "step": step,
+        "error_code": error_code,
+        "severity": severity,
+        "field": field,
+        "original_value": str(original_value)[:200],  # truncate long values
+        "error_description": error_description,
+        "action_taken": action_taken,
+    })
 
 # ─────────────────────────────────────────────────────────────────────
 # Constants
@@ -418,20 +464,42 @@ def normalise_dates(df: pd.DataFrame) -> pd.DataFrame:
     parsed_dates = []
     qualities = []
 
-    for _, row in df.iterrows():
+    for idx, row in df.iterrows():
         site = row.get("site_code", "")
         raw_date = row.get("date", "")
         parsed, quality = parse_date_value(raw_date, site_code=site)
         parsed_dates.append(parsed)
         qualities.append(quality)
 
+        if quality == "unparseable" and pd.notna(raw_date) and str(raw_date).strip():
+            log_error(
+                step=4, error_code="DATE_UNPARSEABLE",
+                error_description=f"Could not parse date value '{raw_date}'",
+                severity="warning", action_taken="Set date_parsed to NaT",
+                field="date", original_value=raw_date,
+                site_code=str(site),
+                source_file=str(row.get("source_file", "")),
+                source_row=str(row.get("source_row", "")),
+            )
+        elif quality == "approximate":
+            log_error(
+                step=4, error_code="DATE_APPROXIMATE",
+                error_description=f"Relative date '{raw_date}' converted to approximate date {parsed}",
+                severity="info", action_taken=f"Estimated as {parsed}",
+                field="date", original_value=raw_date,
+                site_code=str(site),
+                source_file=str(row.get("source_file", "")),
+                source_row=str(row.get("source_row", "")),
+            )
+
     df = df.copy()
     df["date_parsed"] = parsed_dates
     df["date_quality"] = qualities
 
-    unparseable = sum(1 for q in qualities if q == "unparseable" and not pd.isna(df["date"].iloc[qualities.index(q)]))
+    exact_count = sum(1 for q in qualities if q == "exact")
     approximate = sum(1 for q in qualities if q == "approximate")
-    log.info(f"  Step 4: Dates — {sum(1 for q in qualities if q == 'exact')} exact, "
+    unparseable = sum(1 for q in qualities if q == "unparseable")
+    log.info(f"  Step 4: Dates — {exact_count} exact, "
              f"{approximate} approximate, {unparseable} unparseable")
 
     return df
@@ -454,12 +522,39 @@ def standardise_departments(df: pd.DataFrame) -> pd.DataFrame:
 
     df["department"] = df["department_raw"].apply(map_dept)
 
-    # Log unmapped values
+    # Log unmapped values — both to console and error log
     unknown_mask = (df["department"] == "Unknown") & df["department_raw"].notna() & (df["department_raw"].str.strip() != "")
     if unknown_mask.any():
         unmapped_vals = df.loc[unknown_mask, "department_raw"].str.strip().str.lower().unique()
         log.warning(f"  Step 5: {unknown_mask.sum()} rows mapped to Unknown. "
                     f"Unmapped raw values: {sorted(set(unmapped_vals))}")
+        for idx in df[unknown_mask].index:
+            row = df.loc[idx]
+            log_error(
+                step=5, error_code="DEPT_UNMAPPED",
+                error_description=f"Department '{row['department_raw']}' not in lookup table",
+                severity="warning", action_taken="Set department to 'Unknown'",
+                field="department", original_value=row["department_raw"],
+                site_code=str(row.get("site_code", "")),
+                source_file=str(row.get("source_file", "")),
+                source_row=str(row.get("source_row", "")),
+            )
+
+    # Log missing department
+    missing_mask = df["department_raw"].isna() | (df["department_raw"].str.strip() == "")
+    missing_mask = missing_mask & (df["department"] == "Unknown")
+    if missing_mask.any():
+        for idx in df[missing_mask].index:
+            row = df.loc[idx]
+            log_error(
+                step=5, error_code="DEPT_MISSING",
+                error_description="Department value is blank or missing",
+                severity="warning", action_taken="Set department to 'Unknown'",
+                field="department", original_value="",
+                site_code=str(row.get("site_code", "")),
+                source_file=str(row.get("source_file", "")),
+                source_row=str(row.get("source_row", "")),
+            )
 
     counts = df["department"].value_counts()
     log.info(f"  Step 5: Department distribution — {counts.to_dict()}")
@@ -493,6 +588,15 @@ def normalise_ratings(df: pd.DataFrame) -> pd.DataFrame:
         if pd.isna(raw) or str(raw).strip() == "":
             rating_std.append(np.nan)
             rating_scales.append("")
+            log_error(
+                step=6, error_code="RATING_MISSING",
+                error_description="Rating value is blank or missing",
+                severity="info", action_taken="Set rating_std to NaN",
+                field="rating_raw", original_value="",
+                site_code=str(site),
+                source_file=str(row.get("source_file", "")),
+                source_row=str(row.get("source_row", "")),
+            )
             continue
 
         raw_str = str(raw).strip()
@@ -524,6 +628,15 @@ def normalise_ratings(df: pd.DataFrame) -> pd.DataFrame:
                 # Unparseable rating
                 rating_std.append(np.nan)
                 rating_scales.append("unparseable")
+                log_error(
+                    step=6, error_code="RATING_UNPARSEABLE",
+                    error_description=f"Could not parse rating value '{raw_str}'",
+                    severity="warning", action_taken="Set rating_std to NaN",
+                    field="rating_raw", original_value=raw_str,
+                    site_code=str(site),
+                    source_file=str(row.get("source_file", "")),
+                    source_row=str(row.get("source_row", "")),
+                )
                 continue
 
         # Apply site-specific transformations
@@ -589,6 +702,15 @@ def route_north_qld(df: pd.DataFrame) -> pd.DataFrame:
         else:
             unrouted += 1
             log.warning(f"  Step 7: Unrouted North QLD row — site_raw='{site_val}' (row {idx})")
+            log_error(
+                step=7, error_code="NQLD_UNROUTED",
+                error_description=f"North QLD row could not be routed — site_raw='{site_val}' does not match Rockhampton or Townsville patterns",
+                severity="warning", action_taken="Left as QLD07 (default)",
+                field="site_raw", original_value=site_val,
+                site_code="QLD07",
+                source_file=str(df.at[idx, "source_file"]) if "source_file" in df.columns else "",
+                source_row=str(df.at[idx, "source_row"]) if "source_row" in df.columns else "",
+            )
 
     log.info(f"  Step 7: North QLD routing — {routed} routed, {unrouted} unrouted out of {nqld_count}")
     return df
@@ -617,6 +739,17 @@ def validate_ipswich(df: pd.DataFrame) -> pd.DataFrame:
             bad_vals = non_ipswich["site_raw"].unique()
             log.warning(f"  Step 8: {len(non_ipswich)} Ipswich rows have unexpected "
                         f"site_raw values: {list(bad_vals)}")
+            for idx in non_ipswich.index:
+                row = df.loc[idx]
+                log_error(
+                    step=8, error_code="IPSWICH_SITE_MISMATCH",
+                    error_description=f"Ipswich (QLD03) row has unexpected site_raw='{row['site_raw']}'",
+                    severity="warning", action_taken="Kept row, flagged for review",
+                    field="site_raw", original_value=str(row["site_raw"]),
+                    site_code="QLD03",
+                    source_file=str(row.get("source_file", "")),
+                    source_row=str(row.get("source_row", "")),
+                )
         else:
             log.info(f"  Step 8: Ipswich validation passed ({len(ips_rows)} rows)")
     return df
@@ -732,21 +865,33 @@ def redact_pii(df: pd.DataFrame) -> pd.DataFrame:
     if "comment" in df.columns:
         pii_found = 0
         redacted_comments = []
-        for comment in df["comment"]:
+        for idx, comment in enumerate(df["comment"]):
             if pd.isna(comment) or str(comment).strip() == "":
                 redacted_comments.append(comment)
                 continue
 
             text = str(comment)
             found_any = False
+            found_types = []
             for pii_type, pattern in PII_PATTERNS.items():
                 matches = pattern.findall(text)
                 if matches:
                     found_any = True
+                    found_types.append(pii_type)
                     for m in matches:
                         text = text.replace(m, f"[REDACTED_{pii_type.upper()}]")
             if found_any:
                 pii_found += 1
+                row = df.iloc[idx]
+                log_error(
+                    step=11, error_code="PII_IN_COMMENT",
+                    error_description=f"Comment contains embedded PII ({', '.join(found_types)})",
+                    severity="info", action_taken=f"Redacted {', '.join(found_types)} patterns",
+                    field="comment", original_value="[redacted]",
+                    site_code=str(row.get("site_code", "")),
+                    source_file=str(row.get("source_file", "")),
+                    source_row=str(row.get("source_row", "")),
+                )
             redacted_comments.append(text)
 
         df["comment"] = redacted_comments
@@ -785,10 +930,15 @@ def add_derived_columns(df: pd.DataFrame) -> pd.DataFrame:
 # Main pipeline
 # ─────────────────────────────────────────────────────────────────────
 
-def clean(input_path: Path, output_path: Path, rejects_path: Path | None = None):
+def clean(input_path: Path, output_path: Path, rejects_path: Path | None = None,
+          errors_path: Path | None = None):
     """Run the full cleaning pipeline."""
+    global _error_log, _error_counter
+    _error_log = []
+    _error_counter = 0
+
     log.info(f"Loading {input_path}")
-    df = pd.read_csv(input_path, dtype=str, low_memory=False)
+    df = pd.read_csv(input_path, dtype=str, low_memory=False, encoding="utf-8")
     log.info(f"Loaded {len(df):,} rows, {len(df.columns)} columns")
 
     all_rejects: list[pd.DataFrame] = []
@@ -845,8 +995,38 @@ def clean(input_path: Path, output_path: Path, rejects_path: Path | None = None)
     log.info("Step 12: Adding derived columns...")
     df = add_derived_columns(df)
 
+    # Step 13: Assign stable feedback_id (after all drops/dedup/routing)
+    log.info("Step 13: Assigning feedback_id...")
+    df = df.sort_values(["site_code", "date_parsed", "source_file", "source_row"]).reset_index(drop=True)
+    df["feedback_id"] = df.apply(
+        lambda r: f"{r['site_code']}-{r.name + 1:05d}", axis=1
+    )
+    log.info(f"  Step 13: Assigned {len(df):,} feedback IDs "
+             f"({df['feedback_id'].iloc[0]} … {df['feedback_id'].iloc[-1]})")
+
+    # ── Back-fill feedback_id into error log ──
+    # Build a lookup from (source_file, source_row) → feedback_id
+    fid_lookup = {}
+    for _, row in df[["feedback_id", "source_file", "source_row"]].iterrows():
+        key = (str(row["source_file"]), str(row["source_row"]))
+        fid_lookup[key] = row["feedback_id"]
+
+    for err in _error_log:
+        if not err["feedback_id"]:
+            key = (err["source_file"], err["source_row"])
+            err["feedback_id"] = fid_lookup.get(key, "")
+
+    # ── Save error log ──
+    if errors_path and _error_log:
+        errors_df = pd.DataFrame(_error_log)
+        errors_df.to_csv(errors_path, index=False)
+        log.info(f"Saved error log: {errors_path} ({len(errors_df):,} errors)")
+    elif errors_path:
+        log.info("No data quality errors recorded")
+
     # ── Final column ordering ──
     priority_cols = [
+        "feedback_id",
         "site_code", "site_name", "site_status",
         "source_file", "source_sheet", "source_row",
         "from_google_southport", "segment_id",
@@ -900,6 +1080,14 @@ def clean(input_path: Path, output_path: Path, rejects_path: Path | None = None)
     if "date_quality" in df.columns:
         print(df["date_quality"].value_counts().to_string())
 
+    if _error_log:
+        print(f"\nData quality errors: {len(_error_log):,}")
+        err_df = pd.DataFrame(_error_log)
+        print("  By error code:")
+        print(err_df["error_code"].value_counts().to_string())
+        print("  By severity:")
+        print(err_df["severity"].value_counts().to_string())
+
     return df
 
 
@@ -923,13 +1111,17 @@ def main():
         "--rejects", type=Path, default=Path("rejects.csv"),
         help="Path for rejected rows CSV",
     )
+    parser.add_argument(
+        "--errors", type=Path, default=Path("data_quality_errors.csv"),
+        help="Path for data quality error log CSV",
+    )
     args = parser.parse_args()
 
     if not args.input.is_file():
         log.error(f"Input file not found: {args.input}")
         sys.exit(1)
 
-    clean(args.input, args.output, args.rejects)
+    clean(args.input, args.output, args.rejects, args.errors)
 
 
 if __name__ == "__main__":

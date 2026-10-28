@@ -16,12 +16,44 @@ Usage:
 """
 
 import argparse
+import io
 import re
 import sys
 from pathlib import Path
 from collections import Counter
 
 import pandas as pd
+import openpyxl
+
+
+# ─────────────────────────────────────────────────────────────────────
+# Tee: print to both console and an in-memory buffer for file output
+# ─────────────────────────────────────────────────────────────────────
+
+class Tee:
+    """Wraps stdout so every print() goes to console AND a buffer."""
+
+    def __init__(self, original_stdout):
+        self.original = original_stdout
+        self.buffer = io.StringIO()
+
+    def write(self, text):
+        self.original.write(text)
+        # Strip emoji to keep the text file clean and portable
+        clean = (
+            text
+            .replace("✅", "[PASS]")
+            .replace("❌", "[FAIL]")
+            .replace("⚠️", "[WARN]")
+        )
+        self.buffer.write(clean)
+
+    def flush(self):
+        self.original.flush()
+        self.buffer.flush()
+
+    def get_text(self) -> str:
+        return self.buffer.getvalue()
 
 # ─────────────────────────────────────────────────────────────────────
 # Expected files & sites (from source_registry.yaml)
@@ -241,8 +273,66 @@ def check_site_coverage(df: pd.DataFrame, dealerships_path: Path | None, vr: Val
 # Check 3: Row counts per source file
 # ─────────────────────────────────────────────────────────────────────
 
-def check_row_counts(df: pd.DataFrame, vr: ValidationResult):
-    """Report row counts per source file for manual cross-check."""
+def _count_actual_rows(filepath: Path) -> int | None:
+    """
+    Count total data rows in a source file across ALL sheets (xlsx)
+    or the single table (csv). Returns None if the file can't be read.
+    A data row is any row below the header that isn't entirely blank.
+    """
+    suffix = filepath.suffix.lower()
+
+    if suffix == ".csv":
+        encodings = ["utf-8", "cp1252", "latin-1"]
+        delimiters = [",", ";", "\t"]
+        best_count = None
+        best_cols = 0
+        for enc in encodings:
+            for delim in delimiters:
+                try:
+                    df = pd.read_csv(
+                        filepath, dtype=str, encoding=enc,
+                        sep=delim, on_bad_lines="warn",
+                    )
+                    n_cols = len(df.columns)
+                    n_rows = len(df.dropna(how="all"))
+                    # The right delimiter produces the most columns;
+                    # a wrong one lumps everything into one column.
+                    if n_cols > best_cols:
+                        best_cols = n_cols
+                        best_count = n_rows
+                except (UnicodeDecodeError, Exception):
+                    continue
+            if best_count is not None:
+                return best_count
+        return None
+
+    if suffix == ".xlsx":
+        try:
+            xl = pd.ExcelFile(filepath)
+            total = 0
+            for sheet in xl.sheet_names:
+                # Try header=0 as a reasonable default; the consolidation
+                # loader may use a different header row, but for a rough
+                # row count this is close enough — we're looking for big
+                # discrepancies (e.g. 32 loaded vs 400 actual), not
+                # off-by-one from header position.
+                try:
+                    sdf = pd.read_excel(xl, sheet_name=sheet, header=0, dtype=str)
+                    total += len(sdf.dropna(how="all"))
+                except Exception:
+                    pass
+            return total
+        except Exception:
+            return None
+
+    return None
+
+
+def check_row_counts(df: pd.DataFrame, feedback_dir: Path, vr: ValidationResult):
+    """
+    Report row counts per source file and compare against actual
+    row counts in the source files.
+    """
     print("\n--- CHECK 3: Row Counts per Source File ---")
 
     if "source_file" not in df.columns:
@@ -250,11 +340,40 @@ def check_row_counts(df: pd.DataFrame, vr: ValidationResult):
         return
 
     counts = df.groupby("source_file").size().sort_index()
-    print(f"\n  {'Source File':<55} {'Rows':>6}")
-    print(f"  {'-'*55} {'-'*6}")
-    for fname, count in counts.items():
-        print(f"  {fname:<55} {count:>6}")
-    print(f"  {'TOTAL':<55} {counts.sum():>6}")
+
+    # Count actual rows in each source file
+    actual_counts: dict[str, int | None] = {}
+    for fname in counts.index:
+        filepath = feedback_dir / fname
+        if filepath.exists():
+            actual_counts[fname] = _count_actual_rows(filepath)
+        else:
+            actual_counts[fname] = None
+
+    print(f"\n  {'Source File':<50} {'Loaded':>7} {'Actual':>7} {'Match':>7}")
+    print(f"  {'-'*50} {'-'*7} {'-'*7} {'-'*7}")
+
+    mismatches = []
+    for fname, loaded in counts.items():
+        actual = actual_counts.get(fname)
+        if actual is not None:
+            diff = loaded - actual
+            if abs(diff) <= 2:
+                # Close enough — header detection quirks can cause ±1-2
+                status = "ok"
+            elif loaded < actual:
+                status = f"-{actual - loaded}"
+                mismatches.append((fname, loaded, actual))
+            else:
+                status = f"+{loaded - actual}"
+                mismatches.append((fname, loaded, actual))
+            print(f"  {fname:<50} {loaded:>7} {actual:>7} {status:>7}")
+        else:
+            print(f"  {fname:<50} {loaded:>7} {'???':>7} {'???':>7}")
+
+    loaded_total = counts.sum()
+    actual_total = sum(v for v in actual_counts.values() if v is not None)
+    print(f"  {'TOTAL':<50} {loaded_total:>7} {actual_total:>7}")
 
     vr.check("Total row count > 0", len(df) > 0, f"{len(df):,} rows")
 
@@ -263,18 +382,38 @@ def check_row_counts(df: pd.DataFrame, vr: ValidationResult):
         if count < 5:
             vr.warn(f"Very few rows from {fname}", f"Only {count} rows — verify this is correct")
 
+    # Flag row count mismatches
+    # Use a 10% tolerance for minor header/junk row differences
+    for fname, loaded, actual in mismatches:
+        gap = actual - loaded
+        pct = (gap / actual * 100) if actual > 0 else 0
+        if pct > 10:
+            vr.check(
+                f"Row count: {fname}",
+                False,
+                f"Loaded {loaded} but source has {actual} data rows "
+                f"(missing {gap}, {pct:.0f}%)"
+            )
+        elif gap > 2:
+            vr.warn(
+                f"Row count: {fname}",
+                f"Loaded {loaded} vs source {actual} (diff {gap}, {pct:.0f}%)"
+            )
+
 
 # ─────────────────────────────────────────────────────────────────────
 # Check 4: Sheet coverage (multi-sheet files)
 # ─────────────────────────────────────────────────────────────────────
 
-def check_sheet_coverage(df: pd.DataFrame, vr: ValidationResult):
+def check_sheet_coverage(df: pd.DataFrame, feedback_dir: Path, vr: ValidationResult):
     """Verify multi-sheet files loaded all expected sheets."""
     print("\n--- CHECK 4: Sheet Coverage ---")
 
     if "source_sheet" not in df.columns:
         vr.check("source_sheet column exists", False, "Column missing!")
         return
+
+    # ── 4a. Known multi-sheet/segment checks (unchanged) ──
 
     # Dandenong: should have ~11-12 month sheets
     dandenong = df[df["site_code"] == "VIC01"]
@@ -318,6 +457,86 @@ def check_sheet_coverage(df: pd.DataFrame, vr: ValidationResult):
             len(segments) >= 2,
             f"Segments: {segments}"
         )
+
+    # ── 4b. Generic xlsx sheet coverage check ──
+    # For every xlsx file in the consolidated output, open the actual
+    # file, count its non-empty sheets, and compare against how many
+    # distinct source_sheet values were loaded. Catches cases where
+    # the loader silently skipped sheets (e.g. Essendon).
+
+    print("\n  --- 4b: Generic xlsx sheet coverage ---")
+
+    xlsx_source_files = sorted(
+        f for f in df["source_file"].unique()
+        if str(f).lower().endswith(".xlsx")
+    )
+
+    for source_fname in xlsx_source_files:
+        filepath = feedback_dir / source_fname
+        if not filepath.exists():
+            continue
+
+        # Count non-empty sheets in the actual file
+        try:
+            wb = openpyxl.load_workbook(filepath, read_only=True, data_only=True)
+            actual_sheets = []
+            for sheet_name in wb.sheetnames:
+                ws = wb[sheet_name]
+                # A sheet is "non-empty" if it has at least 2 rows (header + 1 data row)
+                row_count = 0
+                for row in ws.iter_rows(max_row=5, values_only=True):
+                    if any(cell is not None for cell in row):
+                        row_count += 1
+                if row_count >= 2:
+                    actual_sheets.append(sheet_name)
+            wb.close()
+        except Exception as e:
+            vr.warn(f"Could not inspect {source_fname}", str(e))
+            continue
+
+        if len(actual_sheets) <= 1:
+            # Single-sheet file — nothing to check
+            continue
+
+        # Count what was loaded into consolidated output for this file
+        file_rows = df[df["source_file"] == source_fname]
+        loaded_sheets = file_rows["source_sheet"].unique()
+        loaded_nonempty = set(
+            s for s in loaded_sheets if s and str(s).strip()
+        )
+
+        # For segmented files (source_sheet is blank but segment_id
+        # is populated), the loader intentionally reads a single sheet
+        # and splits by header detection. That's fine — skip these.
+        if "segment_id" in df.columns:
+            segments = set(
+                s for s in file_rows["segment_id"].unique()
+                if s and str(s).strip()
+            )
+            if segments and not loaded_nonempty:
+                # Segmented loader — segments within one sheet, not
+                # separate sheets. Skip the sheet-count check.
+                continue
+
+        # Compare
+        actual_count = len(actual_sheets)
+        loaded_count = len(loaded_nonempty) if loaded_nonempty else 1  # blank = sheet 0 only
+
+        if loaded_count < actual_count:
+            missing_sheets = set(actual_sheets) - loaded_nonempty
+            vr.check(
+                f"Sheet coverage: {source_fname}",
+                False,
+                f"File has {actual_count} non-empty sheets {actual_sheets} "
+                f"but only {loaded_count} loaded. "
+                f"Missing sheets: {sorted(missing_sheets)}"
+            )
+        else:
+            vr.check(
+                f"Sheet coverage: {source_fname}",
+                True,
+                f"All {actual_count} non-empty sheets loaded"
+            )
 
 
 # ─────────────────────────────────────────────────────────────────────
@@ -463,6 +682,8 @@ def main():
     parser.add_argument("--feedback-dir", type=Path, default=Path("feedback"))
     parser.add_argument("--dealerships", type=Path, default=None,
                         help="Path to reference/dealerships.csv (optional)")
+    parser.add_argument("--report", type=Path, default=Path("validation_report.txt"),
+                        help="Path to save the validation report (default: validation_report.txt)")
     args = parser.parse_args()
 
     if not args.consolidated.exists():
@@ -471,6 +692,10 @@ def main():
     if not args.feedback_dir.is_dir():
         print(f"ERROR: Feedback directory not found: {args.feedback_dir}")
         sys.exit(1)
+
+    # Tee stdout so everything printed also goes to a buffer
+    tee = Tee(sys.stdout)
+    sys.stdout = tee
 
     print(f"{'='*60}")
     print("CONSOLIDATION VALIDATION")
@@ -486,8 +711,8 @@ def main():
 
     check_file_coverage(args.feedback_dir, df, vr)
     check_site_coverage(df, args.dealerships, vr)
-    check_row_counts(df, vr)
-    check_sheet_coverage(df, vr)
+    check_row_counts(df, args.feedback_dir, vr)
+    check_sheet_coverage(df, args.feedback_dir, vr)
     check_unmapped_columns(df, vr)
     check_provenance(df, vr)
     check_chermside_duplicates(df, vr)
@@ -495,6 +720,13 @@ def main():
     check_data_sanity(df, vr)
 
     all_passed = vr.summary()
+
+    # Restore stdout and save report
+    sys.stdout = tee.original
+    report_text = tee.get_text()
+    args.report.write_text(report_text, encoding="utf-8")
+    print(f"\nReport saved to: {args.report}")
+
     sys.exit(0 if all_passed else 1)
 
 

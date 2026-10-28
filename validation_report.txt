@@ -1,0 +1,149 @@
+============================================================
+CONSOLIDATION VALIDATION
+============================================================
+Consolidated file: consolidated_raw.csv
+Feedback dir:      feedback
+Rows loaded:       7,293
+Columns:           29
+
+--- CHECK 1: File Coverage ---
+  Files in feedback/: 52
+  Distinct source_file values in consolidated: 51
+  [PASS] Total file count: Expected 52, found 52 in feedback/
+  [PASS] All files match a registry pattern: All matched
+  [PASS] Excluded file 'Toowoomba Q4 2025 summary.xlsx' not in output: Correctly excluded
+  [PASS] All non-excluded files appear in output: All present
+
+--- CHECK 2: Site Coverage ---
+  Distinct site_codes in output: 23
+  Sites: ['NSW01', 'NSW02', 'NSW03', 'NSW04', 'NSW05', 'NSW06', 'NSW07', 'QLD01', 'QLD02', 'QLD03', 'QLD04', 'QLD05', 'QLD06', 'QLD07', 'VIC01', 'VIC02', 'VIC03', 'VIC04', 'VIC05', 'VIC06', 'VIC07', 'VIC08', 'VIC09']
+  [PASS] Site VIC01 present: 484 rows
+  [PASS] Site VIC02 present: 456 rows
+  [PASS] Site VIC03 present: 346 rows
+  [PASS] Site VIC04 present: 332 rows
+  [PASS] Site VIC05 present: 309 rows
+  [PASS] Site VIC06 present: 304 rows
+  [PASS] Site VIC07 present: 292 rows
+  [PASS] Site VIC08 present: 144 rows
+  [PASS] Site VIC09 present: 54 rows
+  [PASS] Site NSW01 present: 479 rows
+  [PASS] Site NSW02 present: 497 rows
+  [PASS] Site NSW03 present: 278 rows
+  [PASS] Site NSW04 present: 311 rows
+  [PASS] Site NSW05 present: 303 rows
+  [PASS] Site NSW06 present: 285 rows
+  [PASS] Site NSW07 present: 143 rows
+  [PASS] Site QLD01 present: 572 rows
+  [PASS] Site QLD02 present: 310 rows
+  [PASS] Site QLD03 present: 277 rows
+  [PASS] Site QLD04 present: 262 rows
+  [PASS] Site QLD05 present: 49 rows
+  [PASS] Site QLD06 present: 250 rows
+  [PASS] Site QLD07 present: 556 rows
+
+--- CHECK 3: Row Counts per Source File ---
+
+  Source File                                         Loaded  Actual   Match
+  -------------------------------------------------- ------- ------- -------
+  Ballarat - Customer Satisfaction.xlsx                  292     293      ok
+  Chermside Q1 2026 FINAL v2.xlsx                        118     118      ok
+  Chermside Q1 2026 FINAL.xlsx                           112     112      ok
+  Chermside Q2 2026.xlsx                                 116     116      ok
+  Chermside Q3 2026.xlsx                                 124     124      ok
+  Chermside Q4 2025.xlsx                                 102     102      ok
+  Dandenong Customer Feedback 2025-26.xlsx               484     509     -25
+  ESSENDON - feedback register.xlsx                      346     346      ok
+  Frankston_CX_tracker.xlsx                              332     321     +11
+  Geelong Feedback.xlsx                                  304     308      -4
+  Hunter Motors feedback 25-26.xlsx                      303     304      ok
+  IPS_feedback_log.xlsx                                  277     277      ok
+  Noosa feedback cards.xlsx                               49      49      ok
+  North QLD feedback (Rocky + TSV).xlsx                  556     556      ok
+  Parramatta_Feedback_2025-10.xlsx                        47      47      ok
+  Parramatta_Feedback_2025-11.xlsx                        36      36      ok
+  Parramatta_Feedback_2025-12.xlsx                        37      37      ok
+  Parramatta_Feedback_2026-01.xlsx                        42      42      ok
+  Parramatta_Feedback_2026-02.xlsx                        33      33      ok
+  Parramatta_Feedback_2026-03.xlsx                        40      40      ok
+  Parramatta_Feedback_2026-04.xlsx                        34      34      ok
+  Parramatta_Feedback_2026-05.xlsx                        45      45      ok
+  Parramatta_Feedback_2026-06.xlsx                        49      49      ok
+  Parramatta_Feedback_2026-07.xlsx                        37      37      ok
+  Parramatta_Feedback_2026-08.xlsx                        39      39      ok
+  Parramatta_Feedback_2026-09.xlsx                        40      40      ok
+  Penrith Feedback.xlsx                                  497     497      ok
+  Ringwood feedback Q1 2026.xlsx                         114     114      ok
+  Ringwood feedback Q2 2026.xlsx                         115     115      ok
+  Ringwood feedback Q3 2026.xlsx                         127     127      ok
+  Ringwood feedback Q4 2025.xlsx                         100     100      ok
+  Shepparton feedback FINAL - site closed.xlsx            54      53      ok
+  Southport Feedback Tracker.xlsx                        262     263      ok
+  Springwood feedback.xlsx                               310     310      ok
+  Tamworth.xlsx                                          143     143      ok
+  Toowoomba feedback 2026.xlsx                           250     250      ok
+  Wollongong_Apr26-Sep26.csv                             147     147      ok
+  Wollongong_Oct25-Mar26.csv                             138     138      ok
+  bendigo feedback.csv                                   144     144      ok
+  boxhill_survey_export_2025Q4.csv                        64      64      ok
+  boxhill_survey_export_2026Q1.csv                        77      77      ok
+  boxhill_survey_export_2026Q2.csv                        83      83      ok
+  boxhill_survey_export_2026Q3.csv                        85      85      ok
+  chatswood_2025_q4.csv                                   68      68      ok
+  chatswood_2026_q1.csv                                   56      56      ok
+  chatswood_2026_q2.csv                                   76      76      ok
+  chatswood_2026_q3.csv                                   78      78      ok
+  liverpool_q1_2026.csv                                   73      73      ok
+  liverpool_q2_2026.csv                                   71      71      ok
+  liverpool_q3_2026.csv                                   85      85      ok
+  liverpool_q4_2025.csv                                   82      82      ok
+  TOTAL                                                 7293    7313
+  [PASS] Total row count > 0: 7,293 rows
+  [WARN]  Row count: Dandenong Customer Feedback 2025-26.xlsx: Loaded 484 vs source 509 (diff 25, 5%)
+  [WARN]  Row count: Geelong Feedback.xlsx: Loaded 304 vs source 308 (diff 4, 1%)
+
+--- CHECK 4: Sheet Coverage ---
+  [PASS] VIC01 Dandenong sheet count: 12 sheets loaded: ['Apr 26', 'Aug 26', 'Dec 25', 'Feb 26', 'Jan 26', 'Jul 26', 'Jun 26', 'Mar 26', 'May 26', 'Nov 25', 'Oct 25', 'Sep 26']
+  [PASS] QLD04 Southport: both sheets/segments loaded: Sheets: ['Feedback', 'Google reviews (copied)'], Segments: ['dealership_feedback', 'google_reviews']
+  [PASS] VIC02 Ringwood: both segments found: Segments: ['old_template', 'new_template']
+  [PASS] VIC04 Frankston: both segments found: Segments: ['old_layout', 'new_layout']
+
+  --- 4b: Generic xlsx sheet coverage ---
+  [PASS] Sheet coverage: Dandenong Customer Feedback 2025-26.xlsx: All 12 non-empty sheets loaded
+  [PASS] Sheet coverage: ESSENDON - feedback register.xlsx: All 3 non-empty sheets loaded
+  [PASS] Sheet coverage: Geelong Feedback.xlsx: All 2 non-empty sheets loaded
+  [PASS] Sheet coverage: North QLD feedback (Rocky + TSV).xlsx: All 4 non-empty sheets loaded
+  [PASS] Sheet coverage: Penrith Feedback.xlsx: All 12 non-empty sheets loaded
+  [PASS] Sheet coverage: Southport Feedback Tracker.xlsx: All 2 non-empty sheets loaded
+
+--- CHECK 5: Unmapped Columns ---
+  [WARN]  Found 3 unmapped column(s): ['_unmapped_nan', '_unmapped_nan_2', '_unmapped_nan_3']
+
+--- CHECK 6: Provenance Completeness ---
+  [PASS] Provenance: site_code fully populated: Complete
+  [PASS] Provenance: source_file fully populated: Complete
+  [PASS] Provenance: source_row fully populated: Complete
+
+--- CHECK 7: Chermside Q1 Duplicate Check ---
+  [WARN]  Chermside Q1 2026: multiple versions loaded: Files: ['Chermside Q1 2026 FINAL v2.xlsx', 'Chermside Q1 2026 FINAL.xlsx']. You need to diff these and keep only one.
+    Chermside Q1 2026 FINAL v2.xlsx: 118 rows
+    Chermside Q1 2026 FINAL.xlsx: 112 rows
+  [PASS] Chermside file count: 5 files: ['Chermside Q1 2026 FINAL v2.xlsx', 'Chermside Q1 2026 FINAL.xlsx', 'Chermside Q2 2026.xlsx', 'Chermside Q3 2026.xlsx', 'Chermside Q4 2025.xlsx']
+
+--- CHECK 8: from_google_southport Flag ---
+  [PASS] Google flag only on QLD04: 8 rows flagged, from sites: ['QLD04']
+
+--- CHECK 9: Basic Data Sanity ---
+  [PASS] comment: has data: 5,507 non-null (75.5%)
+  [PASS] rating_raw: has data: 7,266 non-null (99.6%)
+  [PASS] date: has data: 7,278 non-null (99.8%)
+  [PASS] Rows with all key fields null: 14 rows have date+dept+rating+comment ALL null (these are likely junk to clean)
+
+============================================================
+VALIDATION SUMMARY: 41 passed, 0 failed, 4 warnings
+============================================================
+
+Warnings:
+  [WARN]  Row count: Dandenong Customer Feedback 2025-26.xlsx: Loaded 484 vs source 509 (diff 25, 5%)
+  [WARN]  Row count: Geelong Feedback.xlsx: Loaded 304 vs source 308 (diff 4, 1%)
+  [WARN]  Found 3 unmapped column(s): ['_unmapped_nan', '_unmapped_nan_2', '_unmapped_nan_3']
+  [WARN]  Chermside Q1 2026: multiple versions loaded: Files: ['Chermside Q1 2026 FINAL v2.xlsx', 'Chermside Q1 2026 FINAL.xlsx']. You need to diff these and keep only one.
