@@ -20,6 +20,7 @@ Steps:
   12. Assign customer_code (C1, C2, C3, …) per unique customer
   13. Add derived columns (rating_scale, date_quality)
   14. Assign feedback_id (site_code + sequence, e.g. VIC01-00001)
+  15. Merge vehicle/model into one vehicle_model field for the clean output
 
 Outputs:
   - consolidated_clean.csv   — the cleaned dataset
@@ -1279,6 +1280,74 @@ def add_derived_columns(df: pd.DataFrame) -> pd.DataFrame:
 
 
 # ─────────────────────────────────────────────────────────────────────
+# Final schema: merge vehicle + model
+# ─────────────────────────────────────────────────────────────────────
+
+def merge_vehicle_model_columns(df: pd.DataFrame) -> pd.DataFrame:
+    """Combine vehicle/model into vehicle_model without discarding conflicts.
+
+    Empty strings are treated as missing. If both values are present and
+    equivalent ignoring case and repeated/outer whitespace, keep the vehicle
+    spelling. If only one is present, use it. If both differ, retain both in
+    the combined value separated by " | ". The raw consolidated file remains
+    unchanged; this function only affects the cleaned output DataFrame.
+    """
+    df = df.copy()
+
+    vehicle = df["vehicle"] if "vehicle" in df.columns else pd.Series(pd.NA, index=df.index)
+    model = df["model"] if "model" in df.columns else pd.Series(pd.NA, index=df.index)
+
+    def clean_value(value):
+        if pd.isna(value):
+            return None
+        value = str(value).strip()
+        return value if value else None
+
+    def comparison_key(value: str) -> str:
+        return re.sub(r"\s+", " ", value).casefold()
+
+    merged = []
+    both_populated = 0
+    equivalent = 0
+    conflicts = 0
+
+    for vehicle_value, model_value in zip(vehicle, model):
+        v = clean_value(vehicle_value)
+        m = clean_value(model_value)
+
+        if v is None:
+            merged.append(m)
+        elif m is None:
+            merged.append(v)
+        else:
+            both_populated += 1
+            if comparison_key(v) == comparison_key(m):
+                equivalent += 1
+                merged.append(v)
+            else:
+                conflicts += 1
+                # Keep both values visible rather than silently dropping one.
+                merged.append(f"{v} | {m}")
+
+    df["vehicle_model"] = merged
+    df = df.drop(columns=[c for c in ("vehicle", "model") if c in df.columns])
+
+    log.info(
+        "  Step 15: Merged vehicle/model into vehicle_model — "
+        f"{both_populated:,} rows had both populated, "
+        f"{equivalent:,} equivalent, {conflicts:,} conflicting; "
+        f"{sum(v is not None for v in merged):,} rows have a combined value"
+    )
+    if conflicts:
+        log.warning(
+            f"  Step 15: Preserved both values in vehicle_model for {conflicts:,} "
+            "conflicting rows using the format 'vehicle | model'"
+        )
+
+    return df
+
+
+# ─────────────────────────────────────────────────────────────────────
 # Main pipeline
 # ─────────────────────────────────────────────────────────────────────
 
@@ -1380,6 +1449,10 @@ def clean(input_path: Path, output_path: Path, rejects_path: Path | None = None,
     elif errors_path:
         log.info("No data quality errors recorded")
 
+    # Step 15: Merge vehicle/model for the clean output only
+    log.info("Step 15: Merging vehicle and model columns...")
+    df = merge_vehicle_model_columns(df)
+
     # ── Final column ordering ──
     priority_cols = [
         "feedback_id",
@@ -1392,7 +1465,7 @@ def clean(input_path: Path, output_path: Path, rejects_path: Path | None = None,
         "comment",
         "customer_code",
         "customer_name", "phone", "email", "customer_ref",
-        "vehicle", "model", "rego",
+        "vehicle_model", "rego",
         "booking_ref", "action_taken", "staff",
         "response_id", "source_detail",
         "dealer_raw", "site_raw",
