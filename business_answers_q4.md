@@ -12,6 +12,19 @@ Kestrel Motor Group runs 24 dealerships across Victoria, New South Wales and Que
 
 ---
 
+## Executive summary
+
+| Priority | Executive Insight | Estimated Commercial Impact | Why It Matters |
+|---|---|---|---|
+| 🔴 1 | **Safety:** 131 issues, 100% Critical, from 23 of 24 dealerships, and not falling (62 in H1, 69 in H2) | ~\$2.25M per serious-injury claim (assumption), plus legal penalties and brand damage | Potentially life-threatening and preventable at almost no cost; one incident outweighs every other issue combined |
+| 🟠 2 | **Communication:** the biggest driver of negative feedback (854 issues, 26%), led by "no updates / had to chase", and not improving | ~\$145K/yr at-risk service revenue | A systems fix (DMS notifications) with a payback measured in weeks |
+| 🟡 3 | **Parts availability:** 299 issues, up 221% from H1 to H2 | ~\$51K/yr | The fastest-deteriorating problem; every delay cascades into timeliness and communication complaints |
+| 🔵 4 | **Pricing:** 366 issues, up 41% | ~\$67K/yr | A process/DMS fix (pricing pre-authorisation) |
+| ⚪ 5 | **Booking:** 217 issues, up 47% | ~\$38K/yr | An IT/digital fix |
+| Overall | **CSAT is 66.4% and falling** (69.3% → 63.7%); negative issues rose 28.8% while revenue grew 6.1% | ~\$2.55M combined (0.30% of group revenue) | Dissatisfaction is group-wide, and complaints are outpacing business growth |
+
+---
+
 ## Overall customer satisfaction
 
 ![CSAT by Dealership](charts/00_csat_by_dealership.png)
@@ -157,19 +170,11 @@ Safety issues come from 23 of 24 dealerships, so this is a group-wide process ga
 
 **What it's worth:** Every parts delay cascades into a Timeliness complaint, a Communication complaint, and often a repeat visit. Parts delays are a multiplier of pain. The group's parts revenue is \$11.56M/yr. With 299 direct issues from 275 customers (plus 21 timeliness issues in the same comments), the same churn method gives **~$51K/year** in at-risk service revenue. This excludes the cost of vehicles off the road for fleet customers (assumed $500–1,500/day), which falls on the customer rather than Kestrel.
 
-### Summary: Where to start
-
-| Priority | Focus Area | Issues | Trend | Fix Type | Estimated Value at Risk |
-|---|---|---|---|---|---|
-| 🔴 1 | Safety sign-off checklist | 131 | Stable (all Critical) | Process (free) | $2,250,000 per serious-injury claim (assumption) |
-| 🟠 2 | Communication automation | 854 | Stable (not improving) | Systems/DMS | $145,477/yr |
-| 🟡 3 | Parts floor stock & sharing | 299 | **+221% and rising** | Supply chain | $51,422/yr |
-| 🔵 4 | Pricing pre-authorisation | 366 | +41% | Process/DMS | $67,129/yr |
-| ⚪ 5 | Booking system IT fix | 217 | +47% | IT/Digital | $37,585/yr |
-
-**Total group revenue: $838.7M.** The combined estimated revenue at risk across these five areas is approximately **\$2.55M (0.30% of group revenue)**: one serious-injury claim for Safety (\$2.25M) plus ~\$302K a year across the other four.  While modest relative to total revenue, this exposure warrants attention given the potential for preventable customer churn, deteriorating parts availability, and safety-related liabilities.
-
 **Start with Safety, then Communication.** Safety has the highest potential impact and costs almost nothing to fix; Communication has the largest volume and a fast payback. Parts Availability requires structural supply chain work but is the fastest-deteriorating problem and will get worse every month without intervention.
+
+## Summary
+
+Customer satisfaction is falling (CSAT 69.3% → 63.7%), and complaints are growing faster than revenue. Communication drives the most negative feedback, but Safety carries the biggest risk: 131 Critical issues, where one serious incident could cost ~\$2.25M. Kestrel should fix Safety first, then Communication, then Parts availability, the fastest-deteriorating problem. Together, the five priority areas put about \$2.55M at risk.
 
 ---
 

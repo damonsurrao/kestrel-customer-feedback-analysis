@@ -17,28 +17,13 @@ Initial observations:
 - **Metadata:** column names, department labels and site identifiers all vary by file. Rating scales are often unstated and differ (1–5, 1–10, inverted, text, stars), and dates come in many formats (AU, ISO, Excel serials, "3 weeks ago", "early Apr").
 - **Data quality:** blank, test and subtotal rows are mixed in with real feedback, there are duplicates and superseded file versions, departments and ratings are sometimes missing, and customers' personal details appear in free-text comments.
 
-Some things I caught doing this:
-- Ringwood changes template mid-file at row 36 in Q1 2026 (columns change, rating scale goes from 1–5 to 1–10)
-- Dandenong's May sheet has an extra annotation row that pushes the header down by one
-- Geelong's 2025 sheet has an inverted rating scale (1 = Excellent, 5 = Poor), noted in a banner row; its 2026 sheet uses the normal scale
-- Frankston has subtotal rows embedded in the data ("Total Mar 2026") that look like real records
-- Chermside Q1 2026 has two files: FINAL and FINAL v2
-- North QLD is a shared file covering two dealerships (Rockhampton + Townsville), identified by a "Site" column with variant abbreviations (ROK, ROCK, ROCKY, TSV, etc.)
-- Southport has a second sheet of copy-pasted Google reviews — different population, different schema
+The file-by-file quirks this caught (template changes mid-file, inverted scales, embedded subtotals, duplicate file versions, a shared two-site file) are listed under *Observations about Data Quality*.
 
 I defined a set of canonical columns (date, department, rating_raw, comment, customer_name, etc.) and mapped every source column across all 52 files to them. Unmapped columns were preserved with an `_unmapped_` prefix rather than silently dropped. Every row carries full provenance (site_code, source_file, source_sheet, source_row) so it traces back to its exact origin.
 
 ### 2. Cleaning & validation
 
-A 16-step pipeline in `clean.py`, where each step logs what it changed and why:
-
-- **Junk removal:** all-null rows, banner rows ("Grand Total", "***"), test submissions ("testing new form", "asdf")
-- **Date parsing:** handles AU formats (DD/MM/YYYY), Excel serial numbers, relative text ("3 weeks ago"), vague hand-typed dates ("wk5 Mar", "early Apr", "mid Nov"), and blank dates interpolated from neighbours
-- **Department standardisation:** ~40 raw variants → Sales | Service | Parts | Unknown
-- **Rating normalisation:** everything onto a 1–5 scale (5 = best), handling Geelong's inversion, Ringwood's 1–10 scale, text ratings ("excellent", "poor"), and star emoji (★★★½☆)
-- **Site routing:** North QLD rows split to QLD07/QLD08 based on the Site column
-- **Dedup:** on (site_code, date, department, rating_raw, comment_hash), with response_id as a tighter key where available
-- **PII redaction:** SHA-256 hash on name/phone/email/rego columns; regex scan of comments for embedded PII
+A 16-step pipeline in `clean.py`, where each step logs what it changed and why. It removes junk rows (blanks, banners, test submissions), parses every date format, maps departments to Sales | Service | Parts | Unknown, puts all ratings on a 1–5 scale (5 = best), splits the shared North QLD file by site, removes duplicates, and hashes or redacts personal details.
 
 Every transformation logs to `data_quality_errors.csv` (step, error code, original value, action taken). Rejected rows go to `rejects.csv` with a reason code. Nothing is silently discarded.
 
@@ -105,26 +90,6 @@ Three principles throughout:
 - **No database** — at this scale, CSVs are simpler, more portable, and easier to inspect. A database would add infrastructure overhead without solving a real problem.
 - **matplotlib for charts** — nothing interactive needed; static PNGs for a report. No point pulling in Plotly/D3 for bar charts.
 - **YAML for the source registry** — human-readable, easy to diff, and captures the messy reality of 52 files with different formats better than code comments would.
-
-### Repo structure
-
-| File | Purpose |
-|---|---|
-| `source_registry.yaml` | Per-file documentation of formats, quirks, column maps, and decisions |
-| `consolidate.py` | Raw consolidation with full provenance — no cleaning |
-| `validate_consolidation.py` | Checks consolidation: file coverage, row counts, sheet coverage |
-| `clean.py` | 16-step cleaning pipeline with error & reject logging |
-| `validate_clean.py` | Checks cleaning: row accounting, data integrity, encoding |
-| `ai_analysis_optimised.py` | Two-pass AI classification + theme-level strategy generation |
-| `generate_charts_for_q4.py` | 13 charts + `report_stats.md` with all computed numbers |
-| `consolidated_raw.csv` | Output of consolidation (untouched values) |
-| `consolidated_clean.csv` | Output of cleaning (standardised, deduplicated, PII-redacted) |
-| `data_quality_errors.csv` | Every data quality issue logged by the cleaning pipeline |
-| `rejects.csv` | Rows removed, with reason codes |
-| `ai_output/` | AI classification results, taxonomy, strategies, word clouds, validation sample |
-| `charts/` | All generated chart PNGs |
-| `reference/` | Dealership list and monthly revenue data |
-| `feedback/` | The 52 original source files (unchanged) |
 
 ---
 

@@ -46,8 +46,6 @@ Sections 2–4 also exist as standalone files: [`approach_overview.md`](approach
     └── ai_output/                 ← AI results, taxonomy, word clouds, validation sample
 ```
 
-The file table in the Approach section lists paths relative to `code_and_data/`.
-
 ### How to run
 
 Requirements are Python 3 with `pandas`, `numpy`, `openpyxl`, `matplotlib`, `wordcloud` and `anthropic`. The AI step also needs `ANTHROPIC_API_KEY` set as an environment variable. All paths are relative, so run every command from inside `code_and_data/`. The `-X utf8` flag stops the scripts crashing on Windows consoles when they print characters like →:
@@ -68,6 +66,10 @@ Note: `generate_charts_for_q4.py` writes its PNGs to `code_and_data/charts/`. If
 
 ---
 
+
+
+<div style="page-break-after: always;"></div>
+
 # Approach, Assumptions & Solution
 
 ## Approach
@@ -87,28 +89,13 @@ Initial observations:
 - **Metadata:** column names, department labels and site identifiers all vary by file. Rating scales are often unstated and differ (1–5, 1–10, inverted, text, stars), and dates come in many formats (AU, ISO, Excel serials, "3 weeks ago", "early Apr").
 - **Data quality:** blank, test and subtotal rows are mixed in with real feedback, there are duplicates and superseded file versions, departments and ratings are sometimes missing, and customers' personal details appear in free-text comments.
 
-Some things I caught doing this:
-- Ringwood changes template mid-file at row 36 in Q1 2026 (columns change, rating scale goes from 1–5 to 1–10)
-- Dandenong's May sheet has an extra annotation row that pushes the header down by one
-- Geelong's 2025 sheet has an inverted rating scale (1 = Excellent, 5 = Poor), noted in a banner row; its 2026 sheet uses the normal scale
-- Frankston has subtotal rows embedded in the data ("Total Mar 2026") that look like real records
-- Chermside Q1 2026 has two files: FINAL and FINAL v2
-- North QLD is a shared file covering two dealerships (Rockhampton + Townsville), identified by a "Site" column with variant abbreviations (ROK, ROCK, ROCKY, TSV, etc.)
-- Southport has a second sheet of copy-pasted Google reviews — different population, different schema
+The file-by-file quirks this caught (template changes mid-file, inverted scales, embedded subtotals, duplicate file versions, a shared two-site file) are listed under *Observations about Data Quality*.
 
 I defined a set of canonical columns (date, department, rating_raw, comment, customer_name, etc.) and mapped every source column across all 52 files to them. Unmapped columns were preserved with an `_unmapped_` prefix rather than silently dropped. Every row carries full provenance (site_code, source_file, source_sheet, source_row) so it traces back to its exact origin.
 
 ### 2. Cleaning & validation
 
-A 16-step pipeline in `clean.py`, where each step logs what it changed and why:
-
-- **Junk removal:** all-null rows, banner rows ("Grand Total", "***"), test submissions ("testing new form", "asdf")
-- **Date parsing:** handles AU formats (DD/MM/YYYY), Excel serial numbers, relative text ("3 weeks ago"), vague hand-typed dates ("wk5 Mar", "early Apr", "mid Nov"), and blank dates interpolated from neighbours
-- **Department standardisation:** ~40 raw variants → Sales | Service | Parts | Unknown
-- **Rating normalisation:** everything onto a 1–5 scale (5 = best), handling Geelong's inversion, Ringwood's 1–10 scale, text ratings ("excellent", "poor"), and star emoji (★★★½☆)
-- **Site routing:** North QLD rows split to QLD07/QLD08 based on the Site column
-- **Dedup:** on (site_code, date, department, rating_raw, comment_hash), with response_id as a tighter key where available
-- **PII redaction:** SHA-256 hash on name/phone/email/rego columns; regex scan of comments for embedded PII
+A 16-step pipeline in `clean.py`, where each step logs what it changed and why. It removes junk rows (blanks, banners, test submissions), parses every date format, maps departments to Sales | Service | Parts | Unknown, puts all ratings on a 1–5 scale (5 = best), splits the shared North QLD file by site, removes duplicates, and hashes or redacts personal details.
 
 Every transformation logs to `data_quality_errors.csv` (step, error code, original value, action taken). Rejected rows go to `rejects.csv` with a reason code. Nothing is silently discarded.
 
@@ -176,26 +163,6 @@ Three principles throughout:
 - **matplotlib for charts** — nothing interactive needed; static PNGs for a report. No point pulling in Plotly/D3 for bar charts.
 - **YAML for the source registry** — human-readable, easy to diff, and captures the messy reality of 52 files with different formats better than code comments would.
 
-### Repo structure
-
-| File | Purpose |
-|---|---|
-| `source_registry.yaml` | Per-file documentation of formats, quirks, column maps, and decisions |
-| `consolidate.py` | Raw consolidation with full provenance — no cleaning |
-| `validate_consolidation.py` | Checks consolidation: file coverage, row counts, sheet coverage |
-| `clean.py` | 16-step cleaning pipeline with error & reject logging |
-| `validate_clean.py` | Checks cleaning: row accounting, data integrity, encoding |
-| `ai_analysis_optimised.py` | Two-pass AI classification + theme-level strategy generation |
-| `generate_charts_for_q4.py` | 13 charts + `report_stats.md` with all computed numbers |
-| `consolidated_raw.csv` | Output of consolidation (untouched values) |
-| `consolidated_clean.csv` | Output of cleaning (standardised, deduplicated, PII-redacted) |
-| `data_quality_errors.csv` | Every data quality issue logged by the cleaning pipeline |
-| `rejects.csv` | Rows removed, with reason codes |
-| `ai_output/` | AI classification results, taxonomy, strategies, word clouds, validation sample |
-| `charts/` | All generated chart PNGs |
-| `reference/` | Dealership list and monthly revenue data |
-| `feedback/` | The 52 original source files (unchanged) |
-
 ---
 
 ## Learning & Reflection
@@ -208,7 +175,7 @@ Three principles throughout:
 - **Next time:** agree a single feedback template with the dealerships, since most of the cleaning effort came from not having one.
 
 
----
+<div style="page-break-after: always;"></div>
 
 # Observations about Data Quality
 
@@ -313,7 +280,7 @@ A further 216 rows were removed as duplicates: 112 from Chermside's superseded Q
 Of the 674 logged errors, 640 (95%) are severity `info` (mostly PII redactions — things handled automatically). Only 34 (5%) are `warning` severity, covering unparseable or approximate dates, missing ratings, and missing departments. The data is messy but tractable — the problems are well-understood and concentrated in a handful of sites.
 
 
----
+<div style="page-break-after: always;"></div>
 
 # Kestrel Motor Group — Dealer Customer Satisfaction Performance Analysis
 
@@ -326,6 +293,19 @@ Kestrel Motor Group runs 24 dealerships across Victoria, New South Wales and Que
 > **Dataset:** 7,045 feedback records across 24 dealerships (Oct 2025 - Sep 2026), yielding 3,231 negative issues classified by AI into themes and severity.
 >
 > **Revenue context:** $838,685,990 total revenue across the group, with a total of 200,249 service jobs, avg service ticket $416.
+
+---
+
+## Executive summary
+
+| Priority | Executive Insight | Estimated Commercial Impact | Why It Matters |
+|---|---|---|---|
+| 🔴 1 | **Safety:** 131 issues, 100% Critical, from 23 of 24 dealerships, and not falling (62 in H1, 69 in H2) | ~\$2.25M per serious-injury claim (assumption), plus legal penalties and brand damage | Potentially life-threatening and preventable at almost no cost; one incident outweighs every other issue combined |
+| 🟠 2 | **Communication:** the biggest driver of negative feedback (854 issues, 26%), led by "no updates / had to chase", and not improving | ~\$145K/yr at-risk service revenue | A systems fix (DMS notifications) with a payback measured in weeks |
+| 🟡 3 | **Parts availability:** 299 issues, up 221% from H1 to H2 | ~\$51K/yr | The fastest-deteriorating problem; every delay cascades into timeliness and communication complaints |
+| 🔵 4 | **Pricing:** 366 issues, up 41% | ~\$67K/yr | A process/DMS fix (pricing pre-authorisation) |
+| ⚪ 5 | **Booking:** 217 issues, up 47% | ~\$38K/yr | An IT/digital fix |
+| Overall | **CSAT is 66.4% and falling** (69.3% → 63.7%); negative issues rose 28.8% while revenue grew 6.1% | ~\$2.55M combined (0.30% of group revenue) | Dissatisfaction is group-wide, and complaints are outpacing business growth |
 
 ---
 
@@ -474,19 +454,11 @@ Safety issues come from 23 of 24 dealerships, so this is a group-wide process ga
 
 **What it's worth:** Every parts delay cascades into a Timeliness complaint, a Communication complaint, and often a repeat visit. Parts delays are a multiplier of pain. The group's parts revenue is \$11.56M/yr. With 299 direct issues from 275 customers (plus 21 timeliness issues in the same comments), the same churn method gives **~$51K/year** in at-risk service revenue. This excludes the cost of vehicles off the road for fleet customers (assumed $500–1,500/day), which falls on the customer rather than Kestrel.
 
-### Summary: Where to start
-
-| Priority | Focus Area | Issues | Trend | Fix Type | Estimated Value at Risk |
-|---|---|---|---|---|---|
-| 🔴 1 | Safety sign-off checklist | 131 | Stable (all Critical) | Process (free) | $2,250,000 per serious-injury claim (assumption) |
-| 🟠 2 | Communication automation | 854 | Stable (not improving) | Systems/DMS | $145,477/yr |
-| 🟡 3 | Parts floor stock & sharing | 299 | **+221% and rising** | Supply chain | $51,422/yr |
-| 🔵 4 | Pricing pre-authorisation | 366 | +41% | Process/DMS | $67,129/yr |
-| ⚪ 5 | Booking system IT fix | 217 | +47% | IT/Digital | $37,585/yr |
-
-**Total group revenue: $838.7M.** The combined estimated revenue at risk across these five areas is approximately **\$2.55M (0.30% of group revenue)**: one serious-injury claim for Safety (\$2.25M) plus ~\$302K a year across the other four.  While modest relative to total revenue, this exposure warrants attention given the potential for preventable customer churn, deteriorating parts availability, and safety-related liabilities.
-
 **Start with Safety, then Communication.** Safety has the highest potential impact and costs almost nothing to fix; Communication has the largest volume and a fast payback. Parts Availability requires structural supply chain work but is the fastest-deteriorating problem and will get worse every month without intervention.
+
+## Summary
+
+Customer satisfaction is falling (CSAT 69.3% → 63.7%), and complaints are growing faster than revenue. Communication drives the most negative feedback, but Safety carries the biggest risk: 131 Critical issues, where one serious incident could cost ~\$2.25M. Kestrel should fix Safety first, then Communication, then Parts availability, the fastest-deteriorating problem. Together, the five priority areas put about \$2.55M at risk.
 
 ---
 
@@ -498,12 +470,12 @@ Safety issues come from 23 of 24 dealerships, so this is a group-wide process ga
 
 ### Insights
 
-- **Communication is a group-wide problem, not a few bad sites.** It is the #1 negative theme at 23 of 24 dealerships, making up 20–39% of each site's negative issues. Noosa is the only exception. A problem this consistent points to a shared process or system, so it should be fixed centrally, not site by site.
-- **The Parts blowout is mostly a Victorian problem.** Negative Parts issues went from 28 → 115 in VIC (4×), compared with 21 → 63 in NSW and 22 → 50 in QLD. Dandenong alone went from 3 → 25. A rise concentrated in one state suggests a supplier or distribution change there, not 9 separate dealership failures.
-- **Dandenong (VIC01) and Essendon (VIC03) are genuine underperformers.** They are in the top 5 both by raw count and by complaints per 1,000 service jobs (18.1 and 19.2), so size alone doesn't explain it.
-- **The regional QLD sites (Rockhampton, Townsville, Toowoomba) look worst per $1M revenue.** That's partly because they are service-heavy and sales-light, which inflates the per-revenue figure. Rockhampton is still in the top 5 per 1,000 service jobs (14.8), so its problem is real. For Townsville and Toowoomba, the revenue figure overstates it.
-- **Safety issues are spread across many sites.** The highest counts are Dandenong 12, Parramatta 11 and Box Hill 10. This isn't one rogue workshop, which supports a group-wide handover checklist.
-- **Don't treat Noosa as best practice yet.** It has only 49 records, 4% negative and a mean rating of 4.6/5. It collects feedback on cards, so unhappy customers may simply not be filling them in. Springwood (QLD02) is a more credible benchmark: it has normal volume (296 records) and the lowest negative rate of any normal-volume site (18%).
+- **Communication is group-wide:** the #1 negative theme at 23 of 24 dealerships (20–39% of each site's issues), so fix it centrally, not site by site.
+- **The Parts blowout is mostly Victorian:** VIC rose 28 → 115 (4×) vs NSW 21 → 63 and QLD 22 → 50, pointing to a state-level supply change.
+- **Dandenong (VIC01) and Essendon (VIC03) genuinely underperform:** top 5 by raw count and per 1,000 service jobs (18.1 and 19.2), so size doesn't explain it.
+- **Regional QLD looks worst per $1M revenue partly because those sites are service-heavy;** Rockhampton is still top 5 per 1,000 service jobs (14.8).
+- **Safety issues are spread across sites** (Dandenong 12, Parramatta 11, Box Hill 10), supporting a group-wide checklist.
+- **Noosa isn't best practice yet:** 49 self-selected feedback cards. Springwood (QLD02) is the credible benchmark: 296 records and the lowest negative rate (18%).
 
 ### Recommendations
 
@@ -523,32 +495,13 @@ Safety issues come from 23 of 24 dealerships, so this is a group-wide process ga
 
 # AI usage overview
 
-**How I used AI to build**
-- **Writing code, mainly.** I used an AI coding assistant for most of the code: consolidation, cleaning, validation, AI classification and charts.
-- **No raw data went into the chat.** I only gave it the column headers from each file, never the feedback rows, because the data contains personal information that should be treated as real.
-- **Drafting the report.** I also used AI to help draft these write-ups from the numbers my scripts produced (`report_stats.md`).
-
-**Key interaction: the source registry**
-Before asking for any code, I opened every file myself and wrote a long `.txt` description of what was in each one: structure, headers, quirks and scales, with nothing personal. I gave that to the AI to produce `source_registry.yaml`, which the consolidation code is built on. Grounding it in my own notes, rather than letting it guess, is why I was fairly confident it wouldn't hallucinate much. I still found things I had missed along the way and added them as I went.
-
-**Where it went wrong**
-Because the AI never saw the actual data, it sometimes made wrong assumptions. For example, it didn't know how many sheets a workbook had, so sheets got missed until I corrected it. I fixed these problems as they came up.
-
-**A privacy miss I caught**
-The comment redaction in `clean.py` only removed phone numbers, emails and registrations. In a final review I found 55 staff-transcribed comments at Essendon and Ipswich that began with the customer's full name ("Name - said…"). Those names were never redacted, so they were sent to the Anthropic API. To fix it, I:
-- added a rule to `clean.py` that removes a name at the start of a comment
-- reran the cleaning: only those 55 comments changed, and validation still passes
-- removed the names from every AI output file
-
-The same review showed the AI had misread some of these customers as staff in its summaries ("Staff member [name] praised…"). The theme and sentiment labels weren't affected.
-
-**A second miss, caught by cross-checking**
-Geelong's rating flip (`6 - raw`) was applied to both of its sheets, but only the 2025 sheet uses the inverted scale. Comparing the AI's sentiment against the ratings exposed it: positive Geelong comments averaged 1.2/5. I fixed `clean.py` to flip the 2025 sheet only and updated the ratings in the outputs. Geelong's CSAT went from 30% to 66%. The AI labels weren't affected, because the AI never saw ratings.
-
-**How I verified its output**
-- **Validation scripts.** `validate_consolidation.py` and `validate_clean.py` independently check the AI-written code's output against the source files: row counts, sheet coverage, row accounting and value round-trips.
-- **Manual checks.** I compared the generated files with the source files by hand. For example, I confirmed in Excel that exactly one row had a blank rating, comment and date, and that the script removed exactly that one.
-- **Reading the AI's output.** I went over the AI classification results myself. I also checked the sentiment labels against the star ratings, and kept the 600 rows the model flagged as uncertain (`ai_review_required`) visible instead of hiding them.
-
-**AI inside the solution**
-The Anthropic API classifies the comments: Haiku labels sentiment and theme for every comment, Sonnet extracts detailed issues from the negative and mixed ones, and Sonnet then writes per-theme actions. Phone numbers, emails and registrations are removed from comments before they are sent to the API, and names at the start of a comment now are too (see the miss above).
+- **What I used it for:** mainly writing code (consolidation, cleaning, validation, AI classification, charts), and helping draft the report from the numbers my scripts produced (`report_stats.md`).
+- **What I gave it:** only column headers and my own notes, never raw feedback rows, because the data contains personal information to be treated as real.
+- **Key interaction:** before any code, I opened every file and wrote a `.txt` description of each one (structure, headers, quirks, scales, nothing personal). The AI turned that into `source_registry.yaml`, which the consolidation code is built on. Grounding it in my notes kept hallucination low.
+- **Where it went wrong:** with no access to the data, it sometimes guessed wrong, for example how many sheets a workbook had. I fixed these as they came up.
+- **Two misses I caught late:**
+  - *Privacy:* the comment redaction covered phone numbers, emails and registrations but not names. 55 staff-transcribed comments at Essendon and Ipswich began with the customer's full name and were sent to the API (the AI also mistook some of them for staff). I added a name rule to `clean.py`, reran the cleaning (only those 55 comments changed) and removed the names from every AI output.
+  - *Ratings:* Geelong's `6 - raw` flip was applied to both sheets, but only 2025 is inverted. Checking the AI's sentiment against the ratings exposed it (positive comments averaged 1.2/5). Fixed in `clean.py`; Geelong's CSAT went from 30% to 66%. The AI labels were unaffected, as the AI never saw ratings.
+- **How I verified:** validation scripts check the outputs against the source files (row counts, sheet coverage, row accounting, rating round-trips); manual spot-checks in Excel (e.g. exactly one all-blank row removed); and reading the AI output myself, cross-checking sentiment against ratings and keeping the 600 rows the model flagged as uncertain visible.
+- **Second opinion:** on 29 Oct 2026 at 4:19 pm (Sydney time, AEDT), I ran this report through ChatGPT as an independent check.
+- **AI in the solution:** Haiku labels sentiment and theme for every comment; Sonnet extracts detailed issues from negative and mixed comments and writes per-theme actions. Personal details are redacted before anything is sent to the API.
