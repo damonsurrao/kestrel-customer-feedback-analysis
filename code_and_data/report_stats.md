@@ -14,8 +14,8 @@ Generated from: `ai_output/consolidated_clean_ai.csv`, `ai_output/ai_issues.csv`
 | Negative issues | 3,231 |
 | Critical severity | 162 |
 | High severity | 1,208 |
-| Mean rating (all) | 3.68 / 5 |
-| Mean rating (negative sentiment) | 1.82 / 5 |
+| Mean rating (all) | 3.73 / 5 |
+| Mean rating (negative sentiment) | 1.73 / 5 |
 | **Total group revenue** | **$838,685,990** |
 | Sales revenue | $743,920,000 |
 | Service revenue | $83,209,460 |
@@ -25,6 +25,39 @@ Generated from: `ai_output/consolidated_clean_ai.csv`, `ai_output/ai_issues.csv`
 | Parts transactions | 62,437 |
 | **Avg service ticket** | **$416** |
 | Neg issues per $1M revenue (group) | 3.9 |
+
+---
+
+## CSAT by Dealership
+
+CSAT = % of ratings that are 4 or 5 (out of 5). Group CSAT: **66.4%** from 7,035 rated responses. H1: 69.3%, H2: 63.7%.
+
+| Site Code | Site Name | Rated Responses | CSAT % | Mean Rating |
+|---|---|---|---|---|
+| QLD05 | Noosa | 49 | 98.0% | 4.63 |
+| QLD02 | Springwood | 296 | 76.4% | 3.99 |
+| VIC09 | Shepparton | 52 | 73.1% | 3.98 |
+| NSW06 | Wollongong | 282 | 70.9% | 3.90 |
+| QLD03 | Ipswich | 276 | 70.7% | 3.84 |
+| VIC08 | Bendigo | 144 | 70.1% | 3.78 |
+| NSW07 | Tamworth | 133 | 69.9% | 3.38 |
+| NSW04 | Liverpool | 309 | 69.6% | 3.83 |
+| NSW02 | Penrith | 450 | 69.6% | 3.78 |
+| VIC02 | Ringwood | 451 | 68.7% | 3.82 |
+| NSW05 | Newcastle | 300 | 68.0% | 3.78 |
+| NSW03 | Chatswood | 278 | 66.5% | 3.71 |
+| VIC06 | Geelong | 304 | 66.4% | 3.77 |
+| VIC04 | Frankston | 306 | 66.0% | 3.75 |
+| QLD08 | Townsville | 350 | 66.0% | 3.74 |
+| VIC07 | Ballarat | 290 | 65.9% | 3.76 |
+| QLD06 | Toowoomba | 248 | 65.7% | 3.73 |
+| VIC05 | Box Hill | 309 | 64.1% | 3.63 |
+| VIC03 | Essendon | 343 | 63.0% | 3.64 |
+| QLD01 | Chermside | 460 | 62.6% | 3.68 |
+| QLD04 | Southport | 256 | 62.5% | 3.62 |
+| VIC01 | Dandenong | 476 | 61.1% | 3.62 |
+| QLD07 | Rockhampton | 201 | 59.7% | 3.52 |
+| NSW01 | Parramatta | 472 | 58.9% | 3.57 |
 
 ---
 

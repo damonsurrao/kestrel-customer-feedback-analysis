@@ -11,7 +11,7 @@ Expects these files in the same directory (or edit the paths below):
     - reference/monthly_revenue.csv
 
 Outputs:
-    - charts/01_top_themes.png  ... 14_safety_breakdown.png
+    - charts/00_csat_by_dealership.png ... 14_safety_breakdown.png
     - report_stats.md   (all computed numbers & tables for the report)
 """
 
@@ -121,6 +121,34 @@ print(f"Negative issues: {len(neg):,}")
 print(f"Revenue rows   : {len(rev):,}")
 print(f"Total revenue  : ${rev['total_revenue'].sum():,.0f}")
 print()
+
+# =====================================================================
+# CHART 0 — Overall CSAT by dealership (CSAT = % of ratings that are 4 or 5)
+# =====================================================================
+rated      = fb[fb['rating_std'].notna()]
+csat_group = (rated['rating_std'] >= 4).mean() * 100
+csat_site  = (rated.groupby(['site_code', 'site_name'])
+                   .agg(n=('rating_std', 'size'),
+                        csat=('rating_std', lambda r: (r >= 4).mean() * 100),
+                        mean_rating=('rating_std', 'mean'))
+                   .reset_index().sort_values('csat', ascending=False))
+
+fig, ax = plt.subplots(figsize=(10, 8))
+ax.barh(range(len(csat_site)), csat_site['csat'].values, color='#457B9D', alpha=0.85)
+ax.set_yticks(range(len(csat_site)))
+ax.set_yticklabels([f"{r.site_code} ({r.site_name})" for _, r in csat_site.iterrows()], fontsize=9)
+ax.invert_yaxis()
+ax.axvline(csat_group, color='gray', linestyle='--', linewidth=1.5)
+ax.text(csat_group + 0.5, len(csat_site) - 0.6, f'Group {csat_group:.1f}%', color='gray', fontsize=10)
+for i, v in enumerate(csat_site['csat'].values):
+    ax.text(v + 0.5, i, f'{v:.0f}%', va='center', fontsize=9)
+ax.set_xlim(0, 105)
+ax.set_xlabel('CSAT (% of ratings 4 or 5 out of 5)')
+ax.set_title(f'Customer Satisfaction (CSAT) by Dealership ({len(rated):,} rated responses)')
+plt.tight_layout()
+plt.savefig(f'{CHART_DIR}/00_csat_by_dealership.png', bbox_inches='tight')
+plt.close()
+print("  00 CSAT by dealership")
 
 # =====================================================================
 # CHART 1 — Top drivers of negative feedback
@@ -682,6 +710,16 @@ s.append(f"| **Avg service ticket** | **${avg_svc_ticket:,.0f}** |")
 s.append(f"| Neg issues per $1M revenue (group) | {total_neg/(total_rev_yr/1e6):.1f} |")
 
 s.append("\n---\n")
+s.append("## CSAT by Dealership\n")
+csat_half = rated.groupby(rated['year_month'].astype(str) >= '2026-04')['rating_std'].apply(lambda r: (r >= 4).mean() * 100)
+s.append(f"CSAT = % of ratings that are 4 or 5 (out of 5). Group CSAT: **{csat_group:.1f}%** "
+         f"from {len(rated):,} rated responses. H1: {csat_half.get(False, float('nan')):.1f}%, H2: {csat_half.get(True, float('nan')):.1f}%.\n")
+s.append(f"| Site Code | Site Name | Rated Responses | CSAT % | Mean Rating |")
+s.append(f"|---|---|---|---|---|")
+for _, r in csat_site.iterrows():
+    s.append(f"| {r.site_code} | {r.site_name} | {int(r.n)} | {r.csat:.1f}% | {r.mean_rating:.2f} |")
+
+s.append("\n---\n")
 s.append("## H1 vs H2 Summary\n")
 s.append(f"| Metric | H1 (Oct 25–Mar 26) | H2 (Apr–Sep 26) | Change |")
 s.append(f"|---|---|---|---|")
@@ -834,6 +872,6 @@ with open(STATS_PATH, 'w') as f:
 
 # ── Done ─────────────────────────────────────────────────────────────
 print(f"\n{'='*60}")
-print(f"  14 charts saved to {CHART_DIR}/")
+print(f"  15 charts saved to {CHART_DIR}/")
 print(f"  Stats/tables saved to {STATS_PATH}")
 print(f"{'='*60}")

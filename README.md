@@ -8,7 +8,7 @@ Kestrel's head office had 52 customer-feedback spreadsheets from 24 dealerships 
 1. [Codebase overview](#codebase-overview): where things live and how to run them
 2. [Approach, assumptions & solution](#approach-assumptions--solution), including tech choices
 3. [Observations about data quality](#observations-about-data-quality)
-4. [Answers for the Head of Customer Experience](#kestrel-motor-group--answers-for-the-head-of-customer-experience)
+4. [Dealer Customer Satisfaction Performance Analysis](#kestrel-motor-group--dealer-customer-satisfaction-performance-analysis)
 5. [Insights & recommendations across dealerships](#insights--recommendations-across-dealerships)
 6. [AI usage overview](#ai-usage-overview)
 
@@ -24,7 +24,7 @@ Sections 2–4 also exist as standalone files: [`approach_overview.md`](approach
 ├── approach_overview.md           ← approach, assumptions, tech choices
 ├── data_quality_observations.md   ← data quality findings
 ├── business_answers_q4.md         ← answers to the business questions
-├── charts/                        ← 14 PNG charts used in the report
+├── charts/                        ← chart PNGs used in the report
 └── code_and_data/                 ← all code, inputs and outputs (run everything from here)
     ├── feedback/                  ← the 52 original source files (unchanged)
     ├── reference/                 ← dealerships.csv, monthly_revenue.csv
@@ -72,16 +72,25 @@ Note: `generate_charts_for_q4.py` writes its PNGs to `code_and_data/charts/`. If
 
 ## Approach
 
-The pipeline has four stages: **consolidate → clean → AI-classify → analyse**.
+The pipeline runs in three phases: **Data preparation → AI classification → Analysis & reporting**.
+
+- **Data preparation** (sections 1–2): consolidate, clean and validate 52 inconsistent files into one trusted, traceable dataset.
+- **AI classification** (section 3): turn every free-text comment into themes, sentiment and severity.
+- **Analysis & reporting** (section 4): link feedback to revenue and turn it into prioritised, costed recommendations.
 
 ### 1. Source registry & consolidation
 
 Before writing any code, I manually inspected all 52 files — opening each one, noting column names, header positions, sheet structures, and quirks. This produced `source_registry.yaml`: a per-file manifest documenting formats, column maps, anomalies, and decisions.
 
+Initial observations:
+- **File structure:** 52 .xlsx and .csv files from 24 sites, with no shared layout. Some sites send a file per month or quarter, others one running workbook with up to 12 sheets. Headers don't always start on row 1, banners and notes sit above them, delimiters differ, and one file covers two dealerships.
+- **Metadata:** column names, department labels and site identifiers all vary by file. Rating scales are often unstated and differ (1–5, 1–10, inverted, text, stars), and dates come in many formats (AU, ISO, Excel serials, "3 weeks ago", "early Apr").
+- **Data quality:** blank, test and subtotal rows are mixed in with real feedback, there are duplicates and superseded file versions, departments and ratings are sometimes missing, and customers' personal details appear in free-text comments.
+
 Some things I caught doing this:
 - Ringwood changes template mid-file at row 36 in Q1 2026 (columns change, rating scale goes from 1–5 to 1–10)
 - Dandenong's May sheet has an extra annotation row that pushes the header down by one
-- Geelong's rating scale is inverted (1 = Excellent, 5 = Poor) — noted in a banner row
+- Geelong's 2025 sheet has an inverted rating scale (1 = Excellent, 5 = Poor), noted in a banner row; its 2026 sheet uses the normal scale
 - Frankston has subtotal rows embedded in the data ("Total Mar 2026") that look like real records
 - Chermside Q1 2026 has two files: FINAL and FINAL v2
 - North QLD is a shared file covering two dealerships (Rockhampton + Townsville), identified by a "Site" column with variant abbreviations (ROK, ROCK, ROCKY, TSV, etc.)
@@ -115,6 +124,10 @@ Two-pass architecture using the Anthropic API:
 - **Pass 2 (Sonnet):** detailed issue-level analysis on negative/mixed comments only (~35% of rows). Extracts multiple issues per comment, severity, evidence quotes, and responsible department.
 - **Pass 3 (Sonnet):** one call per theme with all the evidence aggregated — produces 3 prioritised actions per theme instead of repetitive per-issue recommendations.
 
+- **Why Haiku + Sonnet:** most comments only need a sentiment and theme label, which Haiku does well at a fraction of the cost. Sonnet's stronger reasoning is kept for the ~2,400 negative/mixed comments, where separating multiple issues, severity and responsibility matters.
+- **Why ~5,300 comments, not 7,045 rows:** 1,676 rows have no comment (almost all are rating-only feedback), so there is nothing to classify. They skip the AI but stay in the dataset for rating analysis.
+- **Why the API, not a chat window or Excel:** 5,000+ comments are too many to paste into a chat reliably, and Excel can't interpret free text. The API makes the run scripted and repeatable, redacts personal details before anything is sent, returns structured output that loads straight back into the dataset, and supports batching, caching and resuming from checkpoints.
+
 The theme taxonomy (13 themes, ~50 sub-themes) was built from an initial sample of the data, not imposed top-down. It covers the operational categories that actually appear: Communication, Pricing, Timeliness, Staff Attitude, Repair Quality, Safety, Booking, Parts Availability, Vehicle Knowledge, Sales Process, Facilities, plus catch-alls for general positives and unclear comments.
 
 Cost controls: prompt caching on system prompts, batches of 30, trimmed prompts (~65% shorter), and the two-pass design (only ~35% of rows hit the expensive model). Estimated ~85–90% cost reduction vs sending everything to Sonnet.
@@ -134,7 +147,7 @@ A validation sample of 250 stratified comments is exported for human review.
 | **Hunter Motors = Newcastle (NSW05)** | No Newcastle file existed; Hunter Motors wasn't in dealerships.csv. Treated as Newcastle per implied data owner instruction. Flagged for confirmation. |
 | **Vague dates → mid-point estimates** | Ipswich's hand-typed dates ("early Apr" → Apr 10, "wk5 Mar" → Mar 28, "mid Nov" → Nov 15). Marked as `date_quality = approximate`. |
 | **Relative dates from end of reporting period** | "3 weeks ago" calculated from 30 Sep 2026. Also marked approximate. |
-| **Geelong inverted scale: `6 - raw`** | Banner says "1 = Excellent, 5 = Poor". Flipped to match the group convention (5 = best). |
+| **Geelong inverted scale: `6 - raw` (2025 sheet only)** | Banner says "1 = Excellent, 5 = Poor". Flipped to match the group convention (5 = best). The 2026 sheet already uses 5 = best. |
 | **Ringwood 1–10 → 1–5 via `ceil(raw / 2)`** | New template from Feb 2026 uses 1–10. Ceiling division preserves the sentiment direction (1–2 → 1, 9–10 → 5). |
 | **Toowoomba Q4 2025 summary excluded** | Pivot table with no individual records. Creates a known coverage gap for Q4 2025. |
 | **Chermside: keep FINAL v2, drop FINAL** | v2 is assumed to be the corrected version. |
@@ -199,6 +212,8 @@ Three principles throughout:
 
 # Observations about Data Quality
 
+**Root cause: there is no data management process across the group.** There are no standard master data or data definitions, no common structure, format or template, and no quality control at the point of data entry. Files are collected and submitted manually, with no standard for what is sent. At head office there is no quality control, consolidation, analysis or reporting, no action planning or tracking, no governance or performance accountability, no integration or automation, and no continuous improvement. The issues below are symptoms of these gaps.
+
 ## The shape of the problem
 
 52 files, zero shared template. Every dealership evolved its own spreadsheet over time, so the incoming data varied in column names, column order, rating scales, date formats, sheet structure, and what counted as a "row." The source registry documents the per-file reality; the cleaning pipeline logged 674 data quality errors and rejected 32 rows.
@@ -231,7 +246,7 @@ All approximate dates are flagged so downstream analysis can exclude or weight t
 
 Every site nominally used a 1–5 scale, but:
 
-- **Geelong (VIC06)** inverted it: 1 = Excellent, 5 = Poor. A banner row in the spreadsheet says so. Normalised via `6 - raw`.
+- **Geelong (VIC06)** inverted it on its 2025 sheet: 1 = Excellent, 5 = Poor. A banner row in the spreadsheet says so. Normalised via `6 - raw`. The 2026 sheet uses the normal scale (5 = best) and is left as is.
 - **Ringwood (VIC02)** switched to 1–10 from February 2026 onwards. Normalised via `ceil(raw / 2)`.
 - **Tamworth (NSW07)** used text ratings ("Good", "OK", "Bad") instead of numbers. 10 rows had no rating at all — the highest count of missing ratings for any site.
 - **Southport (QLD04)** Google reviews used star emoji (★★★½☆). Parsed to numeric.
@@ -300,7 +315,7 @@ Of the 674 logged errors, 640 (95%) are severity `info` (mostly PII redactions �
 
 ---
 
-# Kestrel Motor Group — Answers for the Head of Customer Experience
+# Kestrel Motor Group — Dealer Customer Satisfaction Performance Analysis
 
 ## Business context
 
@@ -314,11 +329,21 @@ Kestrel Motor Group runs 24 dealerships across Victoria, New South Wales and Que
 
 ---
 
+## Overall customer satisfaction
+
+![CSAT by Dealership](charts/00_csat_by_dealership.png)
+
+- **Group CSAT is 66.4%**: two in three rated responses score 4 or 5 out of 5 (7,035 responses).
+- **It is falling:** 69.3% in H1 to 63.7% in H2, matching the rise in negative feedback (section 2).
+- **The spread is narrow:** most dealerships sit between 59% (Parramatta) and 76% (Springwood), so dissatisfaction is group-wide rather than confined to a few sites. Noosa's 98% comes from only 49 feedback cards and is likely to be self-selected.
+
+---
+
 ## 1. What are the main drivers of negative feedback?
 
 ![Top Themes](charts/01_top_themes.png)
 
-The top five drivers account for **~72%** of all negative issues:
+The top five causes account for **~72%** of all negative issues:
 
 | Theme | Negative Issues | % of Total | Severity Profile |
 |---|---|---|---|
@@ -366,8 +391,6 @@ Normalising by service volume tells a similar story: some mid-sized dealerships 
 ![Theme x Department Heatmap](charts/02_theme_department_heatmap.png)
 
 **Service is the epicentre**: it generates 80%+ of negative issues across Communication (715), Repair Quality (369), Timeliness (368), and Pricing (304). Parts and Customer Service/Front Desk are secondary hotspots, particularly for Communication failures (the front desk is the structural chokepoint where messages die).
-
-![Department Breakdown](charts/08_departments.png)
 
 ---
 
@@ -467,7 +490,7 @@ Safety issues come from 23 of 24 dealerships, so this is a group-wide process ga
 
 ---
 
-*Analysis based on AI-classified themes from 7,045 feedback records. Revenue figures from monthly_revenue.csv. Sentiment classification validated against rating scores (negative sentiment aligns with mean rating of 1.82/5). Revenue-at-risk estimates count each complaining customer once and use a conservative 15% churn assumption and 3x annual visit frequency — they should be validated against Kestrel's actual margin and retention data. The Safety liability (one serious-injury claim at the TAC average), DMS fix cost and fleet downtime figures are assumptions, not calculated from the data.*
+*Analysis based on AI-classified themes from 7,045 feedback records. Revenue figures from monthly_revenue.csv. Sentiment classification validated against rating scores (negative sentiment aligns with mean rating of 1.73/5). Revenue-at-risk estimates count each complaining customer once and use a conservative 15% churn assumption and 3x annual visit frequency — they should be validated against Kestrel's actual margin and retention data. The Safety liability (one serious-injury claim at the TAC average), DMS fix cost and fleet downtime figures are assumptions, not calculated from the data.*
 
 ---
 
@@ -492,7 +515,7 @@ Safety issues come from 23 of 24 dealerships, so this is a group-wide process ga
 
 ### Limitations
 
-- The theme and sentiment labels come from AI. Every extracted issue carries an evidence quote taken from the customer's own comment, so each label can be traced back to what was actually said. I reviewed the output by hand, and the labels agree with the ratings (negative comments average 1.82/5).
+- The theme and sentiment labels come from AI. Every extracted issue carries an evidence quote taken from the customer's own comment, so each label can be traced back to what was actually said. I reviewed the output by hand, and the labels agree with the ratings (negative comments average 1.73/5).
 - The dollar values are rough estimates built on stated assumptions (15% churn, 3 visits per year). They are not forecasts.
 - Toowoomba has no Q4 2025 records. Liverpool has 6 records dated Oct–Dec 2026, outside the reporting period, which are probably day/month swaps.
 
@@ -518,6 +541,9 @@ The comment redaction in `clean.py` only removed phone numbers, emails and regis
 - removed the names from every AI output file
 
 The same review showed the AI had misread some of these customers as staff in its summaries ("Staff member [name] praised…"). The theme and sentiment labels weren't affected.
+
+**A second miss, caught by cross-checking**
+Geelong's rating flip (`6 - raw`) was applied to both of its sheets, but only the 2025 sheet uses the inverted scale. Comparing the AI's sentiment against the ratings exposed it: positive Geelong comments averaged 1.2/5. I fixed `clean.py` to flip the 2025 sheet only and updated the ratings in the outputs. Geelong's CSAT went from 30% to 66%. The AI labels weren't affected, because the AI never saw ratings.
 
 **How I verified its output**
 - **Validation scripts.** `validate_consolidation.py` and `validate_clean.py` independently check the AI-written code's output against the source files: row counts, sheet coverage, row accounting and value round-trips.

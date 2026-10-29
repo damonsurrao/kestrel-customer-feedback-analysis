@@ -838,7 +838,7 @@ def normalise_ratings(df: pd.DataFrame) -> pd.DataFrame:
     Convert all ratings to a standardised 1-5 scale (5 = best).
     Handles:
       - Numeric on 1-5 scale (most sites): keep as-is
-      - Geelong (VIC06): inverted scale (1=best) → 6 - raw
+      - Geelong (VIC06) 2025 sheet: inverted scale (1=best) → 6 - raw; 2026 sheet is normal
       - Ringwood new template (VIC02 segment new_template): 1-10 → raw / 2
       - Text ratings: lookup table → numeric
       - Stars emoji/text: extract number
@@ -922,8 +922,9 @@ def normalise_ratings(df: pd.DataFrame) -> pd.DataFrame:
             rating_scales.append("1-10→1-5")
         else:
             # Apply site-specific transformations, then bucket onto integer 1–5.
-            if site == "VIC06":
-                # Geelong: inverted scale (1 = Excellent, 5 = Poor).
+            if site == "VIC06" and str(row.get("source_sheet", "")).strip() == "2025":
+                # Geelong 2025 sheet only: inverted scale (1 = Excellent, 5 = Poor).
+                # The 2026 sheet uses the normal scale (5 = best).
                 std = 6.0 - numeric_val
                 scale_label = "1-5_inverted"
             else:

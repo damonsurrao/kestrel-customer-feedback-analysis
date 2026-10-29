@@ -1,4 +1,4 @@
-# Kestrel Motor Group — Answers for the Head of Customer Experience
+# Kestrel Motor Group — Dealer Customer Satisfaction Performance Analysis
 
 ## Business context
 
@@ -12,11 +12,21 @@ Kestrel Motor Group runs 24 dealerships across Victoria, New South Wales and Que
 
 ---
 
+## Overall customer satisfaction
+
+![CSAT by Dealership](charts/00_csat_by_dealership.png)
+
+- **Group CSAT is 66.4%**: two in three rated responses score 4 or 5 out of 5 (7,035 responses).
+- **It is falling:** 69.3% in H1 to 63.7% in H2, matching the rise in negative feedback (section 2).
+- **The spread is narrow:** most dealerships sit between 59% (Parramatta) and 76% (Springwood), so dissatisfaction is group-wide rather than confined to a few sites. Noosa's 98% comes from only 49 feedback cards and is likely to be self-selected.
+
+---
+
 ## 1. What are the main drivers of negative feedback?
 
 ![Top Themes](charts/01_top_themes.png)
 
-The top five drivers account for **~72%** of all negative issues:
+The top five causes account for **~72%** of all negative issues:
 
 | Theme | Negative Issues | % of Total | Severity Profile |
 |---|---|---|---|
@@ -64,8 +74,6 @@ Normalising by service volume tells a similar story: some mid-sized dealerships 
 ![Theme x Department Heatmap](charts/02_theme_department_heatmap.png)
 
 **Service is the epicentre**: it generates 80%+ of negative issues across Communication (715), Repair Quality (369), Timeliness (368), and Pricing (304). Parts and Customer Service/Front Desk are secondary hotspots, particularly for Communication failures (the front desk is the structural chokepoint where messages die).
-
-![Department Breakdown](charts/08_departments.png)
 
 ---
 
@@ -165,4 +173,4 @@ Safety issues come from 23 of 24 dealerships, so this is a group-wide process ga
 
 ---
 
-*Analysis based on AI-classified themes from 7,045 feedback records. Revenue figures from monthly_revenue.csv. Sentiment classification validated against rating scores (negative sentiment aligns with mean rating of 1.82/5). Revenue-at-risk estimates count each complaining customer once and use a conservative 15% churn assumption and 3x annual visit frequency — they should be validated against Kestrel's actual margin and retention data. The Safety liability (one serious-injury claim at the TAC average), DMS fix cost and fleet downtime figures are assumptions, not calculated from the data.*
+*Analysis based on AI-classified themes from 7,045 feedback records. Revenue figures from monthly_revenue.csv. Sentiment classification validated against rating scores (negative sentiment aligns with mean rating of 1.73/5). Revenue-at-risk estimates count each complaining customer once and use a conservative 15% churn assumption and 3x annual visit frequency — they should be validated against Kestrel's actual margin and retention data. The Safety liability (one serious-injury claim at the TAC average), DMS fix cost and fleet downtime figures are assumptions, not calculated from the data.*

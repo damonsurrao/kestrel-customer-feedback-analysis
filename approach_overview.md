@@ -2,16 +2,25 @@
 
 ## Approach
 
-The pipeline has four stages: **consolidate → clean → AI-classify → analyse**.
+The pipeline runs in three phases: **Data preparation → AI classification → Analysis & reporting**.
+
+- **Data preparation** (sections 1–2): consolidate, clean and validate 52 inconsistent files into one trusted, traceable dataset.
+- **AI classification** (section 3): turn every free-text comment into themes, sentiment and severity.
+- **Analysis & reporting** (section 4): link feedback to revenue and turn it into prioritised, costed recommendations.
 
 ### 1. Source registry & consolidation
 
 Before writing any code, I manually inspected all 52 files — opening each one, noting column names, header positions, sheet structures, and quirks. This produced `source_registry.yaml`: a per-file manifest documenting formats, column maps, anomalies, and decisions.
 
+Initial observations:
+- **File structure:** 52 .xlsx and .csv files from 24 sites, with no shared layout. Some sites send a file per month or quarter, others one running workbook with up to 12 sheets. Headers don't always start on row 1, banners and notes sit above them, delimiters differ, and one file covers two dealerships.
+- **Metadata:** column names, department labels and site identifiers all vary by file. Rating scales are often unstated and differ (1–5, 1–10, inverted, text, stars), and dates come in many formats (AU, ISO, Excel serials, "3 weeks ago", "early Apr").
+- **Data quality:** blank, test and subtotal rows are mixed in with real feedback, there are duplicates and superseded file versions, departments and ratings are sometimes missing, and customers' personal details appear in free-text comments.
+
 Some things I caught doing this:
 - Ringwood changes template mid-file at row 36 in Q1 2026 (columns change, rating scale goes from 1–5 to 1–10)
 - Dandenong's May sheet has an extra annotation row that pushes the header down by one
-- Geelong's rating scale is inverted (1 = Excellent, 5 = Poor) — noted in a banner row
+- Geelong's 2025 sheet has an inverted rating scale (1 = Excellent, 5 = Poor), noted in a banner row; its 2026 sheet uses the normal scale
 - Frankston has subtotal rows embedded in the data ("Total Mar 2026") that look like real records
 - Chermside Q1 2026 has two files: FINAL and FINAL v2
 - North QLD is a shared file covering two dealerships (Rockhampton + Townsville), identified by a "Site" column with variant abbreviations (ROK, ROCK, ROCKY, TSV, etc.)
@@ -45,6 +54,10 @@ Two-pass architecture using the Anthropic API:
 - **Pass 2 (Sonnet):** detailed issue-level analysis on negative/mixed comments only (~35% of rows). Extracts multiple issues per comment, severity, evidence quotes, and responsible department.
 - **Pass 3 (Sonnet):** one call per theme with all the evidence aggregated — produces 3 prioritised actions per theme instead of repetitive per-issue recommendations.
 
+- **Why Haiku + Sonnet:** most comments only need a sentiment and theme label, which Haiku does well at a fraction of the cost. Sonnet's stronger reasoning is kept for the ~2,400 negative/mixed comments, where separating multiple issues, severity and responsibility matters.
+- **Why ~5,300 comments, not 7,045 rows:** 1,676 rows have no comment (almost all are rating-only feedback), so there is nothing to classify. They skip the AI but stay in the dataset for rating analysis.
+- **Why the API, not a chat window or Excel:** 5,000+ comments are too many to paste into a chat reliably, and Excel can't interpret free text. The API makes the run scripted and repeatable, redacts personal details before anything is sent, returns structured output that loads straight back into the dataset, and supports batching, caching and resuming from checkpoints.
+
 The theme taxonomy (13 themes, ~50 sub-themes) was built from an initial sample of the data, not imposed top-down. It covers the operational categories that actually appear: Communication, Pricing, Timeliness, Staff Attitude, Repair Quality, Safety, Booking, Parts Availability, Vehicle Knowledge, Sales Process, Facilities, plus catch-alls for general positives and unclear comments.
 
 Cost controls: prompt caching on system prompts, batches of 30, trimmed prompts (~65% shorter), and the two-pass design (only ~35% of rows hit the expensive model). Estimated ~85–90% cost reduction vs sending everything to Sonnet.
@@ -64,7 +77,7 @@ A validation sample of 250 stratified comments is exported for human review.
 | **Hunter Motors = Newcastle (NSW05)** | No Newcastle file existed; Hunter Motors wasn't in dealerships.csv. Treated as Newcastle per implied data owner instruction. Flagged for confirmation. |
 | **Vague dates → mid-point estimates** | Ipswich's hand-typed dates ("early Apr" → Apr 10, "wk5 Mar" → Mar 28, "mid Nov" → Nov 15). Marked as `date_quality = approximate`. |
 | **Relative dates from end of reporting period** | "3 weeks ago" calculated from 30 Sep 2026. Also marked approximate. |
-| **Geelong inverted scale: `6 - raw`** | Banner says "1 = Excellent, 5 = Poor". Flipped to match the group convention (5 = best). |
+| **Geelong inverted scale: `6 - raw` (2025 sheet only)** | Banner says "1 = Excellent, 5 = Poor". Flipped to match the group convention (5 = best). The 2026 sheet already uses 5 = best. |
 | **Ringwood 1–10 → 1–5 via `ceil(raw / 2)`** | New template from Feb 2026 uses 1–10. Ceiling division preserves the sentiment direction (1–2 → 1, 9–10 → 5). |
 | **Toowoomba Q4 2025 summary excluded** | Pivot table with no individual records. Creates a known coverage gap for Q4 2025. |
 | **Chermside: keep FINAL v2, drop FINAL** | v2 is assumed to be the corrected version. |

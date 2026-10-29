@@ -1,5 +1,7 @@
 # Observations about Data Quality
 
+**Root cause: there is no data management process across the group.** There are no standard master data or data definitions, no common structure, format or template, and no quality control at the point of data entry. Files are collected and submitted manually, with no standard for what is sent. At head office there is no quality control, consolidation, analysis or reporting, no action planning or tracking, no governance or performance accountability, no integration or automation, and no continuous improvement. The issues below are symptoms of these gaps.
+
 ## The shape of the problem
 
 52 files, zero shared template. Every dealership evolved its own spreadsheet over time, so the incoming data varied in column names, column order, rating scales, date formats, sheet structure, and what counted as a "row." The source registry documents the per-file reality; the cleaning pipeline logged 674 data quality errors and rejected 32 rows.
@@ -32,7 +34,7 @@ All approximate dates are flagged so downstream analysis can exclude or weight t
 
 Every site nominally used a 1–5 scale, but:
 
-- **Geelong (VIC06)** inverted it: 1 = Excellent, 5 = Poor. A banner row in the spreadsheet says so. Normalised via `6 - raw`.
+- **Geelong (VIC06)** inverted it on its 2025 sheet: 1 = Excellent, 5 = Poor. A banner row in the spreadsheet says so. Normalised via `6 - raw`. The 2026 sheet uses the normal scale (5 = best) and is left as is.
 - **Ringwood (VIC02)** switched to 1–10 from February 2026 onwards. Normalised via `ceil(raw / 2)`.
 - **Tamworth (NSW07)** used text ratings ("Good", "OK", "Bad") instead of numbers. 10 rows had no rating at all — the highest count of missing ratings for any site.
 - **Southport (QLD04)** Google reviews used star emoji (★★★½☆). Parsed to numeric.
