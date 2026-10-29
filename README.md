@@ -460,6 +460,8 @@ Safety issues come from 23 of 24 dealerships, so this is a group-wide process ga
 
 Customer satisfaction is falling (CSAT 69.3% → 63.7%), and complaints are growing faster than revenue. Communication drives the most negative feedback, but Safety carries the biggest risk: 131 Critical issues, where one serious incident could cost ~\$2.25M. Kestrel should fix Safety first, then Communication, then Parts availability, the fastest-deteriorating problem. Together, the five priority areas put about \$2.55M at risk.
 
+> **Qualifier:** This analysis is limited to the feedback and revenue data provided, and its accuracy depends on the quality and coverage of that data (inconsistent templates, a missing Toowoomba quarter, AI-classified themes and assumption-based dollar estimates). Figures should be read as indicative, not exact. Care has been taken to protect customer privacy in analysing the data and producing this report, in line with Australian privacy law (the Privacy Act 1988 and the Australian Privacy Principles): personal details were hashed or redacted, and this report contains no customer personal information.
+
 ---
 
 *Analysis based on AI-classified themes from 7,045 feedback records. Revenue figures from monthly_revenue.csv. Sentiment classification validated against rating scores (negative sentiment aligns with mean rating of 1.73/5). Revenue-at-risk estimates count each complaining customer once and use a conservative 15% churn assumption and 3x annual visit frequency — they should be validated against Kestrel's actual margin and retention data. The Safety liability (one serious-injury claim at the TAC average), DMS fix cost and fleet downtime figures are assumptions, not calculated from the data.*
