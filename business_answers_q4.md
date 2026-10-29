@@ -57,7 +57,7 @@ Normalising by service volume tells a similar story: some mid-sized dealerships 
 
 ![Theme x Department Heatmap](charts/02_theme_department_heatmap.png)
 
-**Service is the epicentre**: it generates 65%+ of negative issues across Communication (715), Repair Quality (369), Timeliness (368), and Pricing (304). Parts and Customer Service/Front Desk are secondary hotspots, particularly for Communication failures (the front desk is the structural chokepoint where messages die).
+**Service is the epicentre**: it generates 80%+ of negative issues across Communication (715), Repair Quality (369), Timeliness (368), and Pricing (304). Parts and Customer Service/Front Desk are secondary hotspots, particularly for Communication failures (the front desk is the structural chokepoint where messages die).
 
 ![Department Breakdown](charts/08_departments.png)
 
@@ -65,7 +65,7 @@ Normalising by service volume tells a similar story: some mid-sized dealerships 
 
 ## 2. Has anything changed over the year?
 
-**Yes, and not for the better.** H2 (Apr–Sep 2026) is **28.5% worse** than H1 (Oct 2025–Mar 2026): 1,814 negative issues vs 1,412.
+**Yes, and not for the better.** H2 (Apr–Sep 2026) is **28.8% worse** than H1 (Oct 2025–Mar 2026): 1,819 negative issues vs 1,412.
 
 ![Monthly Trend](charts/05_monthly_trend.png)
 
@@ -76,10 +76,12 @@ Normalising by service volume tells a similar story: some mid-sized dealerships 
 | Total Revenue | $407.0M | $431.7M | +6.1% |
 | Service Revenue | $40.9M | $42.3M | +3.3% |
 | Service Jobs | 98,220 | 102,029 | +3.9% |
-| Negative Issues | 1,412 | 1,814 | +28.5% |
-| Neg per $1M Revenue | 3.5 | 4.2 | +21.0% |
+| Negative Issues | 1,412 | 1,819 | +28.8% |
+| Neg per $1M Revenue | 3.5 | 4.2 | +21.4% |
 
 **Complaints are outpacing business growth.** Even after accounting for any revenue increase, the complaint rate per dollar of revenue is rising. This is genuine service deterioration, not just volume scaling.
+
+![H1 vs H2 Revenue and Complaints](charts/13_h1_h2_revenue_complaints.png)
 
 ![Revenue vs Complaints](charts/10_revenue_vs_complaints.png)
 
@@ -136,13 +138,13 @@ Normalising by service volume tells a similar story: some mid-sized dealerships 
 
 | Priority | Focus Area | Issues | Trend | Fix Type | Estimated Value at Risk |
 |---|---|---|---|---|---|
-| 🔴 1 | Communication automation | 854 | Stable (not improving) | Systems/DMS | $159,869/yr |
+| 🔴 1 | Communication automation | 854 | Stable (not improving) | Systems/DMS | $159,688/yr |
 | 🟠 2 | Parts floor stock & sharing | 299 | **+221% and rising** | Supply chain | $500K–$1M/yr |
 | ⚫ 3 | Safety sign-off checklist | 131 | Stable (all Critical) | Process (free) | $2M+ liability tail |
 | 🟡 4 | Pricing pre-authorisation | 366 | +41% | Process/DMS | $200K–$400K/yr |
 | 🔵 5 | Booking system IT fix | 217 | +47% | IT/Digital | $150K–$300K/yr |
 
-**Total group revenue: $838.7M.** The combined estimated revenue at risk across these five areas is approximately **$1.5M annually (0.18% of group revenue).**  While modest relative to total revenue, this exposure warrants attention given the potential for preventable customer churn, deteriorating parts availability, and safety-related liabilities.
+**Total group revenue: $838.7M.** The combined estimated revenue at risk across these five areas is approximately **$1.4M annually (0.17% of group revenue).**  While modest relative to total revenue, this exposure warrants attention given the potential for preventable customer churn, deteriorating parts availability, and safety-related liabilities.
 
 **Start with Communication and Safety — they have the highest impact-to-effort ratio.** Parts Availability requires structural supply chain work but is the fastest-deteriorating problem and will get worse every month without intervention.
 

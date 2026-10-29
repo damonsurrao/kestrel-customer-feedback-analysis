@@ -8,13 +8,13 @@
 
 No two dealerships used exactly the same schema. Specific issues:
 
-- **Dandenong (VIC03)** — header row shifts down by one in the May sheet due to an extra annotation row.
-- **Essendon (VIC06)** — no department column at all; every row assigned `Unknown`.
+- **Dandenong (VIC01)** — header row shifts down by one in the May sheet due to an extra annotation row.
+- **Essendon (VIC03)** — no department column; instead each department (Sales, Service, Parts) is on its own sheet, so department was taken from the sheet name.
 - **Frankston (VIC04)** — subtotal rows embedded in data ("Total Mar 2026", "Grand Total") that parse as valid records. 12 of these were caught and rejected.
 - **Ringwood (VIC02)** — template changes mid-file at row 36 in Q1 2026. Column names change, and the rating scale jumps from 1–5 to 1–10.
 - **North QLD (QLD07/QLD08)** — two dealerships share one file, distinguished by a "Site" column with inconsistent abbreviations (ROK, ROCK, ROCKY, TSV, T'VILLE, etc.).
 - **Chermside (QLD01)** — two versions of the Q1 2026 file exist (FINAL and FINAL v2). Kept v2, dropped FINAL.
-- **Parramatta (NSW03)** — schema drifts across quarters with columns appearing and disappearing.
+- **Parramatta (NSW01)** — schema drifts across quarters with columns appearing and disappearing.
 - **Shepparton (VIC09)** — site appears to have closed mid-year; sparse data, 1 unparseable date, 1 missing rating, 1 missing department.
 
 ## Date quality
@@ -32,9 +32,9 @@ All approximate dates are flagged so downstream analysis can exclude or weight t
 
 Every site nominally used a 1–5 scale, but:
 
-- **Geelong (VIC07)** inverted it: 1 = Excellent, 5 = Poor. A banner row in the spreadsheet says so. Normalised via `6 - raw`.
+- **Geelong (VIC06)** inverted it: 1 = Excellent, 5 = Poor. A banner row in the spreadsheet says so. Normalised via `6 - raw`.
 - **Ringwood (VIC02)** switched to 1–10 from February 2026 onwards. Normalised via `ceil(raw / 2)`.
-- **Tamworth (NSW07)** used text ratings ("Excellent", "Good", "Average", "Poor", "Very Poor") instead of numbers. 10 rows had no rating at all — the highest count of missing ratings for any site.
+- **Tamworth (NSW07)** used text ratings ("Good", "OK", "Bad") instead of numbers. 10 rows had no rating at all — the highest count of missing ratings for any site.
 - **Southport (QLD04)** Google reviews used star emoji (★★★½☆). Parsed to numeric.
 - **Shepparton (VIC09):** 1 missing rating.
 
@@ -49,7 +49,7 @@ Every site nominally used a 1–5 scale, but:
 - **Southport (QLD04):** 8 — Google reviews have no department context.
 - **Shepparton (VIC09):** 1.
 
-Essendon (VIC06) had no department column at all, so all its rows default to `Unknown` — but this isn't logged as an error per row because it's a structural issue, not a data entry issue.
+Essendon (VIC03) has no department column, but its workbook has one sheet per department, so every row still gets a department from its sheet name. The only `Unknown` departments in the clean data are the 8 Southport Google reviews.
 
 ## PII in free-text comments
 
@@ -59,15 +59,15 @@ Every site had at least some PII leakage. The worst offenders:
 
 | Site | PII instances |
 |---|---|
-| Box Hill (VIC01) | 54 |
+| Dandenong (VIC01) | 54 |
 | Parramatta (NSW01) | 46 |
 | Penrith (NSW02) | 44 |
-| Dandenong (VIC02) | 43 |
-| Geelong (VIC05) | 35 |
+| Ringwood (VIC02) | 43 |
+| Box Hill (VIC05) | 35 |
 | Ballarat (VIC07) | 35 |
 | Chatswood (NSW03) | 35 |
-| Liverpool (NSW05) | 33 |
-| Bendigo (VIC03) | 32 |
+| Newcastle (NSW05) | 33 |
+| Essendon (VIC03) | 32 |
 
 All PII was redacted before any data left the pipeline — name/phone/email/rego columns were SHA-256 hashed, and comments were regex-scanned and scrubbed before being sent to the AI classification API.
 

@@ -282,9 +282,9 @@ Generated from: `ai_output/consolidated_clean_ai.csv`, `ai_output/ai_issues.csv`
 
 | Priority | Focus Area | Issues | Trend | Fix Type | Est. Value at Risk |
 |---|---|---|---|---|---|
-| 1 | Communication automation | 854 | Stable (not improving) | Systems/DMS | $106,583/yr |
+| 1 | Communication automation | 854 | Stable (not improving) | Systems/DMS | $159,688/yr |
 | 2 | Parts floor stock & sharing | 299 | +221% and rising | Supply chain | $500K–$1M/yr |
-| 3 | Safety sign-off checklist | 162 | Stable (all Critical) | Process (free) | $2M+ liability tail |
+| 3 | Safety sign-off checklist | 131 | Stable (all Critical) | Process (free) | $2M+ liability tail |
 | 4 | Pricing pre-authorisation | 366 | +41% | Process/DMS | $200K–$400K/yr |
 | 5 | Booking system IT fix | 217 | +47% | IT/Digital | $150K–$300K/yr |
 

@@ -499,8 +499,7 @@ for i, (cat, v1, v2) in enumerate(zip(categories, h1_vals, h2_vals)):
     if i == 0:
         clr = '#2A9D8F' if chg > 0 else '#E63946'
     ax.text(0.5, max(v1, v2) * 1.12, f'{sign}{chg:.0f}%',
-            ha='center', fontsize=13, fontweight='bold', color=clr,
-            transform=ax.get_xaxis_transform())
+            ha='center', fontsize=13, fontweight='bold', color=clr)
     ax.set_ylim(0, max(v1, v2) * 1.25)
 
 fig.suptitle('H1 vs H2: Revenue Growth vs Complaint Growth', fontsize=14, fontweight='bold')
@@ -543,7 +542,9 @@ h2_svc_rev     = h2_rev_row['service_revenue'].values[0] if len(h2_rev_row) else
 h1_svc_jobs    = int(h1_rev_row['service_jobs'].values[0]) if len(h1_rev_row) else 0
 h2_svc_jobs    = int(h2_rev_row['service_jobs'].values[0]) if len(h2_rev_row) else 0
 
-comms_at_risk  = 855 * 0.10 * 3 * avg_svc_ticket
+comms_count    = int((neg['ai_theme'] == 'Communication & Updates').sum())
+safety_count   = int((neg['ai_theme'] == 'Safety Concern').sum())
+comms_at_risk  = comms_count * 0.15 * 3 * avg_svc_ticket
 combined_risk  = comms_at_risk + 750_000 + 300_000 + 225_000
 pct_at_risk    = combined_risk / total_rev_yr * 100 if total_rev_yr else 0
 
@@ -765,9 +766,9 @@ s.append("\n---\n")
 s.append("## Priority Summary (pre-formatted)\n")
 s.append(f"| Priority | Focus Area | Issues | Trend | Fix Type | Est. Value at Risk |")
 s.append(f"|---|---|---|---|---|---|")
-s.append(f"| 1 | Communication automation | 854 | Stable (not improving) | Systems/DMS | ${comms_at_risk:,.0f}/yr |")
+s.append(f"| 1 | Communication automation | {comms_count} | Stable (not improving) | Systems/DMS | ${comms_at_risk:,.0f}/yr |")
 s.append(f"| 2 | Parts floor stock & sharing | 299 | +221% and rising | Supply chain | $500K–$1M/yr |")
-s.append(f"| 3 | Safety sign-off checklist | {crit_count} | Stable (all Critical) | Process (free) | $2M+ liability tail |")
+s.append(f"| 3 | Safety sign-off checklist | {safety_count} | Stable (all Critical) | Process (free) | $2M+ liability tail |")
 s.append(f"| 4 | Pricing pre-authorisation | 366 | +41% | Process/DMS | $200K–$400K/yr |")
 s.append(f"| 5 | Booking system IT fix | 217 | +47% | IT/Digital | $150K–$300K/yr |")
 s.append(f"")
