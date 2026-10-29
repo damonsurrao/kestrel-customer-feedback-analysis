@@ -2,7 +2,7 @@
 
 ## The shape of the problem
 
-52 files, zero shared template. Every dealership evolved its own spreadsheet over time, so the incoming data varied in column names, column order, rating scales, date formats, sheet structure, and what counted as a "row." The source registry documents the per-file reality; the cleaning pipeline logged 619 data quality errors and rejected 32 rows.
+52 files, zero shared template. Every dealership evolved its own spreadsheet over time, so the incoming data varied in column names, column order, rating scales, date formats, sheet structure, and what counted as a "row." The source registry documents the per-file reality; the cleaning pipeline logged 674 data quality errors and rejected 32 rows.
 
 ## Structural inconsistencies across files
 
@@ -53,12 +53,13 @@ Essendon (VIC03) has no department column, but its workbook has one sheet per de
 
 ## PII in free-text comments
 
-The largest category: **556 instances** of personally identifiable information found inside comment text. This includes names, phone numbers, email addresses, and registration plates that customers or staff typed into the free-text field.
+The largest category: **611 instances** of personally identifiable information found inside comment text. This includes names, phone numbers, email addresses, and registration plates that customers or staff typed into the free-text field.
 
-Every site had at least some PII leakage. The worst offenders:
+23 of 24 sites had at least some PII leakage. The worst offenders:
 
 | Site | PII instances |
 |---|---|
+| Essendon (VIC03) | 67 |
 | Dandenong (VIC01) | 54 |
 | Parramatta (NSW01) | 46 |
 | Penrith (NSW02) | 44 |
@@ -67,11 +68,10 @@ Every site had at least some PII leakage. The worst offenders:
 | Ballarat (VIC07) | 35 |
 | Chatswood (NSW03) | 35 |
 | Newcastle (NSW05) | 33 |
-| Essendon (VIC03) | 32 |
 
-All PII was redacted before any data left the pipeline — name/phone/email/rego columns were SHA-256 hashed, and comments were regex-scanned and scrubbed before being sent to the AI classification API.
+All PII was redacted before any data left the pipeline — name/phone/email/rego columns were SHA-256 hashed, and comments were regex-scanned and scrubbed before being sent to the AI classification API. One gap was caught late: 55 comments at Essendon and Ipswich began with the customer's full name, which the original patterns missed. These were only redacted after the AI run (see AI usage overview).
 
-This is logged as severity `info` (not a data error, but a privacy hygiene finding). All 556 instances were actioned.
+This is logged as severity `info` (not a data error, but a privacy hygiene finding). All 611 instances were actioned.
 
 ## Rejected rows
 
@@ -87,6 +87,8 @@ This is logged as severity `info` (not a data error, but a privacy hygiene findi
 
 All rejected rows are preserved in `rejects.csv` with full provenance. Nothing was silently dropped.
 
+A further 216 rows were removed as duplicates: 112 from Chermside's superseded Q1 FINAL file, and 104 exact duplicates across sites (dedup counts are printed by `clean.py` and checked by `validate_clean.py`).
+
 ## Coverage gaps
 
 - **Toowoomba (QLD06):** Q4 2025 data exists only as a pivot-table summary — no individual feedback records. This creates a known gap for Oct–Dec 2025.
@@ -94,4 +96,4 @@ All rejected rows are preserved in `rejects.csv` with full provenance. Nothing w
 
 ## Summary
 
-Of the 619 logged errors, 585 (94%) are severity `info` (mostly PII redactions — things handled automatically). Only 34 (6%) are `warning` severity, covering unparseable or approximate dates, missing ratings, and missing departments. The data is messy but tractable — the problems are well-understood and concentrated in a handful of sites.
+Of the 674 logged errors, 640 (95%) are severity `info` (mostly PII redactions — things handled automatically). Only 34 (5%) are `warning` severity, covering unparseable or approximate dates, missing ratings, and missing departments. The data is messy but tractable — the problems are well-understood and concentrated in a handful of sites.

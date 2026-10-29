@@ -2,7 +2,7 @@
 
 Kestrel's head office had 52 customer-feedback spreadsheets from 24 dealerships (Oct 2025 – Sep 2026) and no common template, so it couldn't answer basic questions about customer experience. This repo turns those files into a single traceable dataset, uses AI to turn the free-text comments into themes, sentiment and severity, and answers the Head of Customer Experience's three questions.
 
-**Headline:** 7,045 feedback records produced 3,231 negative issues. Communication is the biggest driver (26%). Parts Availability complaints tripled between H1 and H2. Complaints grew faster than revenue: negative issues per $1M revenue went up 21%.
+**Headline:** 7,045 feedback records produced 3,231 negative issues. Communication is the biggest driver by volume (26%), but Safety is the No.1 priority: 131 issues, all Critical, where one serious incident could cost more than everything else combined. Parts Availability complaints tripled between H1 and H2. Complaints grew faster than revenue: negative issues per $1M revenue went up 21%.
 
 **How this README is organised**
 1. [Codebase overview](#codebase-overview): where things live and how to run them
@@ -24,7 +24,7 @@ Sections 2–4 also exist as standalone files: [`approach_overview.md`](approach
 ├── approach_overview.md           ← approach, assumptions, tech choices
 ├── data_quality_observations.md   ← data quality findings
 ├── business_answers_q4.md         ← answers to the business questions
-├── charts/                        ← 13 PNG charts used in the report
+├── charts/                        ← 14 PNG charts used in the report
 └── code_and_data/                 ← all code, inputs and outputs (run everything from here)
     ├── feedback/                  ← the 52 original source files (unchanged)
     ├── reference/                 ← dealerships.csv, monthly_revenue.csv
@@ -50,18 +50,18 @@ The file table in the Approach section lists paths relative to `code_and_data/`.
 
 ### How to run
 
-Requirements are Python 3 with `pandas`, `numpy`, `openpyxl`, `matplotlib`, `wordcloud` and `anthropic`. The AI step also needs `ANTHROPIC_API_KEY` set as an environment variable. All paths are relative, so run every command from inside `code_and_data/`:
+Requirements are Python 3 with `pandas`, `numpy`, `openpyxl`, `matplotlib`, `wordcloud` and `anthropic`. The AI step also needs `ANTHROPIC_API_KEY` set as an environment variable. All paths are relative, so run every command from inside `code_and_data/`. The `-X utf8` flag stops the scripts crashing on Windows consoles when they print characters like →:
 
 ```bash
 cd code_and_data
-python consolidate.py --feedback-dir feedback --output consolidated_raw.csv
-python validate_consolidation.py --consolidated consolidated_raw.csv --feedback-dir feedback --dealerships reference/dealerships.csv
-python clean.py --input consolidated_raw.csv --output consolidated_clean.csv
-python validate_clean.py --raw consolidated_raw.csv --clean consolidated_clean.csv --rejects rejects.csv --errors data_quality_errors.csv
-python -I ai_analysis_optimised.py --input consolidated_clean.csv --test   # 40-row dry run
-python -I ai_analysis_optimised.py --input consolidated_clean.csv          # full run (paid API calls)
-python generate_charts_for_q4.py
-python generate_excel.py --issues ai_output/ai_issues.csv --main ai_output/consolidated_clean_ai.csv
+python -X utf8 consolidate.py --feedback-dir feedback --output consolidated_raw.csv
+python -X utf8 validate_consolidation.py --consolidated consolidated_raw.csv --feedback-dir feedback --dealerships reference/dealerships.csv
+python -X utf8 clean.py --input consolidated_raw.csv --output consolidated_clean.csv
+python -X utf8 validate_clean.py --raw consolidated_raw.csv --clean consolidated_clean.csv --rejects rejects.csv --errors data_quality_errors.csv
+python -X utf8 -I ai_analysis_optimised.py --input consolidated_clean.csv --test   # 40-row dry run
+python -X utf8 -I ai_analysis_optimised.py --input consolidated_clean.csv          # full run (paid API calls)
+python -X utf8 generate_charts_for_q4.py
+python -X utf8 generate_excel.py --issues ai_output/ai_issues.csv --main ai_output/consolidated_clean_ai.csv
 ```
 
 Note: `generate_charts_for_q4.py` writes its PNGs to `code_and_data/charts/`. If you rerun it, copy them to the top-level `charts/` folder so the report picks up the new versions.
@@ -139,7 +139,8 @@ A validation sample of 250 stratified comments is exported for human review.
 | **Toowoomba Q4 2025 summary excluded** | Pivot table with no individual records. Creates a known coverage gap for Q4 2025. |
 | **Chermside: keep FINAL v2, drop FINAL** | v2 is assumed to be the corrected version. |
 | **Southport Google reviews: kept but flagged** | Different population (self-selected public reviews). `from_google_southport` flag allows filtering. |
-| **Revenue at risk: 15% churn × 3 visits × avg ticket** | Conservative order-of-magnitude estimate, not a forecast. Industry churn benchmarks for dissatisfied customers range 10–30%. |
+| **Revenue at risk: complaining customers × 15% churn × 3 visits × avg ticket** | Conservative order-of-magnitude estimate, not a forecast. Industry churn benchmarks for dissatisfied customers range 10–30%. |
+| **Safety liability ($2.25M per serious-injury claim, TAC average), DMS fix cost ($15–30K), fleet downtime ($500–1,500/day)** | Assumptions; these cannot be calculated from the data provided. |
 | **PII treated as real** | Per the brief. All PII columns hashed; comments scanned and redacted before any API calls. |
 
 ---
@@ -182,6 +183,17 @@ Three principles throughout:
 | `reference/` | Dealership list and monthly revenue data |
 | `feedback/` | The 52 original source files (unchanged) |
 
+---
+
+## Learning & Reflection
+
+- **Inspecting the files by hand first paid off.** The source registry caught most quirks before any code was written. The ones it missed, such as sheet counts and Chermside's column names, were things I hadn't checked.
+- **AI is fast, but only as good as its grounding.** It worked well from my notes and column headers, and went wrong when it had to guess about data it couldn't see.
+- **A privacy miss I caught.** The comment redaction covered phone numbers, emails and registrations, but not names at the start of staff-transcribed comments, so 55 customer names reached the API before I found them. Lesson: test redaction on real comment formats before any API call.
+- **Validate the write-up, not just the data.** A final review found report figures that didn't match the data (typed-in value-at-risk numbers, wrong site codes). These are now calculated or corrected.
+- **Volume isn't priority.** Communication has the most complaints, but Safety carries the biggest risk. Ranking by impact changed the recommendation.
+- **Next time:** agree a single feedback template with the dealerships, since most of the cleaning effort came from not having one.
+
 
 ---
 
@@ -189,7 +201,7 @@ Three principles throughout:
 
 ## The shape of the problem
 
-52 files, zero shared template. Every dealership evolved its own spreadsheet over time, so the incoming data varied in column names, column order, rating scales, date formats, sheet structure, and what counted as a "row." The source registry documents the per-file reality; the cleaning pipeline logged 619 data quality errors and rejected 32 rows.
+52 files, zero shared template. Every dealership evolved its own spreadsheet over time, so the incoming data varied in column names, column order, rating scales, date formats, sheet structure, and what counted as a "row." The source registry documents the per-file reality; the cleaning pipeline logged 674 data quality errors and rejected 32 rows.
 
 ## Structural inconsistencies across files
 
@@ -240,12 +252,13 @@ Essendon (VIC03) has no department column, but its workbook has one sheet per de
 
 ## PII in free-text comments
 
-The largest category: **556 instances** of personally identifiable information found inside comment text. This includes names, phone numbers, email addresses, and registration plates that customers or staff typed into the free-text field.
+The largest category: **611 instances** of personally identifiable information found inside comment text. This includes names, phone numbers, email addresses, and registration plates that customers or staff typed into the free-text field.
 
-Every site had at least some PII leakage. The worst offenders:
+23 of 24 sites had at least some PII leakage. The worst offenders:
 
 | Site | PII instances |
 |---|---|
+| Essendon (VIC03) | 67 |
 | Dandenong (VIC01) | 54 |
 | Parramatta (NSW01) | 46 |
 | Penrith (NSW02) | 44 |
@@ -254,11 +267,10 @@ Every site had at least some PII leakage. The worst offenders:
 | Ballarat (VIC07) | 35 |
 | Chatswood (NSW03) | 35 |
 | Newcastle (NSW05) | 33 |
-| Essendon (VIC03) | 32 |
 
-All PII was redacted before any data left the pipeline — name/phone/email/rego columns were SHA-256 hashed, and comments were regex-scanned and scrubbed before being sent to the AI classification API.
+All PII was redacted before any data left the pipeline — name/phone/email/rego columns were SHA-256 hashed, and comments were regex-scanned and scrubbed before being sent to the AI classification API. One gap was caught late: 55 comments at Essendon and Ipswich began with the customer's full name, which the original patterns missed. These were only redacted after the AI run (see AI usage overview).
 
-This is logged as severity `info` (not a data error, but a privacy hygiene finding). All 556 instances were actioned.
+This is logged as severity `info` (not a data error, but a privacy hygiene finding). All 611 instances were actioned.
 
 ## Rejected rows
 
@@ -274,6 +286,8 @@ This is logged as severity `info` (not a data error, but a privacy hygiene findi
 
 All rejected rows are preserved in `rejects.csv` with full provenance. Nothing was silently dropped.
 
+A further 216 rows were removed as duplicates: 112 from Chermside's superseded Q1 FINAL file, and 104 exact duplicates across sites (dedup counts are printed by `clean.py` and checked by `validate_clean.py`).
+
 ## Coverage gaps
 
 - **Toowoomba (QLD06):** Q4 2025 data exists only as a pivot-table summary — no individual feedback records. This creates a known gap for Oct–Dec 2025.
@@ -281,12 +295,18 @@ All rejected rows are preserved in `rejects.csv` with full provenance. Nothing w
 
 ## Summary
 
-Of the 619 logged errors, 585 (94%) are severity `info` (mostly PII redactions — things handled automatically). Only 34 (6%) are `warning` severity, covering unparseable or approximate dates, missing ratings, and missing departments. The data is messy but tractable — the problems are well-understood and concentrated in a handful of sites.
+Of the 674 logged errors, 640 (95%) are severity `info` (mostly PII redactions — things handled automatically). Only 34 (5%) are `warning` severity, covering unparseable or approximate dates, missing ratings, and missing departments. The data is messy but tractable — the problems are well-understood and concentrated in a handful of sites.
 
 
 ---
 
 # Kestrel Motor Group — Answers for the Head of Customer Experience
+
+## Business context
+
+Kestrel Motor Group runs 24 dealerships across Victoria, New South Wales and Queensland, selling and servicing several vehicle brands. Over the year it sold 16,011 vehicles and completed 200,249 service jobs, for \$838.7M in revenue. Around 89% of that revenue comes from vehicle sales, but the service relationship is what brings customers back. Each dealership records feedback in its own format, so head office has had no group-wide view of what customers are saying. This analysis brings that feedback together to show what drives dissatisfaction, how it has changed, and where to act first.
+
+**How priorities are ranked:** Safety first, then financial impact, then customer loyalty, then efficiency.
 
 > **Dataset:** 7,045 feedback records across 24 dealerships (Oct 2025 - Sep 2026), yielding 3,231 negative issues classified by AI into themes and severity.
 >
@@ -308,9 +328,9 @@ The top five drivers account for **~72%** of all negative issues:
 | Pricing & Charges | 366 | 11.3% | 2 Critical, 250 High, 113 Moderate, 1 Low |
 | Parts Availability & Delays | 299 | 9.3% | 2 Critical, 95 High, 195 Moderate, 7 Low |
 
-**Communication is the runaway #1 problem.** The single biggest sub-theme across the entire dataset is "No updates / had to chase" (389 issues) — customers are universally describing the same failure: zero proactive outreach, with every update requiring customer-initiated contact. "Callback not returned" (282) and "Message not passed on" (107) compound this further.
+**Communication is the biggest driver of negative feedback by volume**, but it is not the No.1 priority (see Safety below). The single biggest sub-theme across the entire dataset is "No updates / had to chase" (389 issues) — customers are universally describing the same failure: zero proactive outreach, with every update requiring customer-initiated contact. "Callback not returned" (282) and "Message not passed on" (107) compound this further.
 
-**Safety Concern (131 issues) is smaller in volume but 100% Critical severity** — loose wheel nuts, unsecured bonnets, greasy brake pedals. These carry serious liability exposure.
+**Safety Concern (131 issues) is smaller in volume but 100% Critical severity** — loose wheel nuts, unsecured bonnets, greasy brake pedals. While the themes above are the leading causes of negative sentiment, the analysis has surfaced a potentially serious business risk: safety issues that could be life-threatening to customers and other road users. These carry serious legal, compliance and reputational risk, from compensation claims and penalties to, in the worst case, the shutdown of the business. The volume is small, but with 131 reported in a year (2–3 a week) the probability of a serious incident is high, the impact is very high, and the failures are preventable. **This makes Safety the No.1 priority (see section 3).**
 
 ### How do drivers vary across dealerships?
 
@@ -404,41 +424,50 @@ Normalising by service volume tells a similar story: some mid-sized dealerships 
 
 ![Revenue at Risk](charts/11_revenue_at_risk.png)
 
-### Priority 1: Fix Communication (854 issues — largest volume, solvable with automation)
+### Priority 1: Eliminate Safety failures (131 issues — 100% Critical, liability exposure)
 
-**What to do:** Deploy automated SMS/email notifications at four service milestones (checked in → diagnosis → approved → ready). This is a systems fix, not a people fix.
+![Safety Breakdown](charts/14_safety_breakdown.png)
 
-**What it's worth:** Communication failures drive customer churn. With 854 negative communication issues and a group average service ticket of \$416, a conservative 15% churn assumption (each lost customer = 3 annual visits) suggests **\$160k in at-risk annual service revenue**. The fix (DMS notification automation) costs ~$15–30K to configure across 24 sites — a payback period measured in weeks.
+Safety issues come from 23 of 24 dealerships, so this is a group-wide process gap, not one bad workshop. 90% (118) are in Service. Half are "other" hazards, such as headlights left aimed into the trees, cruise control cutting out on the highway, or overheating after a service. The rest are steering/suspension (33), brakes (20) and loose wheel nuts (12). They are not falling: 62 in H1, 69 in H2.
 
-### Priority 2: Stop the Parts Availability blowout (299 issues, +221% and accelerating)
-
-**What to do:** Mandatory floor stock levels for the top 200 high-velocity parts per platform. Cross-dealership stock-sharing before interstate orders. Pre-service parts checks 48 hours before appointments.
-
-**What it's worth:** Every parts delay cascades into a Timeliness complaint, a Communication complaint, and often a repeat visit. Parts delays are a multiplier of pain. The group's parts revenue is \$11.56M/yr. With 299 direct issues plus an estimated 100+ timeliness issues caused by parts unavailability, and vehicles off the road costing fleet customers $500–1,500/day, the downstream revenue at risk is conservatively **$500K–$1M/year** in lost service revenue and customer defection.
-
-### Priority 3: Eliminate Safety failures (131 issues — 100% Critical, liability exposure)
+> **Potential impact of one serious incident.** A single injury caused by a service failure could cost more than every other issue in this report combined.
+> - **Lawsuit / compensation:** Victoria's TAC paid an average of about \$2.25M per serious-injury claim in 2021–22 ([Law Partners, citing TAC data](https://lawpartners.com.au/blog/tac-compensation-calculator)).
+> - **Legal and compliance:** under the Australian Consumer Law, services must be provided with due care and skill, and customers can claim compensation when they are not ([ACCC](https://www.accc.gov.au/consumers/buying-products-and-services/consumer-rights-and-guarantees)). ACL penalties for companies now reach the greatest of \$50M, three times the benefit gained, or 30% of adjusted turnover ([Gadens](https://www.gadens.com/insights/increased-competition-and-consumer-law-penalties-now-take-effect)).
+> - **Brand reputation:** about half of consumers avoid a business after reading negative reviews (BrightLocal 2025, [via Review42](https://resources.review42.com/online-reputation-management-statistics/)). A safety incident at one site would damage trust in all 24.
 
 **What to do:** Mandatory pre-handover safety sign-off checklist (wheel nuts torqued, bonnet latched, caps secured, road test). This is a 5-minute process step that prevents catastrophic outcomes.
 
-**What it's worth:** A single loose-wheel-nut incident resulting in injury would dwarf all other costs. The legal/insurance exposure from 131 Critical safety incidents per year — including documented near-misses on highways — represents a liability tail risk of **$2M+** in a worst-case scenario. The fix costs essentially nothing (a printed checklist and 5 minutes per vehicle).
+**What it's worth:** We assume one serious-injury claim at the TAC average, **~\$2.25M** (assumption; the data cannot predict whether an incident will happen). That alone is over seven times the at-risk revenue of the other four priorities combined (~\$302K/yr). The fix costs essentially nothing (a printed checklist and 5 minutes per vehicle).
+
+### Priority 2: Fix Communication (854 issues — largest volume, solvable with automation)
+
+**What to do:** Deploy automated SMS/email notifications at four service milestones (checked in → diagnosis → approved → ready). This is a systems fix, not a people fix.
+
+**What it's worth:** Communication failures drive customer churn. With 854 negative communication issues from 778 customers and a group average service ticket of \$416, a conservative 15% churn assumption (each lost customer = 3 annual visits) suggests **\$145k in at-risk annual service revenue**. The fix (DMS notification automation) costs ~$15–30K (assumption) to configure across 24 sites — a payback period measured in weeks.
+
+### Priority 3: Stop the Parts Availability blowout (299 issues, +221% and accelerating)
+
+**What to do:** Mandatory floor stock levels for the top 200 high-velocity parts per platform. Cross-dealership stock-sharing before interstate orders. Pre-service parts checks 48 hours before appointments.
+
+**What it's worth:** Every parts delay cascades into a Timeliness complaint, a Communication complaint, and often a repeat visit. Parts delays are a multiplier of pain. The group's parts revenue is \$11.56M/yr. With 299 direct issues from 275 customers (plus 21 timeliness issues in the same comments), the same churn method gives **~$51K/year** in at-risk service revenue. This excludes the cost of vehicles off the road for fleet customers (assumed $500–1,500/day), which falls on the customer rather than Kestrel.
 
 ### Summary: Where to start
 
 | Priority | Focus Area | Issues | Trend | Fix Type | Estimated Value at Risk |
 |---|---|---|---|---|---|
-| 🔴 1 | Communication automation | 854 | Stable (not improving) | Systems/DMS | $159,688/yr |
-| 🟠 2 | Parts floor stock & sharing | 299 | **+221% and rising** | Supply chain | $500K–$1M/yr |
-| ⚫ 3 | Safety sign-off checklist | 131 | Stable (all Critical) | Process (free) | $2M+ liability tail |
-| 🟡 4 | Pricing pre-authorisation | 366 | +41% | Process/DMS | $200K–$400K/yr |
-| 🔵 5 | Booking system IT fix | 217 | +47% | IT/Digital | $150K–$300K/yr |
+| 🔴 1 | Safety sign-off checklist | 131 | Stable (all Critical) | Process (free) | $2,250,000 per serious-injury claim (assumption) |
+| 🟠 2 | Communication automation | 854 | Stable (not improving) | Systems/DMS | $145,477/yr |
+| 🟡 3 | Parts floor stock & sharing | 299 | **+221% and rising** | Supply chain | $51,422/yr |
+| 🔵 4 | Pricing pre-authorisation | 366 | +41% | Process/DMS | $67,129/yr |
+| ⚪ 5 | Booking system IT fix | 217 | +47% | IT/Digital | $37,585/yr |
 
-**Total group revenue: $838.7M.** The combined estimated revenue at risk across these five areas is approximately **$1.4M annually (0.17% of group revenue).**  While modest relative to total revenue, this exposure warrants attention given the potential for preventable customer churn, deteriorating parts availability, and safety-related liabilities.
+**Total group revenue: $838.7M.** The combined estimated revenue at risk across these five areas is approximately **\$2.55M (0.30% of group revenue)**: one serious-injury claim for Safety (\$2.25M) plus ~\$302K a year across the other four.  While modest relative to total revenue, this exposure warrants attention given the potential for preventable customer churn, deteriorating parts availability, and safety-related liabilities.
 
-**Start with Communication and Safety — they have the highest impact-to-effort ratio.** Parts Availability requires structural supply chain work but is the fastest-deteriorating problem and will get worse every month without intervention.
+**Start with Safety, then Communication.** Safety has the highest potential impact and costs almost nothing to fix; Communication has the largest volume and a fast payback. Parts Availability requires structural supply chain work but is the fastest-deteriorating problem and will get worse every month without intervention.
 
 ---
 
-*Analysis based on AI-classified themes from 7,045 feedback records. Revenue figures from monthly_revenue.csv. Sentiment classification validated against rating scores (negative sentiment aligns with mean rating of 1.82/5). Revenue-at-risk estimates use a conservative 15% churn assumption and 3x annual visit frequency — they should be validated against Kestrel's actual margin and retention data.*
+*Analysis based on AI-classified themes from 7,045 feedback records. Revenue figures from monthly_revenue.csv. Sentiment classification validated against rating scores (negative sentiment aligns with mean rating of 1.82/5). Revenue-at-risk estimates count each complaining customer once and use a conservative 15% churn assumption and 3x annual visit frequency — they should be validated against Kestrel's actual margin and retention data. The Safety liability (one serious-injury claim at the TAC average), DMS fix cost and fleet downtime figures are assumptions, not calculated from the data.*
 
 ---
 
@@ -455,7 +484,7 @@ Normalising by service volume tells a similar story: some mid-sized dealerships 
 
 ### Recommendations
 
-1. **Fix Communication, Safety and Pricing authorisation centrally**, through DMS notifications and a standard handover checklist, rolled out to all 24 sites at once (see the priority table above).
+1. **Fix Safety first, then Communication and Pricing authorisation, centrally**, through a standard safety handover checklist and DMS notifications, rolled out to all 24 sites at once (see the priority table above).
 2. **Investigate Victorian parts supply specifically.** Ask what changed around April 2026 (supplier, warehouse, ordering policy), starting with Dandenong, Essendon and Ringwood.
 3. **Run deep-dives at Dandenong and Essendon**, and compare their processes with Springwood's.
 4. **Standardise feedback collection.** Use one template with a mandatory department, a 1–5 scale (5 = best), real dates, a site code, and a warning against putting personal details in the comment field. Most of the cleaning effort in this project exists because there was no template.
@@ -482,10 +511,18 @@ Before asking for any code, I opened every file myself and wrote a long `.txt` d
 **Where it went wrong**
 Because the AI never saw the actual data, it sometimes made wrong assumptions. For example, it didn't know how many sheets a workbook had, so sheets got missed until I corrected it. I fixed these problems as they came up.
 
+**A privacy miss I caught**
+The comment redaction in `clean.py` only removed phone numbers, emails and registrations. In a final review I found 55 staff-transcribed comments at Essendon and Ipswich that began with the customer's full name ("Name - said…"). Those names were never redacted, so they were sent to the Anthropic API. To fix it, I:
+- added a rule to `clean.py` that removes a name at the start of a comment
+- reran the cleaning: only those 55 comments changed, and validation still passes
+- removed the names from every AI output file
+
+The same review showed the AI had misread some of these customers as staff in its summaries ("Staff member [name] praised…"). The theme and sentiment labels weren't affected.
+
 **How I verified its output**
 - **Validation scripts.** `validate_consolidation.py` and `validate_clean.py` independently check the AI-written code's output against the source files: row counts, sheet coverage, row accounting and value round-trips.
 - **Manual checks.** I compared the generated files with the source files by hand. For example, I confirmed in Excel that exactly one row had a blank rating, comment and date, and that the script removed exactly that one.
 - **Reading the AI's output.** I went over the AI classification results myself. I also checked the sentiment labels against the star ratings, and kept the 600 rows the model flagged as uncertain (`ai_review_required`) visible instead of hiding them.
 
 **AI inside the solution**
-The Anthropic API classifies the comments: Haiku labels sentiment and theme for every comment, Sonnet extracts detailed issues from the negative and mixed ones, and Sonnet then writes per-theme actions. All personal details are redacted before any comment is sent to the API.
+The Anthropic API classifies the comments: Haiku labels sentiment and theme for every comment, Sonnet extracts detailed issues from the negative and mixed ones, and Sonnet then writes per-theme actions. Phone numbers, emails and registrations are removed from comments before they are sent to the API, and names at the start of a comment now are too (see the miss above).

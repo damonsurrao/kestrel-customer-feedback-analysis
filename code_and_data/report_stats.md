@@ -1,4 +1,4 @@
-# Report Stats — auto-generated, copy into your report as needed
+# Report Stats â€” auto-generated, copy into your report as needed
 
 Generated from: `ai_output/consolidated_clean_ai.csv`, `ai_output/ai_issues.csv`, `reference/monthly_revenue.csv`
 
@@ -30,7 +30,7 @@ Generated from: `ai_output/consolidated_clean_ai.csv`, `ai_output/ai_issues.csv`
 
 ## H1 vs H2 Summary
 
-| Metric | H1 (Oct 25–Mar 26) | H2 (Apr–Sep 26) | Change |
+| Metric | H1 (Oct 25â€“Mar 26) | H2 (Aprâ€“Sep 26) | Change |
 |---|---|---|---|
 | Total Revenue | $407.0M | $431.7M | +6.1% |
 | Service Revenue | $40.9M | $42.3M | +3.3% |
@@ -118,7 +118,7 @@ Generated from: `ai_output/consolidated_clean_ai.csv`, `ai_output/ai_issues.csv`
 
 ---
 
-## Top 5 Themes — Report-Ready (copy-paste into report)
+## Top 5 Themes â€” Report-Ready (copy-paste into report)
 
 | Theme | Negative Issues | % of Total | Severity Profile |
 |---|---|---|---|
@@ -209,22 +209,22 @@ Generated from: `ai_output/consolidated_clean_ai.csv`, `ai_output/ai_issues.csv`
 
 ---
 
-## Revenue at Risk — Top 10 Dealerships
+## Revenue at Risk â€” Top 10 Dealerships
 
-*Assumptions: 15% churn rate, 3 service visits/yr, site-specific avg service ticket*
+*Assumptions: per complaining customer (comment), 15% churn rate, 3 service visits/yr, site-specific avg service ticket*
 
-| Site Code | Site Name | Neg Issues | Avg Svc Ticket | Est. Revenue at Risk |
-|---|---|---|---|---|
-| VIC01 | Dandenong | 257 | $414 | $47,926 |
-| NSW01 | Parramatta | 231 | $416 | $43,245 |
-| QLD01 | Chermside | 224 | $416 | $41,956 |
-| VIC02 | Ringwood | 193 | $416 | $36,110 |
-| VIC03 | Essendon | 186 | $415 | $34,725 |
-| NSW02 | Penrith | 184 | $414 | $34,258 |
-| QLD08 | Townsville | 169 | $416 | $31,637 |
-| VIC06 | Geelong | 154 | $414 | $28,710 |
-| VIC05 | Box Hill | 146 | $415 | $27,266 |
-| VIC07 | Ballarat | 137 | $416 | $25,647 |
+| Site Code | Site Name | Neg Issues | Neg Comments | Avg Svc Ticket | Est. Revenue at Risk |
+|---|---|---|---|---|---|
+| VIC01 | Dandenong | 257 | 188 | $414 | $35,059 |
+| NSW01 | Parramatta | 231 | 178 | $416 | $33,323 |
+| QLD01 | Chermside | 224 | 171 | $416 | $32,029 |
+| VIC02 | Ringwood | 193 | 141 | $416 | $26,381 |
+| VIC03 | Essendon | 186 | 132 | $415 | $24,643 |
+| NSW02 | Penrith | 184 | 129 | $414 | $24,018 |
+| QLD08 | Townsville | 169 | 128 | $416 | $23,962 |
+| VIC06 | Geelong | 154 | 112 | $414 | $20,880 |
+| VIC05 | Box Hill | 146 | 104 | $415 | $19,422 |
+| VIC07 | Ballarat | 137 | 101 | $416 | $18,907 |
 
 ---
 
@@ -278,14 +278,41 @@ Generated from: `ai_output/consolidated_clean_ai.csv`, `ai_output/ai_issues.csv`
 
 ---
 
+## Safety Concern Breakdown
+
+131 issues, all Critical severity, across 23 of 24 dealerships. H1: 62, H2: 69.
+
+| Sub-Theme | Count | % of Safety |
+|---|---|---|
+| Other safety hazard | 66 | 50.4% |
+| Steering / suspension safety | 33 | 25.2% |
+| Brake failure / issue | 20 | 15.3% |
+| Loose wheel nuts / wheels | 12 | 9.2% |
+
+| Department | Count |
+|---|---|
+| Service | 118 |
+| Sales | 8 |
+| Parts | 5 |
+
+| Top Sites | Count |
+|---|---|
+| VIC01 Dandenong | 12 |
+| NSW01 Parramatta | 11 |
+| VIC05 Box Hill | 10 |
+| VIC07 Ballarat | 9 |
+| QLD01 Chermside | 9 |
+
+---
+
 ## Priority Summary (pre-formatted)
 
 | Priority | Focus Area | Issues | Trend | Fix Type | Est. Value at Risk |
 |---|---|---|---|---|---|
-| 1 | Communication automation | 854 | Stable (not improving) | Systems/DMS | $159,688/yr |
-| 2 | Parts floor stock & sharing | 299 | +221% and rising | Supply chain | $500K–$1M/yr |
-| 3 | Safety sign-off checklist | 131 | Stable (all Critical) | Process (free) | $2M+ liability tail |
-| 4 | Pricing pre-authorisation | 366 | +41% | Process/DMS | $200K–$400K/yr |
-| 5 | Booking system IT fix | 217 | +47% | IT/Digital | $150K–$300K/yr |
+| 1 | Safety sign-off checklist | 131 | Stable (all Critical) | Process (free) | $2,250,000 per serious-injury claim (assumption) |
+| 2 | Communication automation | 854 | Stable (not improving) | Systems/DMS | $145,477/yr |
+| 3 | Parts floor stock & sharing | 299 | +221% and rising | Supply chain | $51,422/yr |
+| 4 | Pricing pre-authorisation | 366 | +41% | Process/DMS | $67,129/yr |
+| 5 | Booking system IT fix | 217 | +47% | IT/Digital | $37,585/yr |
 
-**Total group revenue: $838.7M** | Combined at-risk: ~$1.4M (0.2% of annual revenue)
+**Total group revenue: $838.7M** | Combined at-risk (incl. one serious-injury claim): ~$2.55M (0.30% of annual revenue)

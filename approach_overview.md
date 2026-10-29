@@ -69,7 +69,8 @@ A validation sample of 250 stratified comments is exported for human review.
 | **Toowoomba Q4 2025 summary excluded** | Pivot table with no individual records. Creates a known coverage gap for Q4 2025. |
 | **Chermside: keep FINAL v2, drop FINAL** | v2 is assumed to be the corrected version. |
 | **Southport Google reviews: kept but flagged** | Different population (self-selected public reviews). `from_google_southport` flag allows filtering. |
-| **Revenue at risk: 15% churn × 3 visits × avg ticket** | Conservative order-of-magnitude estimate, not a forecast. Industry churn benchmarks for dissatisfied customers range 10–30%. |
+| **Revenue at risk: complaining customers × 15% churn × 3 visits × avg ticket** | Conservative order-of-magnitude estimate, not a forecast. Industry churn benchmarks for dissatisfied customers range 10–30%. |
+| **Safety liability ($2.25M per serious-injury claim, TAC average), DMS fix cost ($15–30K), fleet downtime ($500–1,500/day)** | Assumptions; these cannot be calculated from the data provided. |
 | **PII treated as real** | Per the brief. All PII columns hashed; comments scanned and redacted before any API calls. |
 
 ---
@@ -111,3 +112,14 @@ Three principles throughout:
 | `charts/` | All generated chart PNGs |
 | `reference/` | Dealership list and monthly revenue data |
 | `feedback/` | The 52 original source files (unchanged) |
+
+---
+
+## Learning & Reflection
+
+- **Inspecting the files by hand first paid off.** The source registry caught most quirks before any code was written. The ones it missed, such as sheet counts and Chermside's column names, were things I hadn't checked.
+- **AI is fast, but only as good as its grounding.** It worked well from my notes and column headers, and went wrong when it had to guess about data it couldn't see.
+- **A privacy miss I caught.** The comment redaction covered phone numbers, emails and registrations, but not names at the start of staff-transcribed comments, so 55 customer names reached the API before I found them. Lesson: test redaction on real comment formats before any API call.
+- **Validate the write-up, not just the data.** A final review found report figures that didn't match the data (typed-in value-at-risk numbers, wrong site codes). These are now calculated or corrected.
+- **Volume isn't priority.** Communication has the most complaints, but Safety carries the biggest risk. Ranking by impact changed the recommendation.
+- **Next time:** agree a single feedback template with the dealerships, since most of the cleaning effort came from not having one.

@@ -230,6 +230,12 @@ PII_PATTERNS = {
     "rego": re.compile(
         r"\b[A-Z]{2,3}[\s-]?\d{2,3}[\s-]?[A-Z]{0,3}\b"
     ),
+    # Staff-transcribed comments (Essendon, Ipswich) start with the customer's
+    # full name, e.g. "Jane Citizen - Said staff were great". Anchored to the
+    # start of the comment so place names mid-sentence are not caught.
+    "name": re.compile(
+        r"^\s*[A-Z][a-z]+(?: [A-Z][a-z'-]+)+(?=\s*[-–:])"
+    ),
 }
 
 # ─────────────────────────────────────────────────────────────────────

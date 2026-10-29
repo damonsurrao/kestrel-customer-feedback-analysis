@@ -11,7 +11,7 @@ Expects these files in the same directory (or edit the paths below):
     - reference/monthly_revenue.csv
 
 Outputs:
-    - charts/01_top_themes.png  ... 13_h1_h2_revenue_complaints.png
+    - charts/01_top_themes.png  ... 14_safety_breakdown.png
     - report_stats.md   (all computed numbers & tables for the report)
 """
 
@@ -404,15 +404,16 @@ print("  10 revenue vs complaints")
 # =====================================================================
 # CHART 11 — Revenue at Risk: Top Dealerships
 # =====================================================================
-site_neg_rev = (neg.groupby(['site_code', 'site_name']).size()
-                   .reset_index(name='neg_count'))
+site_neg_rev = (neg.groupby(['site_code', 'site_name'])
+                   .agg(neg_count=('feedback_id', 'size'), neg_comments=('feedback_id', 'nunique'))
+                   .reset_index())
 site_neg_rev = site_neg_rev.merge(rev_by_site, left_on='site_code',
                                    right_on='dealer_code', how='inner')
 site_neg_rev['avg_service_ticket'] = (
     site_neg_rev['service_revenue'] / site_neg_rev['service_jobs'].replace(0, np.nan)
 ).fillna(0)
 site_neg_rev['est_revenue_at_risk'] = (
-    site_neg_rev['neg_count'] * 0.15 * 3 * site_neg_rev['avg_service_ticket']
+    site_neg_rev['neg_comments'] * 0.15 * 3 * site_neg_rev['avg_service_ticket']
 )
 site_neg_rev = site_neg_rev.sort_values('est_revenue_at_risk', ascending=False).head(12)
 
@@ -425,7 +426,7 @@ ax.set_yticks(range(len(site_neg_rev)))
 ax.set_yticklabels(bar_labels, fontsize=9)
 ax.invert_yaxis()
 ax.set_xlabel("Estimated Annual Revenue at Risk ($'000)")
-ax.set_title('Revenue at Risk from Negative Feedback\n(est. 15% churn rate x 3 service visits x avg ticket)')
+ax.set_title('Revenue at Risk from Negative Feedback\n(est. per complaining customer: 15% churn rate x 3 service visits x avg ticket)')
 for i, v in enumerate(site_neg_rev['est_revenue_at_risk'].values):
     ax.text(v / 1000 + 1, i, f'${v/1000:.0f}K', va='center', fontsize=9, fontweight='bold')
 ax.set_xlim(0, site_neg_rev['est_revenue_at_risk'].values[0] / 1000 * 1.2)
@@ -509,6 +510,28 @@ plt.close()
 print("  13 H1 vs H2 revenue & complaints")
 
 # =====================================================================
+# CHART 14 — Safety concern breakdown by sub-theme
+# =====================================================================
+safety     = neg[neg['ai_theme'] == 'Safety Concern']
+safety_sub = safety['ai_subtheme'].value_counts()
+
+fig, ax = plt.subplots(figsize=(9, 4))
+ax.barh(range(len(safety_sub)), safety_sub.values, color='#9D0208', alpha=0.85)
+ax.set_yticks(range(len(safety_sub)))
+ax.set_yticklabels(safety_sub.index, fontsize=10)
+ax.invert_yaxis()
+ax.set_xlabel('Number of Negative Issues')
+ax.set_title(f'Safety Concerns by Type ({len(safety)} issues, all Critical severity, '
+             f'{safety["site_code"].nunique()} of 24 dealerships)')
+for i, v in enumerate(safety_sub.values):
+    ax.text(v + 1, i, str(v), va='center', fontsize=10, fontweight='bold')
+ax.set_xlim(0, safety_sub.values[0] * 1.15)
+plt.tight_layout()
+plt.savefig(f'{CHART_DIR}/14_safety_breakdown.png', bbox_inches='tight')
+plt.close()
+print("  14 safety breakdown")
+
+# =====================================================================
 # COMPUTE ALL STATS & WRITE report_stats.md
 # =====================================================================
 print("\nComputing report stats...")
@@ -544,8 +567,21 @@ h2_svc_jobs    = int(h2_rev_row['service_jobs'].values[0]) if len(h2_rev_row) el
 
 comms_count    = int((neg['ai_theme'] == 'Communication & Updates').sum())
 safety_count   = int((neg['ai_theme'] == 'Safety Concern').sum())
-comms_at_risk  = comms_count * 0.15 * 3 * avg_svc_ticket
-combined_risk  = comms_at_risk + 750_000 + 300_000 + 225_000
+parts_count    = int((neg['ai_theme'] == 'Parts Availability & Delays').sum())
+pricing_count  = int((neg['ai_theme'] == 'Pricing & Charges').sum())
+booking_count  = int((neg['ai_theme'] == 'Booking & Scheduling').sum())
+# Same churn method for every theme, per complaining customer (one comment can hold
+# several issues in a theme): comments x 15% churn x 3 visits/yr x avg ticket
+theme_comments  = lambda th: int(neg.loc[neg['ai_theme'] == th, 'feedback_id'].nunique())
+comms_at_risk   = theme_comments('Communication & Updates') * 0.15 * 3 * avg_svc_ticket
+parts_at_risk   = theme_comments('Parts Availability & Delays') * 0.15 * 3 * avg_svc_ticket
+pricing_at_risk = theme_comments('Pricing & Charges') * 0.15 * 3 * avg_svc_ticket
+booking_at_risk = theme_comments('Booking & Scheduling') * 0.15 * 3 * avg_svc_ticket
+# Safety liability is an assumption, not calculable from this data: one serious-injury
+# claim, using the TAC's average serious-injury payout (~$2.25M, 2021-22)
+safety_liability = 2_250_000
+combined_risk  = (comms_at_risk + parts_at_risk + pricing_at_risk + booking_at_risk
+                  + safety_liability)
 pct_at_risk    = combined_risk / total_rev_yr * 100 if total_rev_yr else 0
 
 # Top 5 worst dealerships (raw count)
@@ -572,10 +608,12 @@ site_svc_all['neg_per_1k_jobs'] = (
 top5_svc_rate = site_svc_all.sort_values('neg_per_1k_jobs', ascending=False).head(5)
 
 # Revenue at risk by dealership (top 10)
-rar = (neg.groupby(['site_code', 'site_name']).size().reset_index(name='neg_count'))
+rar = (neg.groupby(['site_code', 'site_name'])
+         .agg(neg_count=('feedback_id', 'size'), neg_comments=('feedback_id', 'nunique'))
+         .reset_index())
 rar = rar.merge(rev_by_site, left_on='site_code', right_on='dealer_code', how='inner')
 rar['avg_ticket'] = (rar['service_revenue'] / rar['service_jobs'].replace(0, np.nan)).fillna(0)
-rar['est_risk']   = rar['neg_count'] * 0.15 * 3 * rar['avg_ticket']
+rar['est_risk']   = rar['neg_comments'] * 0.15 * 3 * rar['avg_ticket']
 rar = rar.sort_values('est_risk', ascending=False).head(10)
 
 # Theme severity breakdown
@@ -742,11 +780,11 @@ for _, r in top5_svc_rate.iterrows():
 
 s.append("\n---\n")
 s.append("## Revenue at Risk — Top 10 Dealerships\n")
-s.append(f"*Assumptions: 15% churn rate, 3 service visits/yr, site-specific avg service ticket*\n")
-s.append(f"| Site Code | Site Name | Neg Issues | Avg Svc Ticket | Est. Revenue at Risk |")
-s.append(f"|---|---|---|---|---|")
+s.append(f"*Assumptions: per complaining customer (comment), 15% churn rate, 3 service visits/yr, site-specific avg service ticket*\n")
+s.append(f"| Site Code | Site Name | Neg Issues | Neg Comments | Avg Svc Ticket | Est. Revenue at Risk |")
+s.append(f"|---|---|---|---|---|---|")
 for _, r in rar.iterrows():
-    s.append(f"| {r.site_code} | {r.site_name} | {int(r.neg_count)} | ${r.avg_ticket:,.0f} | ${r.est_risk:,.0f} |")
+    s.append(f"| {r.site_code} | {r.site_name} | {int(r.neg_count)} | {int(r.neg_comments)} | ${r.avg_ticket:,.0f} | ${r.est_risk:,.0f} |")
 
 s.append("\n---\n")
 s.append("## Full Dealership Revenue + Complaints Table\n")
@@ -763,22 +801,39 @@ for _, r in monthly_trend.iterrows():
     s.append(f"| {r.year_month} | {int(r['count'])} | {int(r['total'])} | {r.neg_rate}% | ${r.total_revenue:,.0f} | {r.neg_per_M_rev:.1f} |")
 
 s.append("\n---\n")
+s.append("## Safety Concern Breakdown\n")
+s.append(f"{safety_count} issues, all Critical severity, across {safety['site_code'].nunique()} of 24 dealerships. "
+         f"H1: {int((safety['half'] == 'H1 (Oct 25–Mar 26)').sum())}, H2: {int((safety['half'] == 'H2 (Apr–Sep 26)').sum())}.\n")
+s.append(f"| Sub-Theme | Count | % of Safety |")
+s.append(f"|---|---|---|")
+for sub, cnt in safety_sub.items():
+    s.append(f"| {sub} | {cnt} | {cnt / safety_count * 100:.1f}% |")
+s.append(f"\n| Department | Count |")
+s.append(f"|---|---|")
+for dept, cnt in safety['department'].value_counts().items():
+    s.append(f"| {dept} | {cnt} |")
+s.append(f"\n| Top Sites | Count |")
+s.append(f"|---|---|")
+for (code, name), cnt in safety.groupby(['site_code', 'site_name']).size().sort_values(ascending=False).head(5).items():
+    s.append(f"| {code} {name} | {cnt} |")
+
+s.append("\n---\n")
 s.append("## Priority Summary (pre-formatted)\n")
 s.append(f"| Priority | Focus Area | Issues | Trend | Fix Type | Est. Value at Risk |")
 s.append(f"|---|---|---|---|---|---|")
-s.append(f"| 1 | Communication automation | {comms_count} | Stable (not improving) | Systems/DMS | ${comms_at_risk:,.0f}/yr |")
-s.append(f"| 2 | Parts floor stock & sharing | 299 | +221% and rising | Supply chain | $500K–$1M/yr |")
-s.append(f"| 3 | Safety sign-off checklist | {safety_count} | Stable (all Critical) | Process (free) | $2M+ liability tail |")
-s.append(f"| 4 | Pricing pre-authorisation | 366 | +41% | Process/DMS | $200K–$400K/yr |")
-s.append(f"| 5 | Booking system IT fix | 217 | +47% | IT/Digital | $150K–$300K/yr |")
+s.append(f"| 1 | Safety sign-off checklist | {safety_count} | Stable (all Critical) | Process (free) | ${safety_liability:,.0f} per serious-injury claim (assumption) |")
+s.append(f"| 2 | Communication automation | {comms_count} | Stable (not improving) | Systems/DMS | ${comms_at_risk:,.0f}/yr |")
+s.append(f"| 3 | Parts floor stock & sharing | {parts_count} | +221% and rising | Supply chain | ${parts_at_risk:,.0f}/yr |")
+s.append(f"| 4 | Pricing pre-authorisation | {pricing_count} | +41% | Process/DMS | ${pricing_at_risk:,.0f}/yr |")
+s.append(f"| 5 | Booking system IT fix | {booking_count} | +47% | IT/Digital | ${booking_at_risk:,.0f}/yr |")
 s.append(f"")
-s.append(f"**Total group revenue: ${total_rev_yr/1e6:.1f}M** | Combined at-risk: ~${combined_risk/1e6:.1f}M ({pct_at_risk:.1f}% of annual revenue)")
+s.append(f"**Total group revenue: ${total_rev_yr/1e6:.1f}M** | Combined at-risk (incl. one serious-injury claim): ~${combined_risk/1e6:.2f}M ({pct_at_risk:.2f}% of annual revenue)")
 
 with open(STATS_PATH, 'w') as f:
     f.write('\n'.join(s) + '\n')
 
 # ── Done ─────────────────────────────────────────────────────────────
 print(f"\n{'='*60}")
-print(f"  13 charts saved to {CHART_DIR}/")
+print(f"  14 charts saved to {CHART_DIR}/")
 print(f"  Stats/tables saved to {STATS_PATH}")
 print(f"{'='*60}")
