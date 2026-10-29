@@ -498,6 +498,7 @@ Customer satisfaction is falling (CSAT 69.3% → 63.7%), and complaints are grow
 
 # AI usage overview
 
+- **Tools:** Claude and Claude Code, mainly with the Opus 5.5 model.
 - **What I used it for:** mainly writing code (consolidation, cleaning, validation, AI classification, charts), and helping draft the report from the numbers my scripts produced (`report_stats.md`).
 - **What I gave it:** only column headers and my own notes, never raw feedback rows, because the data contains personal information to be treated as real.
 - **Key interaction:** before any code, I opened every file and wrote a `.txt` description of each one (structure, headers, quirks, scales, nothing personal). The AI turned that into `source_registry.yaml`, which the consolidation code is built on. Grounding it in my notes kept hallucination low.
