@@ -12,7 +12,7 @@ Kestrel's head office had 52 customer-feedback spreadsheets from 24 dealerships 
 5. [Insights & recommendations across dealerships](#insights--recommendations-across-dealerships)
 6. [AI usage overview](#ai-usage-overview)
 
-Sections 2–4 also exist as standalone files: [`approach_overview.md`](approach_overview.md), [`data_quality_observations.md`](data_quality_observations.md) and [`business_answers_q4.md`](business_answers_q4.md).
+Sections 2–4 also exist as standalone files: [`report/approach_overview.md`](report/approach_overview.md), [`report/data_quality_observations.md`](report/data_quality_observations.md) and [`report/business_answers_q4.md`](report/business_answers_q4.md).
 
 ---
 
@@ -21,10 +21,11 @@ Sections 2–4 also exist as standalone files: [`approach_overview.md`](approach
 ```
 .
 ├── README.md                      ← this report
-├── approach_overview.md           ← approach, assumptions, tech choices
-├── data_quality_observations.md   ← data quality findings
-├── business_answers_q4.md         ← answers to the business questions
-├── charts/                        ← chart PNGs used in the report
+├── report/
+│   ├── approach_overview.md       ← approach, assumptions, tech choices
+│   ├── data_quality_observations.md ← data quality findings
+│   ├── business_answers_q4.md     ← customer satisfaction performance analysis
+│   └── charts/                    ← chart PNGs used in the report
 └── code_and_data/                 ← all code, inputs and outputs (run everything from here)
     ├── feedback/                  ← the 52 original source files (unchanged)
     ├── reference/                 ← dealerships.csv, monthly_revenue.csv
@@ -62,7 +63,7 @@ python -X utf8 generate_charts_for_q4.py
 python -X utf8 generate_excel.py --issues ai_output/ai_issues.csv --main ai_output/consolidated_clean_ai.csv
 ```
 
-Note: `generate_charts_for_q4.py` writes its PNGs to `code_and_data/charts/`. If you rerun it, copy them to the top-level `charts/` folder so the report picks up the new versions.
+Note: `generate_charts_for_q4.py` writes its PNGs to `code_and_data/charts/`. If you rerun it, copy them to `report/charts/` so the report picks up the new versions.
 
 ---
 
@@ -311,7 +312,7 @@ Kestrel Motor Group runs 24 dealerships across Victoria, New South Wales and Que
 
 ## Overall customer satisfaction
 
-![CSAT by Dealership](charts/00_csat_by_dealership.png)
+![CSAT by Dealership](report/charts/00_csat_by_dealership.png)
 
 - **Group CSAT is 66.4%**: two in three rated responses score 4 or 5 out of 5 (7,035 responses).
 - **It is falling:** 69.3% in H1 to 63.7% in H2, matching the rise in negative feedback (section 2).
@@ -321,7 +322,7 @@ Kestrel Motor Group runs 24 dealerships across Victoria, New South Wales and Que
 
 ## 1. What are the main drivers of negative feedback?
 
-![Top Themes](charts/01_top_themes.png)
+![Top Themes](report/charts/01_top_themes.png)
 
 The top five causes account for **~72%** of all negative issues:
 
@@ -339,7 +340,7 @@ The top five causes account for **~72%** of all negative issues:
 
 ### How do drivers vary across dealerships?
 
-![Worst Dealerships](charts/03_worst_dealerships.png)
+![Worst Dealerships](report/charts/03_worst_dealerships.png)
 
 The **top 5 worst dealerships** generate 34% of all negative issues:
 
@@ -352,23 +353,23 @@ The **top 5 worst dealerships** generate 34% of all negative issues:
 | VIC03 | Essendon | 186 |
 <br>
 
-![Dealership Theme Profile](charts/04_dealership_theme_profile.png)
+![Dealership Theme Profile](report/charts/04_dealership_theme_profile.png)
 
 #### Revenue-normalised view: who's really underperforming?
 
 Raw complaint counts favour large dealerships. When we normalise by revenue, the picture shifts:
 
-![Neg per $M Revenue](charts/09_neg_per_M_revenue.png)
+![Neg per $M Revenue](report/charts/09_neg_per_M_revenue.png)
 
 **QLD07** leads with 8.7 negative issues per $1M revenue; even though it may not top the raw-count list, it has the worst complaint-to-revenue ratio. This is a more actionable metric because it answers: *"Where are we losing the most customer goodwill relative to business we're doing?"*
 
-![Neg per 1k Service Jobs](charts/12_neg_per_1k_service_jobs.png)
+![Neg per 1k Service Jobs](report/charts/12_neg_per_1k_service_jobs.png)
 
 Normalising by service volume tells a similar story: some mid-sized dealerships have a worse complaint rate per 1,000 service jobs than the high-volume sites, suggesting systemic process issues rather than just scale effects.
 
 ### How do drivers vary across departments?
 
-![Theme x Department Heatmap](charts/02_theme_department_heatmap.png)
+![Theme x Department Heatmap](report/charts/02_theme_department_heatmap.png)
 
 **Service is the epicentre**: it generates 80%+ of negative issues across Communication (715), Repair Quality (369), Timeliness (368), and Pricing (304). Parts and Customer Service/Front Desk are secondary hotspots, particularly for Communication failures (the front desk is the structural chokepoint where messages die).
 
@@ -378,7 +379,7 @@ Normalising by service volume tells a similar story: some mid-sized dealerships 
 
 **Yes, and not for the better.** H2 (Apr–Sep 2026) is **28.8% worse** than H1 (Oct 2025–Mar 2026): 1,819 negative issues vs 1,412.
 
-![Monthly Trend](charts/05_monthly_trend.png)
+![Monthly Trend](report/charts/05_monthly_trend.png)
 
 ### Revenue context: complaints are growing faster than revenue
 
@@ -392,11 +393,11 @@ Normalising by service volume tells a similar story: some mid-sized dealerships 
 
 **Complaints are outpacing business growth.** Even after accounting for any revenue increase, the complaint rate per dollar of revenue is rising. This is genuine service deterioration, not just volume scaling.
 
-![H1 vs H2 Revenue and Complaints](charts/13_h1_h2_revenue_complaints.png)
+![H1 vs H2 Revenue and Complaints](report/charts/13_h1_h2_revenue_complaints.png)
 
-![Revenue vs Complaints](charts/10_revenue_vs_complaints.png)
+![Revenue vs Complaints](report/charts/10_revenue_vs_complaints.png)
 
-![H1 vs H2 Comparison](charts/06_h1_vs_h2.png)
+![H1 vs H2 Comparison](report/charts/06_h1_vs_h2.png)
 
 ### What's getting worse:
 
@@ -423,13 +424,13 @@ Normalising by service volume tells a similar story: some mid-sized dealerships 
 
 ## 3. Where should Kestrel focus first, and roughly what is it worth?
 
-![Severity by Theme](charts/07_severity_by_theme.png)
+![Severity by Theme](report/charts/07_severity_by_theme.png)
 
-![Revenue at Risk](charts/11_revenue_at_risk.png)
+![Revenue at Risk](report/charts/11_revenue_at_risk.png)
 
 ### Priority 1: Eliminate Safety failures (131 issues — 100% Critical, liability exposure)
 
-![Safety Breakdown](charts/14_safety_breakdown.png)
+![Safety Breakdown](report/charts/14_safety_breakdown.png)
 
 Safety issues come from 23 of 24 dealerships, so this is a group-wide process gap, not one bad workshop. 90% (118) are in Service. Half are "other" hazards, such as headlights left aimed into the trees, cruise control cutting out on the highway, or overheating after a service. The rest are steering/suspension (33), brakes (20) and loose wheel nuts (12). They are not falling: 62 in H1, 69 in H2.
 
